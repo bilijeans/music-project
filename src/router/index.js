@@ -2,6 +2,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HomePageView from "../views/home/HomePageView.vue";
 import RankPageView from "../views/rank/RankPageView.vue";
+import RankScreamsGroup from "../views/rank/RankScreamsGroup.vue";
+import RankCharacteristicsGroup from "../views/rank/RankCharacteristicsGroup.vue";
 Vue.use(VueRouter)
 
 const routes = [
@@ -14,6 +16,17 @@ const routes = [
     path: '/rank',
     name: 'rank',
     component: RankPageView,
+  },
+  {
+    path: '/rankScreams', 
+    name: 'screams', 
+    component: RankScreamsGroup,
+    props:true,
+  },
+  {
+    path: '/rankCharacteristics', 
+    name: 'characteristics', 
+    component: RankCharacteristicsGroup,
   }
 ]
 
