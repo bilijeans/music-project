@@ -1,0 +1,1830 @@
+{
+	"code": "000000",
+	"info": "操作成功",
+	"data": {
+		"contents": [
+			{
+				"contents": [
+					{
+						"action": "https://y.migu.cn/app/gm/v1/index.html?id=94930&cfrom=sy",
+						"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/bcb5ddaf77828caee4eddc172edaa105/cf42dd9b0ae85c5fe76b8d3c3197fb10/5b029266245cefc85aee99ab0b3a98cb",
+						"track": "",
+						"view": "Top-Img-Item",
+						"viewId": "4006-41755007"
+					}
+				],
+				"view": "Top-Img",
+				"viewId": "2011-31414475"
+			},
+			{
+				"contents": [
+					{
+						"action": "mgmusic://song-player?id=600919000008316709",
+						"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/bcb5ddaf77828caee4eddc172edaa105/cf42dd9b0ae85c5fe76b8d3c3197fb10/78d8556d891ad448e033dc35bcf3a269",
+						"logEvent": {
+							"contentId": "1302@47468231",
+							"contentName": "【首发】索郎达吉&拥金措新单曲《梦回皮洛》上线",
+							"index": "var:index",
+							"subContentId": "",
+							"subContentType": ""
+						},
+						"track": "",
+						"txt": "新歌",
+						"view": "ZJ-Banner-Item",
+						"viewId": "4014-47468231"
+					},
+					{
+						"action": "mgmusic://browser?url=https%3A%2F%2Fh5.nf.migu.cn%2Fapp%2Fgm%2Fv1%2Findex.html%3Fid%3D94884",
+						"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/bcb5ddaf77828caee4eddc172edaa105/4c1ab6ef8224e2bafccbf9e5e87da3d5/6f12172864c1c12a9dde2bfe2b21f636",
+						"logEvent": {
+							"contentId": "1001@https://h5.nf.migu.cn/app/gm/v1/index.html?id=94884",
+							"contentName": "【活动】《不被定义的赛场》原创音乐征集",
+							"index": "var:index",
+							"subContentId": "",
+							"subContentType": ""
+						},
+						"track": "",
+						"txt": "活动",
+						"view": "ZJ-Banner-Item",
+						"viewId": "4014-47176772"
+					},
+					{
+						"action": "mgmusic://album-info?id=1139855588",
+						"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/bcb5ddaf77828caee4eddc172edaa105/ec4a2ed30340c772a807cf10863e3037/9e4f8939ceee912b88ccfb08429b183b",
+						"logEvent": {
+							"contentId": "1301@47429373",
+							"contentName": "【首发】陈学冬全新专辑《溯·光》上线",
+							"index": "var:index",
+							"subContentId": "",
+							"subContentType": ""
+						},
+						"track": "",
+						"txt": "新歌",
+						"view": "ZJ-Banner-Item",
+						"viewId": "4014-47429373"
+					},
+					{
+						"action": "mgmusic://song-player?id=600919000008292431",
+						"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/bcb5ddaf77828caee4eddc172edaa105/4a0fe998abc577d39ee3963b9cdf2c8b/ed7704094e8d95640685cffa2794c8b5",
+						"logEvent": {
+							"contentId": "1302@47217477",
+							"contentName": "【首发】爱你孤身走暗巷 陈奕迅《孤勇者(Live)》版上线",
+							"index": "var:index",
+							"subContentId": "",
+							"subContentType": ""
+						},
+						"track": "",
+						"txt": "新歌",
+						"view": "ZJ-Banner-Item",
+						"viewId": "4014-47217477"
+					},
+					{
+						"action": "mgmusic://song-player?id=600919000008313075",
+						"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/bcb5ddaf77828caee4eddc172edaa105/e3edd8d6f574c369028c75587bea4c26/eaf8ffc96af1307976c8f5ace63d5faf",
+						"logEvent": {
+							"contentId": "1302@47394648",
+							"contentName": "【首发】张艺兴最新单曲《动起来》上线",
+							"index": "var:index",
+							"subContentId": "",
+							"subContentType": ""
+						},
+						"track": "",
+						"txt": "新歌",
+						"view": "ZJ-Banner-Item",
+						"viewId": "4014-47394648"
+					},
+					{
+						"action": "mgmusic://song-player?id=600919000008289342",
+						"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/bcb5ddaf77828caee4eddc172edaa105/ec4a2ed30340c772a807cf10863e3037/2dc51779b15bd7def3ab7158e689683d",
+						"logEvent": {
+							"contentId": "1302@47429320",
+							"contentName": "【首发】王晰 最新单曲《平凡又美好的晚上》上线",
+							"index": "var:index",
+							"subContentId": "",
+							"subContentType": ""
+						},
+						"track": "",
+						"txt": "新歌",
+						"view": "ZJ-Banner-Item",
+						"viewId": "4014-47429320"
+					},
+					{
+						"action": "mgmusic://song-player?id=600919000008292963",
+						"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/bcb5ddaf77828caee4eddc172edaa105/943c6364b7f20e648e013ae8d2578d7c/98c258a60696dec0c51bed4e5a0bb546",
+						"logEvent": {
+							"contentId": "1302@47267726",
+							"contentName": "【首发】 王啸坤全新创作公益歌曲《我叫勺嘴鹬》上线",
+							"index": "var:index",
+							"subContentId": "",
+							"subContentType": ""
+						},
+						"track": "",
+						"txt": "新歌",
+						"view": "ZJ-Banner-Item",
+						"viewId": "4014-47267726"
+					},
+					{
+						"action": "mgmusic://album-info?id=1139857550",
+						"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/bcb5ddaf77828caee4eddc172edaa105/e302926a85ba46c20d69ed3b85b97cea/fdbb352caf3ca69d117dd2b0db03949f",
+						"logEvent": {
+							"contentId": "1301@47260661",
+							"contentName": "【综艺首发】《2022中国好声音》第12期上线",
+							"index": "var:index",
+							"subContentId": "",
+							"subContentType": ""
+						},
+						"track": "",
+						"txt": "新歌",
+						"view": "ZJ-Banner-Item",
+						"viewId": "4014-47260661"
+					},
+					{
+						"action": "mgmusic://browser?url=https%3A%2F%2Fh5.nf.migu.cn%2Fapp%2Fgm%2Fv1%2Findex.html%3Fid%3D94928",
+						"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/bcb5ddaf77828caee4eddc172edaa105/e3edd8d6f574c369028c75587bea4c26/8f4644ed5cbac65cd4e2fbb1f3fed246",
+						"logEvent": {
+							"contentId": "1001@https://h5.nf.migu.cn/app/gm/v1/index.html?id=94928",
+							"contentName": "【专访】咪咕星访问-Veegee徐若侨",
+							"index": "var:index",
+							"subContentId": "",
+							"subContentType": ""
+						},
+						"track": "",
+						"txt": "专访",
+						"view": "ZJ-Banner-Item",
+						"viewId": "4014-47402040"
+					}
+				],
+				"view": "ZJ-Banner",
+				"viewId": "2011-31417313"
+			},
+			{
+				"contents": [
+					{
+						"action": "mgmusic://song-lists",
+						"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/bcb5ddaf77828caee4eddc172edaa105/86d2c17e40cd03e035f58751bab96ad8/e78e8132d86947cfd30b2b7ac6520896",
+						"track": "",
+						"txt": "歌单",
+						"view": "Transformers-Item",
+						"viewId": "4006-41115331"
+					},
+					{
+						"action": "mgmusic://scene-radio?tabIndex=0",
+						"displayType": "normal",
+						"img": "http://d.musicapp.migu.cn/prod/file-service/file-down/bcb5ddaf77828caee4eddc172edaa105/86d2c17e40cd03e035f58751bab96ad8/f725883637fde256c91ac2067676e573",
+						"track": "",
+						"txt": "音乐电台",
+						"view": "Transformers-Item",
+						"viewId": "4006-41115328"
+					},
+					{
+						"action": "mgmusic://rank",
+						"img": "http://d.musicapp.migu.cn/prod/file-service/file-down/bcb5ddaf77828caee4eddc172edaa105/86d2c17e40cd03e035f58751bab96ad8/3770e92bf8a36c52814f0693b90176ff",
+						"track": "",
+						"txt": "排行榜",
+						"view": "Transformers-Item",
+						"viewId": "4006-41115325"
+					},
+					{
+						"action": "mgmusic://browser?url=https%3A%2F%2Fh5.nf.migu.cn%2Fapp%2Fv4%2Fzt%2F2021%2Fnative-singer%2Findex.html",
+						"img": "http://d.musicapp.migu.cn/prod/file-service/file-down/bcb5ddaf77828caee4eddc172edaa105/86d2c17e40cd03e035f58751bab96ad8/03bcce6dd548afbb8dfac0a5db712080",
+						"track": "",
+						"txt": "歌手",
+						"view": "Transformers-Item",
+						"viewId": "4006-41115322"
+					}
+				],
+				"view": "ZJ-Transformers",
+				"viewId": "2011-38160891"
+			},
+			{
+				"contents": [
+					{
+						"action": "mgmusic://browser?url=https%3A%2F%2Fh5.nf.migu.cn%2Fapp%2Fgm%2Fv1%2Findex.html%3Fid%3D94854",
+						"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/bcb5ddaf77828caee4eddc172edaa105/1690f7cbfc8950e7d1e9acf89afdfdb6/a4f250ac86ff19315dba6d5ae1e3b191",
+						"logEvent": {
+							"contentId": "1001@https://h5.nf.migu.cn/app/gm/v1/index.html?id=94854",
+							"contentName": "一道穿越远古而来的光，带你梦回皮洛>>",
+							"index": "var:index",
+							"subContentId": "",
+							"subContentType": ""
+						},
+						"track": "",
+						"txt": "一道穿越远古而来的光，带你梦回皮洛>>",
+						"view": "ZJ-Banner-V-Item",
+						"viewId": "4014-47470127"
+					}
+				],
+				"view": "ZJ-Banner-V",
+				"viewId": "2011-31417432"
+			},
+			{
+				"contents": [
+					{
+						"action": "mgmusic://song-lists",
+						"track": "",
+						"txt": "推荐歌单",
+						"txt2": "邂逅你的真爱歌单",
+						"txt4": "31417242",
+						"view": "ZJ-Title",
+						"viewId": "4006-31417242"
+					}
+				],
+				"view": "ZJ-Title",
+				"viewId": "2011-31417260"
+			},
+			{
+				"contents": [
+					{
+						"action": "mgmusic://song-list-info?id=215360998",
+						"img": "http://d.musicapp.migu.cn/prod/playlist-service/playListimg/662f99c9-bb95-4cf7-b3e2-c1f4a9d28736.jpg",
+						"logEvent": {
+							"contentId": "215360998",
+							"contentName": "华语live丨那些惊艳的神级现场",
+							"contentType": "2021",
+							"index": "var:index",
+							"subContentId": "",
+							"subContentType": ""
+						},
+						"resId": "215360998",
+						"resType": "2021",
+						"style": "",
+						"track": "yyygdtj_1",
+						"txt": "华语live丨那些惊艳的神级现场",
+						"view": "ZJ-SongList-Item",
+						"viewId": "4025-215360998"
+					},
+					{
+						"action": "mgmusic://song-list-info?id=192837338",
+						"img": "http://d.musicapp.migu.cn/prod/playlist-service/playListimg/e58b8cbd-099e-488b-bdc6-e72ae5a05a59.jpg",
+						"logEvent": {
+							"contentId": "192837338",
+							"contentName": "新潮国风| 华夏大地的悠扬古韵",
+							"contentType": "2021",
+							"index": "var:index",
+							"subContentId": "",
+							"subContentType": ""
+						},
+						"resId": "192837338",
+						"resType": "2021",
+						"style": "",
+						"track": "yyygdtj_2",
+						"txt": "新潮国风| 华夏大地的悠扬古韵",
+						"view": "ZJ-SongList-Item",
+						"viewId": "4025-192837338"
+					},
+					{
+						"action": "mgmusic://song-list-info?id=213086948",
+						"img": "http://d.musicapp.migu.cn/prod/playlist-service/playListimg/6f3b600a-eba4-4847-98e0-0cceb3f17cc7.jpg",
+						"logEvent": {
+							"contentId": "213086948",
+							"contentName": "这才是爸妈想要的广场舞歌单",
+							"contentType": "2021",
+							"index": "var:index",
+							"subContentId": "",
+							"subContentType": ""
+						},
+						"resId": "213086948",
+						"resType": "2021",
+						"style": "",
+						"track": "yyygdtj_3",
+						"txt": "这才是爸妈想要的广场舞歌单",
+						"view": "ZJ-SongList-Item",
+						"viewId": "4025-213086948"
+					},
+					{
+						"action": "mgmusic://song-list-info?id=215062248",
+						"img": "http://d.musicapp.migu.cn/prod/playlist-service/playListimg/4a86f15a-ea56-48bb-a96a-0535a202a7d5.jpg",
+						"logEvent": {
+							"contentId": "215062248",
+							"contentName": "\"Disco\"属于那个带感的年代，重温起舞的粤语劲歌",
+							"contentType": "2021",
+							"index": "var:index",
+							"subContentId": "",
+							"subContentType": ""
+						},
+						"resId": "215062248",
+						"resType": "2021",
+						"style": "",
+						"track": "yyygdtj_4",
+						"txt": "\"Disco\"属于那个带感的年代，重温起舞的粤语劲歌",
+						"view": "ZJ-SongList-Item",
+						"viewId": "4025-215062248"
+					},
+					{
+						"action": "mgmusic://song-list-info?id=212986113",
+						"img": "http://d.musicapp.migu.cn/prod/playlist-service/playListimg/5b83ab77-badf-401d-a9ef-658dc495ef32.jpg",
+						"logEvent": {
+							"contentId": "212986113",
+							"contentName": "小众粤语丨绝佳赏味期",
+							"contentType": "2021",
+							"index": "var:index",
+							"subContentId": "",
+							"subContentType": ""
+						},
+						"resId": "212986113",
+						"resType": "2021",
+						"style": "",
+						"track": "yyygdtj_5",
+						"txt": "小众粤语丨绝佳赏味期",
+						"view": "ZJ-SongList-Item",
+						"viewId": "4025-212986113"
+					},
+					{
+						"action": "mgmusic://song-list-info?id=216078409",
+						"img": "http://d.musicapp.migu.cn/prod/playlist-service/playListimg/51a42d96-167f-4153-9e07-81042c2803ae.jpg",
+						"logEvent": {
+							"contentId": "216078409",
+							"contentName": "超强节奏感丨BPM180快跑速度",
+							"contentType": "2021",
+							"index": "var:index",
+							"subContentId": "",
+							"subContentType": ""
+						},
+						"resId": "216078409",
+						"resType": "2021",
+						"style": "",
+						"track": "yyygdtj_6",
+						"txt": "超强节奏感丨BPM180快跑速度",
+						"view": "ZJ-SongList-Item",
+						"viewId": "4025-216078409"
+					},
+					{
+						"action": "mgmusic://song-list-info?id=216641961",
+						"img": "http://d.musicapp.migu.cn/prod/playlist-service/playListimg/b4fe3630-ed01-44f1-8119-528be9dd54a1.jpg",
+						"logEvent": {
+							"contentId": "216641961",
+							"contentName": "华语R&B丨共享音频的浪漫",
+							"contentType": "2021",
+							"index": "var:index",
+							"subContentId": "",
+							"subContentType": ""
+						},
+						"resId": "216641961",
+						"resType": "2021",
+						"style": "",
+						"track": "yyygdtj_7",
+						"txt": "华语R&B丨共享音频的浪漫",
+						"view": "ZJ-SongList-Item",
+						"viewId": "4025-216641961"
+					},
+					{
+						"action": "mgmusic://song-list-info?id=214388781",
+						"img": "http://d.musicapp.migu.cn/prod/playlist-service/playListimg/f4ceab5a-39a6-412a-be15-505b010b9b9b.jpg",
+						"logEvent": {
+							"contentId": "214388781",
+							"contentName": "这些歌一下戳到我的心呃…心巴上",
+							"contentType": "2021",
+							"index": "var:index",
+							"subContentId": "",
+							"subContentType": ""
+						},
+						"resId": "214388781",
+						"resType": "2021",
+						"style": "",
+						"track": "yyygdtj_8",
+						"txt": "这些歌一下戳到我的心呃…心巴上",
+						"view": "ZJ-SongList-Item",
+						"viewId": "4025-214388781"
+					},
+					{
+						"action": "mgmusic://song-list-info?id=216656918",
+						"img": "http://d.musicapp.migu.cn/prod/playlist-service/playListimg/f9caccfc-70e0-47ca-8a74-d863b767ee2f.jpg",
+						"logEvent": {
+							"contentId": "216656918",
+							"contentName": "张靓颖|绝美嗓音，天下无双",
+							"contentType": "2021",
+							"index": "var:index",
+							"subContentId": "",
+							"subContentType": ""
+						},
+						"resId": "216656918",
+						"resType": "2021",
+						"style": "",
+						"track": "yyygdtj_9",
+						"txt": "张靓颖|绝美嗓音，天下无双",
+						"view": "ZJ-SongList-Item",
+						"viewId": "4025-216656918"
+					},
+					{
+						"action": "mgmusic://song-list-info?id=207323069",
+						"img": "http://d.musicapp.migu.cn/prod/playlist-service/playListimg/8bbc5d25-0278-48cc-b42c-fc9e0de00ecc.jpg",
+						"logEvent": {
+							"contentId": "207323069",
+							"contentName": "80后的你，其实可以很好",
+							"contentType": "2021",
+							"index": "var:index",
+							"subContentId": "",
+							"subContentType": ""
+						},
+						"resId": "207323069",
+						"resType": "2021",
+						"style": "",
+						"track": "yyygdtj_10",
+						"txt": "80后的你，其实可以很好",
+						"view": "ZJ-SongList-Item",
+						"viewId": "4025-207323069"
+					},
+					{
+						"action": "mgmusic://song-list-info?id=216272087",
+						"img": "http://d.musicapp.migu.cn/prod/playlist-service/playListimg/55c2ad75-e232-417e-9842-5f345406adc5.jpg",
+						"logEvent": {
+							"contentId": "216272087",
+							"contentName": "【秋天】寒秋已至，浸润在属于秋的声音里吧",
+							"contentType": "2021",
+							"index": "var:index",
+							"subContentId": "",
+							"subContentType": ""
+						},
+						"resId": "216272087",
+						"resType": "2021",
+						"style": "",
+						"track": "yyygdtj_11",
+						"txt": "【秋天】寒秋已至，浸润在属于秋的声音里吧",
+						"view": "ZJ-SongList-Item",
+						"viewId": "4025-216272087"
+					},
+					{
+						"action": "mgmusic://song-list-info?id=163167226",
+						"img": "http://d.musicapp.migu.cn/ugcdata/playListimg/a21745d5-557d-463b-b9c5-b010f969b137.jpg",
+						"logEvent": {
+							"contentId": "163167226",
+							"contentName": "华语励志|心若向阳，无畏悲伤",
+							"contentType": "2021",
+							"index": "var:index",
+							"subContentId": "",
+							"subContentType": ""
+						},
+						"resId": "163167226",
+						"resType": "2021",
+						"style": "",
+						"track": "yyygdtj_12",
+						"txt": "华语励志|心若向阳，无畏悲伤",
+						"view": "ZJ-SongList-Item",
+						"viewId": "4025-163167226"
+					}
+				],
+				"view": "ZJ-SongList-Scroll",
+				"viewId": "2011-31417107"
+			},
+			{
+				"contents": [
+					{
+						"action": "mgmusic://song-lists?tagName=%E7%BB%8F%E5%85%B8%E8%80%81%E6%AD%8C&tagIds=1000001635",
+						"track": "",
+						"txt": "经典老歌",
+						"view": "Tag-Item",
+						"viewId": "4034-1000001635"
+					},
+					{
+						"action": "mgmusic://song-lists?tagName=%E5%87%8F%E5%8E%8B&tagIds=1000587679",
+						"track": "",
+						"txt": "减压",
+						"view": "Tag-Item",
+						"viewId": "4034-1000587679"
+					},
+					{
+						"action": "mgmusic://song-lists?tagName=%E5%98%BB%E5%93%88&tagIds=1000001809",
+						"track": "",
+						"txt": "嘻哈",
+						"view": "Tag-Item",
+						"viewId": "4034-1000001809"
+					},
+					{
+						"action": "mgmusic://song-lists?tagName=%E7%BD%91%E7%BB%9C%E7%83%AD%E6%AD%8C&tagIds=1001076096",
+						"track": "",
+						"txt": "网络热歌",
+						"view": "Tag-Item",
+						"viewId": "4034-1001076096"
+					},
+					{
+						"action": "mgmusic://song-lists?tagName=%E4%B8%AD%E5%9B%BD%E9%A3%8E&tagIds=1000001675",
+						"track": "",
+						"txt": "中国风",
+						"view": "Tag-Item",
+						"viewId": "4034-1000001675"
+					},
+					{
+						"action": "mgmusic://song-lists?tagName=%E8%8B%B1%E8%AF%AD&tagIds=1000001766",
+						"track": "",
+						"txt": "英语",
+						"view": "Tag-Item",
+						"viewId": "4034-1000001766"
+					},
+					{
+						"action": "mgmusic://song-lists?tagName=%E5%9B%BD%E8%AF%AD&tagIds=1000001762",
+						"track": "",
+						"txt": "国语",
+						"view": "Tag-Item",
+						"viewId": "4034-1000001762"
+					}
+				],
+				"view": "ZJ-Tag-Scroll",
+				"viewId": "2011-31417021"
+			},
+			{
+				"contents": [
+					{
+						"action": "mgmusic://title-action-playall?songType=1&columnId=31416824&viewId=2011-31416824",
+						"action2": "mgmusic://new-song",
+						"track": "",
+						"txt": "新歌速递",
+						"txt2": "更多鲜乐更多快落",
+						"view": "ZJ-Title-PlayAll",
+						"viewId": "4006-31416905"
+					}
+				],
+				"view": "ZJ-Title-PlayAll",
+				"viewId": "2011-31415641"
+			},
+			{
+				"contents": [
+					{
+						"action": "mgmusic://title-action-playall?songType=1&columnId=31416824",
+						"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/8121e8df41a5c12f48b69aea89b71dab/930de5470e8f0f4335d5b561cf23851e/81f0e7f0eecb799bd86cdcc045af1f08",
+						"logEvent": {
+							"contentId": "600919000008290223",
+							"contentName": "奔腾",
+							"contentType": "2",
+							"index": "var:index",
+							"songId": "1139848852",
+							"subContentId": "",
+							"subContentType": ""
+						},
+						"qualities": [
+							"pq",
+							"hq",
+							"isq",
+							"asq",
+							"izq24",
+							"azq24"
+						],
+						"resId": "600919000008290223",
+						"showTag": [],
+						"track": "",
+						"txt": "奔腾",
+						"txt2": "张杰",
+						"txt3": "奔腾",
+						"view": "ZJ-Song-Item",
+						"viewId": "4001-1139848852",
+						"vip": ""
+					},
+					{
+						"action": "mgmusic://title-action-playall?songType=1&columnId=31416824",
+						"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/8121e8df41a5c12f48b69aea89b71dab/1905a1200c85eca6c9cec639e06c140b/b27d67e840cd2fa7251f547899fca45b",
+						"logEvent": {
+							"contentId": "600919000008313953",
+							"contentName": "I'll Carry On",
+							"contentType": "2",
+							"index": "var:index",
+							"songId": "1139859544",
+							"subContentId": "",
+							"subContentType": ""
+						},
+						"qualities": [
+							"pq",
+							"hq",
+							"isq",
+							"asq",
+							"izq24",
+							"azq24"
+						],
+						"resId": "600919000008313953",
+						"showTag": [],
+						"track": "",
+						"txt": "I'll Carry On",
+						"txt2": "希林娜依高|黄霄雲",
+						"txt3": "I'll Carry On",
+						"view": "ZJ-Song-Item",
+						"viewId": "4001-1139859544",
+						"vip": ""
+					},
+					{
+						"action": "mgmusic://title-action-playall?songType=1&columnId=31416824",
+						"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/8121e8df41a5c12f48b69aea89b71dab/0b7950be2173f4d90b519685a25f0a58/c03d8bef28c61800e087835f9870b49a",
+						"logEvent": {
+							"contentId": "600919000008306154",
+							"contentName": "辞青",
+							"contentType": "2",
+							"index": "var:index",
+							"songId": "1139855515",
+							"subContentId": "",
+							"subContentType": ""
+						},
+						"qualities": [
+							"pq",
+							"hq",
+							"isq",
+							"asq",
+							"izq24",
+							"azq24"
+						],
+						"resId": "600919000008306154",
+						"showTag": [],
+						"track": "",
+						"txt": "辞青",
+						"txt2": "周笔畅",
+						"txt3": "辞青",
+						"view": "ZJ-Song-Item",
+						"viewId": "4001-1139855515",
+						"vip": ""
+					},
+					{
+						"action": "mgmusic://title-action-playall?songType=1&columnId=31416824",
+						"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/8121e8df41a5c12f48b69aea89b71dab/97e3c031c84be97ea2b97f6bdc706230/e348c78e1ca198f3fa088a3acb622636",
+						"logEvent": {
+							"contentId": "600919000008316485",
+							"contentName": "小丑妆",
+							"contentType": "2",
+							"index": "var:index",
+							"songId": "1139861177",
+							"subContentId": "",
+							"subContentType": ""
+						},
+						"qualities": [
+							"pq",
+							"hq",
+							"isq",
+							"asq",
+							"izq24",
+							"azq24"
+						],
+						"resId": "600919000008316485",
+						"showTag": [],
+						"track": "",
+						"txt": "小丑妆",
+						"txt2": "那吾克热-NW",
+						"txt3": "比法尼乐园",
+						"view": "ZJ-Song-Item",
+						"viewId": "4001-1139861177",
+						"vip": ""
+					},
+					{
+						"action": "mgmusic://title-action-playall?songType=1&columnId=31416824",
+						"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/8121e8df41a5c12f48b69aea89b71dab/7e575954a8e8dbec4ff2a2fdf21515d6/707650a1d3947fa4bf76f0ed17089d12",
+						"logEvent": {
+							"contentId": "600919000008290227",
+							"contentName": "他们都不懂",
+							"contentType": "2",
+							"index": "var:index",
+							"songId": "1139848918",
+							"subContentId": "",
+							"subContentType": ""
+						},
+						"qualities": [
+							"pq",
+							"hq"
+						],
+						"resId": "600919000008290227",
+						"showTag": [],
+						"track": "",
+						"txt": "他们都不懂",
+						"txt2": "陈立农",
+						"txt3": "他们都不懂",
+						"view": "ZJ-Song-Item",
+						"viewId": "4001-1139848918",
+						"vip": ""
+					},
+					{
+						"action": "mgmusic://title-action-playall?songType=1&columnId=31416824",
+						"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/8121e8df41a5c12f48b69aea89b71dab/0b7950be2173f4d90b519685a25f0a58/9f3fb0708b68c0076d989cfecdaf41d1",
+						"logEvent": {
+							"contentId": "600919000008292959",
+							"contentName": "借光",
+							"contentType": "2",
+							"index": "var:index",
+							"songId": "1139850153",
+							"subContentId": "",
+							"subContentType": ""
+						},
+						"qualities": [
+							"pq",
+							"hq",
+							"isq",
+							"asq",
+							"izq24",
+							"azq24"
+						],
+						"resId": "600919000008292959",
+						"showTag": [],
+						"track": "",
+						"txt": "借光",
+						"txt2": "胡夏",
+						"txt3": "借光",
+						"view": "ZJ-Song-Item",
+						"viewId": "4001-1139850153",
+						"vip": ""
+					},
+					{
+						"action": "mgmusic://title-action-playall?songType=1&columnId=31416824",
+						"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/8121e8df41a5c12f48b69aea89b71dab/6aeed687674bbc57d34b4f2a0e441276/f81d90393c3d5e6caa459a4951cf2f5e",
+						"logEvent": {
+							"contentId": "600919000008283979",
+							"contentName": "久久",
+							"contentType": "2",
+							"index": "var:index",
+							"songId": "1139844821",
+							"subContentId": "",
+							"subContentType": ""
+						},
+						"qualities": [
+							"pq",
+							"hq"
+						],
+						"resId": "600919000008283979",
+						"showTag": [],
+						"track": "",
+						"txt": "久久",
+						"txt2": "品冠",
+						"txt3": "久久",
+						"view": "ZJ-Song-Item",
+						"viewId": "4001-1139844821",
+						"vip": ""
+					},
+					{
+						"action": "mgmusic://title-action-playall?songType=1&columnId=31416824",
+						"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/8121e8df41a5c12f48b69aea89b71dab/e04f344745722cdf8d3733deda3741a3/52f9e525a4208076e62e921a5af9f53f",
+						"logEvent": {
+							"contentId": "600919000008283915",
+							"contentName": "阳光、海浪、我和你(网剧《炽道》主题曲)",
+							"contentType": "2",
+							"index": "var:index",
+							"songId": "1139844628",
+							"subContentId": "",
+							"subContentType": ""
+						},
+						"qualities": [
+							"pq",
+							"hq",
+							"isq",
+							"asq",
+							"izq24",
+							"azq24"
+						],
+						"resId": "600919000008283915",
+						"showTag": [],
+						"track": "",
+						"txt": "阳光、海浪、我和你(网剧《炽道》主题曲)",
+						"txt2": "摩登兄弟刘宇宁",
+						"txt3": "阳光、海浪、我和你",
+						"view": "ZJ-Song-Item",
+						"viewId": "4001-1139844628",
+						"vip": ""
+					},
+					{
+						"action": "mgmusic://title-action-playall?songType=1&columnId=31416824",
+						"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/8121e8df41a5c12f48b69aea89b71dab/1eb82b19f16cee6c79d58f1c3ed033d5/8723b15e5e8665206d582647ec130353",
+						"logEvent": {
+							"contentId": "600919000008284331",
+							"contentName": "Ideal Type",
+							"contentType": "2",
+							"index": "var:index",
+							"songId": "1139845320",
+							"subContentId": "",
+							"subContentType": ""
+						},
+						"qualities": [
+							"pq",
+							"hq",
+							"isq",
+							"asq",
+							"izq24",
+							"azq24"
+						],
+						"resId": "600919000008284331",
+						"showTag": [],
+						"track": "",
+						"txt": "Ideal Type",
+						"txt2": "张紫宁",
+						"txt3": "Ideal Type",
+						"view": "ZJ-Song-Item",
+						"viewId": "4001-1139845320",
+						"vip": ""
+					}
+				],
+				"view": "ZJ-Song-Scroll",
+				"viewId": "2011-31416824"
+			},
+			{
+				"contents": [
+					{
+						"action": "mgmusic://new-cd",
+						"track": "",
+						"txt": "新碟上架",
+						"txt2": "魔力新碟好听到爆",
+						"txt4": "31416770",
+						"view": "ZJ-Title",
+						"viewId": "4006-31416770"
+					}
+				],
+				"view": "ZJ-Title",
+				"viewId": "2011-31416691"
+			},
+			{
+				"contents": [
+					{
+						"action": "mgmusic://browser?url=https%3a%2f%2fh5.nf.migu.cn%2fapp%2fv3%2fp%2fdigital-album-exchange%2findex.html",
+						"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/bcb5ddaf77828caee4eddc172edaa105/7355d46c93de81060650c81730388335/9a4344de2a2cffaa0494dd7c9bfa4e4c",
+						"resType": "1",
+						"track": "",
+						"txt": "张艺兴《西》",
+						"view": "ZJ-Album-Item",
+						"viewId": "4006-46685985"
+					},
+					{
+						"action": "mgmusic://browser?url=https%3a%2f%2fh5.nf.migu.cn%2fapp%2fv3%2fp%2fdigital-album-exchange%2findex.html",
+						"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/bcb5ddaf77828caee4eddc172edaa105/cfc2459d89b13296c3c8cefb55965be6/0ba0c5674939bb1f3bf73da517800f95",
+						"resType": "1",
+						"track": "",
+						"txt": "洛天依《依如初见》",
+						"view": "ZJ-Album-Item",
+						"viewId": "4006-46226287"
+					},
+					{
+						"action": "mgmusic://browser?url=https%3a%2f%2fh5.nf.migu.cn%2fapp%2fv3%2fp%2fdigital-album-exchange%2findex.html",
+						"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/bcb5ddaf77828caee4eddc172edaa105/c9fc6334be6e50dc0cb6404042f678d3/1a525f1b50b399a7c4d02b7c03956a44",
+						"resType": "1",
+						"track": "",
+						"txt": "赵雷《署前街少年》",
+						"view": "ZJ-Album-Item",
+						"viewId": "4006-45799398"
+					},
+					{
+						"action": "mgmusic://browser?url=https%3a%2f%2fh5.nf.migu.cn%2fapp%2fv3%2fp%2fdigital-album-exchange%2findex.html",
+						"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/bcb5ddaf77828caee4eddc172edaa105/f8f365e99d809b5fa6647c14636b7c9b/118fe36e372bd0a27c74669441056c4d",
+						"resType": "1",
+						"track": "",
+						"txt": "周杰伦《最伟大的作品》",
+						"view": "ZJ-Album-Item",
+						"viewId": "4006-44639085"
+					},
+					{
+						"action": "mgmusic://album-info?id=1139848783",
+						"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/8121e8df41a5c12f48b69aea89b71dab/e04f344745722cdf8d3733deda3741a3/8c4adbc4069c8b4f7ced2c7c6b0fb271",
+						"resId": "1139848783",
+						"resType": "0",
+						"track": "",
+						"txt": "电视剧《烽烟尽处》原声大碟",
+						"txt2": "张翰|金润吉|许艺娜|金贵晟|朱兴东",
+						"txt3": "2022-09-30",
+						"view": "ZJ-Album-Item",
+						"viewId": "4003-1139848783"
+					},
+					{
+						"action": "mgmusic://album-info?id=1139844874",
+						"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/8121e8df41a5c12f48b69aea89b71dab/e04f344745722cdf8d3733deda3741a3/703a7d72b58606bb2749a9252ba88b4b",
+						"resId": "1139844874",
+						"resType": "0",
+						"track": "",
+						"txt": "《我的反派男友》影视原声专辑",
+						"txt2": "陈哲远|沈月|张紫宁|弦子|Nene郑乃馨|骆明劼",
+						"txt3": "2022-09-30",
+						"view": "ZJ-Album-Item",
+						"viewId": "4003-1139844874"
+					},
+					{
+						"action": "mgmusic://album-info?id=1139847745",
+						"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/8121e8df41a5c12f48b69aea89b71dab/b7398dc9c3b9df664bf7504247c19976/61a44bc416f7d45e0a0ac710d6a858b8",
+						"resId": "1139847745",
+						"resType": "0",
+						"track": "",
+						"txt": "披荆斩棘2第7期",
+						"txt2": "披荆斩棘的哥哥",
+						"txt3": "2022-09-29",
+						"view": "ZJ-Album-Item",
+						"viewId": "4003-1139847745"
+					},
+					{
+						"action": "mgmusic://album-info?id=1139849277",
+						"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/8121e8df41a5c12f48b69aea89b71dab/1905a1200c85eca6c9cec639e06c140b/7924b96c40333a8c6f82815502b6d10b",
+						"resId": "1139849277",
+						"resType": "0",
+						"track": "",
+						"txt": "网剧《美味恋人》原声带",
+						"txt2": "超能唱的哈啾|刘芊螢|徐鹤尼",
+						"txt3": "2022-10-10",
+						"view": "ZJ-Album-Item",
+						"viewId": "4003-1139849277"
+					}
+				],
+				"view": "ZJ-Album-Scroll",
+				"viewId": "2011-31416710"
+			},
+			{
+				"contents": [
+					{
+						"contents": [
+							{
+								"action": "mgmusic://title-action-playall?songType=1&columnId=31416645&viewId=2011-31416645",
+								"track": "",
+								"txt": "你可能喜欢",
+								"view": "ZJ-Title-PlayAll",
+								"viewId": "4006-31416617"
+							}
+						],
+						"view": "ZJ-Title-PlayAll",
+						"viewId": "2011-31416633"
+					},
+					{
+						"contents": [
+							{
+								"action": "mgmusic://title-action-playall?songType=1&columnId=31416645",
+								"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/8121e8df41a5c12f48b69aea89b71dab/abf86508cd197a80469ed1ef7fa7d21e/f99cbb8dc195628140aa58e189a96973",
+								"logEvent": {
+									"contentId": "600919000008259062",
+									"contentName": "愿你",
+									"contentType": "2",
+									"index": "var:index",
+									"songId": "1139831477",
+									"subContentId": "",
+									"subContentType": ""
+								},
+								"qualities": [
+									"pq",
+									"hq",
+									"isq",
+									"asq",
+									"izq24",
+									"azq24"
+								],
+								"resId": "600919000008259062",
+								"showTag": [],
+								"track": "yyygqtj",
+								"txt": "愿你",
+								"txt2": "好妹妹",
+								"txt3": "愿你",
+								"view": "ZJ-Song-Item",
+								"viewId": "4001-1139831477",
+								"vip": ""
+							},
+							{
+								"action": "mgmusic://title-action-playall?songType=1&columnId=31416645",
+								"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/8121e8df41a5c12f48b69aea89b71dab/b350b35a1cbc62b517b4f8984d8d32f6/321517c189429635fb8505e56129d64c",
+								"logEvent": {
+									"contentId": "600919000008283627",
+									"contentName": "我要全力奔向你",
+									"contentType": "2",
+									"index": "var:index",
+									"songId": "1139843766",
+									"subContentId": "",
+									"subContentType": ""
+								},
+								"qualities": [
+									"pq",
+									"hq",
+									"isq",
+									"asq",
+									"izq24",
+									"azq24"
+								],
+								"resId": "600919000008283627",
+								"showTag": [],
+								"track": "yyygqtj",
+								"txt": "我要全力奔向你",
+								"txt2": "白举纲",
+								"txt3": "我要全力奔向你",
+								"view": "ZJ-Song-Item",
+								"viewId": "4001-1139843766",
+								"vip": ""
+							},
+							{
+								"action": "mgmusic://title-action-playall?songType=1&columnId=31416645",
+								"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/8121e8df41a5c12f48b69aea89b71dab/30ff534e3173428933a0286df5fb6c5e/b49b89f39f9cdf6ff23c7c2eb350f0b7",
+								"logEvent": {
+									"contentId": "600919000008260058",
+									"contentName": "向往亚丁",
+									"contentType": "2",
+									"index": "var:index",
+									"songId": "1139834893",
+									"subContentId": "",
+									"subContentType": ""
+								},
+								"qualities": [
+									"pq",
+									"hq",
+									"isq",
+									"asq",
+									"izq24",
+									"azq24"
+								],
+								"resId": "600919000008260058",
+								"showTag": [],
+								"track": "yyygqtj",
+								"txt": "向往亚丁",
+								"txt2": "索郎达吉",
+								"txt3": "向往亚丁",
+								"view": "ZJ-Song-Item",
+								"viewId": "4001-1139834893",
+								"vip": ""
+							},
+							{
+								"action": "mgmusic://title-action-playall?songType=1&columnId=31416645",
+								"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/8121e8df41a5c12f48b69aea89b71dab/669d2de4e73ea216004e4fd27d7821d0/e6c35d686fcd3a4b682a0bd1d0df0791",
+								"logEvent": {
+									"contentId": "600919000008283607",
+									"contentName": "迟来的告白",
+									"contentType": "2",
+									"index": "var:index",
+									"songId": "1139844114",
+									"subContentId": "",
+									"subContentType": ""
+								},
+								"qualities": [
+									"pq",
+									"hq",
+									"isq",
+									"asq",
+									"izq24",
+									"azq24"
+								],
+								"resId": "600919000008283607",
+								"showTag": [],
+								"track": "yyygqtj",
+								"txt": "迟来的告白",
+								"txt2": "宋秉洋",
+								"txt3": "迟来的告白",
+								"view": "ZJ-Song-Item",
+								"viewId": "4001-1139844114",
+								"vip": ""
+							},
+							{
+								"action": "mgmusic://title-action-playall?songType=1&columnId=31416645",
+								"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/8121e8df41a5c12f48b69aea89b71dab/669d2de4e73ea216004e4fd27d7821d0/6083ccd7294e7db4e6e2bf0e9695fb8d",
+								"logEvent": {
+									"contentId": "600919000008283803",
+									"contentName": "秋天火车站",
+									"contentType": "2",
+									"index": "var:index",
+									"songId": "1139840031",
+									"subContentId": "",
+									"subContentType": ""
+								},
+								"qualities": [
+									"pq",
+									"hq",
+									"isq",
+									"asq",
+									"izq24",
+									"azq24"
+								],
+								"resId": "600919000008283803",
+								"showTag": [],
+								"track": "yyygqtj",
+								"txt": "秋天火车站",
+								"txt2": "赵照",
+								"txt3": "秋天火车站",
+								"view": "ZJ-Song-Item",
+								"viewId": "4001-1139840031",
+								"vip": ""
+							},
+							{
+								"action": "mgmusic://title-action-playall?songType=1&columnId=31416645",
+								"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/8121e8df41a5c12f48b69aea89b71dab/abf86508cd197a80469ed1ef7fa7d21e/dbebc9bd8cd66ea9abd1d3f121107708",
+								"logEvent": {
+									"contentId": "600919000008266968",
+									"contentName": "不枉",
+									"contentType": "2",
+									"index": "var:index",
+									"songId": "1139837852",
+									"subContentId": "",
+									"subContentType": ""
+								},
+								"qualities": [
+									"pq",
+									"hq",
+									"isq",
+									"asq"
+								],
+								"resId": "600919000008266968",
+								"showTag": [],
+								"track": "yyygqtj",
+								"txt": "不枉",
+								"txt2": "天空乐队",
+								"txt3": "不枉",
+								"view": "ZJ-Song-Item",
+								"viewId": "4001-1139837852",
+								"vip": ""
+							},
+							{
+								"action": "mgmusic://title-action-playall?songType=1&columnId=31416645",
+								"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/8121e8df41a5c12f48b69aea89b71dab/1b3277fe41fea34de7a20939aec26417/aacb9ef40664b5e10df32632468b2a3c",
+								"logEvent": {
+									"contentId": "600919000008054269",
+									"contentName": "黑白之间(《罚罪》影视剧插曲)",
+									"contentType": "2",
+									"index": "var:index",
+									"songId": "1139812066",
+									"subContentId": "",
+									"subContentType": ""
+								},
+								"qualities": [
+									"pq",
+									"hq",
+									"isq",
+									"asq",
+									"izq24",
+									"azq24"
+								],
+								"resId": "600919000008054269",
+								"showTag": [],
+								"track": "yyygqtj",
+								"txt": "黑白之间(《罚罪》影视剧插曲)",
+								"txt2": "刘思涵",
+								"txt3": "罚罪 影视剧原声带",
+								"view": "ZJ-Song-Item",
+								"viewId": "4001-1139812066",
+								"vip": ""
+							},
+							{
+								"action": "mgmusic://title-action-playall?songType=1&columnId=31416645",
+								"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/8121e8df41a5c12f48b69aea89b71dab/abf86508cd197a80469ed1ef7fa7d21e/2e647080a75827066c5e5d0a6f97ac58",
+								"logEvent": {
+									"contentId": "600919000008266844",
+									"contentName": "叫醒",
+									"contentType": "2",
+									"index": "var:index",
+									"songId": "1139837405",
+									"subContentId": "",
+									"subContentType": ""
+								},
+								"qualities": [
+									"pq",
+									"hq",
+									"isq",
+									"asq"
+								],
+								"resId": "600919000008266844",
+								"showTag": [],
+								"track": "yyygqtj",
+								"txt": "叫醒",
+								"txt2": "蒋熠铭",
+								"txt3": "叫醒",
+								"view": "ZJ-Song-Item",
+								"viewId": "4001-1139837405",
+								"vip": ""
+							},
+							{
+								"action": "mgmusic://title-action-playall?songType=1&columnId=31416645",
+								"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/8121e8df41a5c12f48b69aea89b71dab/0d13665a45ce224ceb1c56d136710b73/2fe642e24b8f8266d3b4809520f10459",
+								"logEvent": {
+									"contentId": "600919000007821867",
+									"contentName": "光",
+									"contentType": "2",
+									"index": "var:index",
+									"songId": "1139603370",
+									"subContentId": "",
+									"subContentType": ""
+								},
+								"qualities": [
+									"pq",
+									"hq",
+									"isq",
+									"asq",
+									"izq24",
+									"azq24"
+								],
+								"resId": "600919000007821867",
+								"showTag": [],
+								"track": "yyygqtj",
+								"txt": "光",
+								"txt2": "赵晔",
+								"txt3": "光",
+								"view": "ZJ-Song-Item",
+								"viewId": "4001-1139603370",
+								"vip": ""
+							}
+						],
+						"view": "ZJ-Song-Scroll",
+						"viewId": "2011-31416645"
+					}
+				],
+				"view": "ZJ-Rec-Song-Compound",
+				"viewId": "2011-31414824"
+			},
+			{
+				"contents": [
+					{
+						"action": "N/A",
+						"track": "",
+						"txt": "精彩专区",
+						"txt4": "31416278",
+						"view": "ZJ-Title",
+						"viewId": "4006-31416278"
+					}
+				],
+				"view": "ZJ-Title",
+				"viewId": "2011-31414751"
+			},
+			{
+				"contents": [
+					{
+						"action": "mgmusic://browser?url=http%3A%2F%2Fh5.nf.migu.cn%2Fapp%2Fv3%2Fp%2Fct%2Fproduct-template%2Findex.html%3Fid%3D90177%26key%3Dyszq",
+						"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/bcb5ddaf77828caee4eddc172edaa105/aea782125ade72d5ed9a2ab691f71810/da65d6a6b256283a224522ac78cef531",
+						"logEvent": {
+							"contentId": "1001@http://h5.nf.migu.cn/app/v3/p/ct/product-template/index.html?id=90177&key=yszq",
+							"contentName": "影视专区",
+							"index": "var:index",
+							"subContentId": "",
+							"subContentType": ""
+						},
+						"track": "",
+						"txt": "影视专区",
+						"txt2": "1",
+						"view": "ZJ-Zone-Item",
+						"viewId": "4014-31415107"
+					},
+					{
+						"action": "mgmusic://browser?url=http%3A%2F%2Fh5.nf.migu.cn%2Fapp%2Fv3%2Fp%2Fct%2Fproduct-template%2Findex.html%3Fid%3D90177%26key%3Dyybfyt",
+						"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/bcb5ddaf77828caee4eddc172edaa105/e3edd8d6f574c369028c75587bea4c26/6b06e3e33a719e6efc717677123308ad",
+						"logEvent": {
+							"contentId": "1001@http://h5.nf.migu.cn/app/v3/p/ct/product-template/index.html?id=90177&key=yybfyt",
+							"contentName": "云演播放映厅",
+							"index": "var:index",
+							"subContentId": "",
+							"subContentType": ""
+						},
+						"track": "",
+						"txt": "云演播放映厅",
+						"view": "ZJ-Zone-Item",
+						"viewId": "4014-45525012"
+					},
+					{
+						"action": "mgmusic://browser?url=http%3A%2F%2Fh5.nf.migu.cn%2Fapp%2Fv3%2Fp%2Fct%2Fproduct-template%2Findex.html%3Fid%3D90177%26key%3Dzjl",
+						"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/bcb5ddaf77828caee4eddc172edaa105/e8e0df1acd07294a3c1fe3307fa36bf2/eb2d998c3873c78db14a4953fcd744c0",
+						"logEvent": {
+							"contentId": "1001@http://h5.nf.migu.cn/app/v3/p/ct/product-template/index.html?id=90177&key=zjl",
+							"contentName": "周杰伦专区",
+							"index": "var:index",
+							"subContentId": "",
+							"subContentType": ""
+						},
+						"track": "",
+						"txt": "周杰伦专区",
+						"view": "ZJ-Zone-Item",
+						"viewId": "4014-43363671"
+					},
+					{
+						"action": "mgmusic://browser?url=http%3A%2F%2Fh5.nf.migu.cn%2Fapp%2Fv3%2Fp%2Fct%2Fproduct-template%2Findex.html%3Fid%3D90177%26key%3Dzyzq",
+						"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/bcb5ddaf77828caee4eddc172edaa105/bb65ecf656b64b583f9ec0f1adc2315f/88f6f409908f2460889eef15eb402f08",
+						"logEvent": {
+							"contentId": "1001@http://h5.nf.migu.cn/app/v3/p/ct/product-template/index.html?id=90177&key=zyzq",
+							"contentName": "综艺专区",
+							"index": "var:index",
+							"subContentId": "",
+							"subContentType": ""
+						},
+						"track": "",
+						"txt": "综艺专区",
+						"view": "ZJ-Zone-Item",
+						"viewId": "4014-31415091"
+					},
+					{
+						"action": "mgmusic://browser?url=http%3A%2F%2Fh5.nf.migu.cn%2Fapp%2Fv3%2Fp%2Fct%2Fproduct-template%2Findex.html%3Fid%3D90177%26key%3Dqzzq",
+						"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/bcb5ddaf77828caee4eddc172edaa105/f06020334da53e17719c5f113e60d037/c88cef9bb40def9a8764c21b826297cc",
+						"logEvent": {
+							"contentId": "1001@http://h5.nf.migu.cn/app/v3/p/ct/product-template/index.html?id=90177&key=qzzq",
+							"contentName": "亲子专区",
+							"index": "var:index",
+							"subContentId": "",
+							"subContentType": ""
+						},
+						"track": "",
+						"txt": "亲子专区",
+						"view": "ZJ-Zone-Item",
+						"viewId": "4014-32331116"
+					},
+					{
+						"action": "mgmusic://browser?url=https%3A%2F%2Fh5.nf.migu.cn%2Fapp%2Fv4%2Fzt%2F2022%2Fcloud-college%2Findex.html%23%2Fhome",
+						"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/bcb5ddaf77828caee4eddc172edaa105/7355d46c93de81060650c81730388335/2015e23be8f8eefc5be99fef8f3b3cbd",
+						"logEvent": {
+							"contentId": "1001@https://h5.nf.migu.cn/app/v4/zt/2022/cloud-college/index.html#/home",
+							"contentName": "云上学院",
+							"index": "var:index",
+							"subContentId": "",
+							"subContentType": ""
+						},
+						"track": "",
+						"txt": "云上学院",
+						"view": "ZJ-Zone-Item",
+						"viewId": "4014-34145054"
+					},
+					{
+						"action": "mgmusic://browser?url=http%3A%2F%2Fh5.nf.migu.cn%2Fapp%2Fv3%2Fp%2Fct%2Fproduct-template%2Findex.html%3Fid%3D90177%26key%3Dgyzq",
+						"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/bcb5ddaf77828caee4eddc172edaa105/1f4397f96625bd0b648a29d6a52c11d7/04ee7d89203c6380ba7897ef61b864c8",
+						"logEvent": {
+							"contentId": "1001@http://h5.nf.migu.cn/app/v3/p/ct/product-template/index.html?id=90177&key=gyzq",
+							"contentName": "港乐专区",
+							"index": "var:index",
+							"subContentId": "",
+							"subContentType": ""
+						},
+						"track": "",
+						"txt": "港乐专区",
+						"view": "ZJ-Zone-Item",
+						"viewId": "4014-44052725"
+					},
+					{
+						"action": "mgmusic://browser?url=http%3A%2F%2Fh5.nf.migu.cn%2Fapp%2Fv4%2Fn%2Fmg-make%2Findex.html",
+						"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/bcb5ddaf77828caee4eddc172edaa105/e8e0df1acd07294a3c1fe3307fa36bf2/c02d09f0cb55ee7fbf1e65ec31801ad2",
+						"logEvent": {
+							"contentId": "1001@http://h5.nf.migu.cn/app/v4/n/mg-make/index.html",
+							"contentName": "咪咕出品专区",
+							"index": "var:index",
+							"subContentId": "",
+							"subContentType": ""
+						},
+						"track": "",
+						"txt": "咪咕出品专区",
+						"view": "ZJ-Zone-Item",
+						"viewId": "4014-31712468"
+					},
+					{
+						"action": "mgmusic://browser?url=http%3A%2F%2Fh5.nf.migu.cn%2Fapp%2Fv3%2Fp%2Fct%2Fproduct-template%2Findex.html%3Fid%3D90177%26key%3Dfxjhzq",
+						"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/bcb5ddaf77828caee4eddc172edaa105/e8e0df1acd07294a3c1fe3307fa36bf2/dab00b29ea637ee52728fc7c0df85fff",
+						"logEvent": {
+							"contentId": "1001@http://h5.nf.migu.cn/app/v3/p/ct/product-template/index.html?id=90177&key=fxjhzq",
+							"contentName": "凡响计划专区",
+							"index": "var:index",
+							"subContentId": "",
+							"subContentType": ""
+						},
+						"track": "",
+						"txt": "凡响计划专区",
+						"view": "ZJ-Zone-Item",
+						"viewId": "4014-31712460"
+					},
+					{
+						"action": "mgmusic://browser?url=http%3A%2F%2Fh5.nf.migu.cn%2Fapp%2Fv3%2Fp%2Fct%2Fproduct-template%2Findex.html%3Fid%3D90177%26key%3Dgfzq",
+						"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/bcb5ddaf77828caee4eddc172edaa105/e8e0df1acd07294a3c1fe3307fa36bf2/231d65e107bd9b7737c927500d068e94",
+						"logEvent": {
+							"contentId": "1001@http://h5.nf.migu.cn/app/v3/p/ct/product-template/index.html?id=90177&key=gfzq",
+							"contentName": "国风专区",
+							"index": "var:index",
+							"subContentId": "",
+							"subContentType": ""
+						},
+						"track": "",
+						"txt": "国风专区",
+						"view": "ZJ-Zone-Item",
+						"viewId": "4014-31415080"
+					},
+					{
+						"action": "mgmusic://browser?url=http%3A%2F%2Fh5.nf.migu.cn%2Fapp%2Fv3%2Fp%2Fct%2Fproduct-template%2Findex.html%3Fid%3D90177%26key%3Dlyc",
+						"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/bcb5ddaf77828caee4eddc172edaa105/e8e0df1acd07294a3c1fe3307fa36bf2/bd301af0105b51c79fd3fc8d04d1eb5b",
+						"logEvent": {
+							"contentId": "1001@http://h5.nf.migu.cn/app/v3/p/ct/product-template/index.html?id=90177&key=lyc",
+							"contentName": "李宇春专区",
+							"index": "var:index",
+							"subContentId": "",
+							"subContentType": ""
+						},
+						"track": "",
+						"txt": "李宇春专区",
+						"view": "ZJ-Zone-Item",
+						"viewId": "4014-42690190"
+					},
+					{
+						"action": "mgmusic://browser?url=http%3A%2F%2Fc.migu.cn%2F00ez6J",
+						"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/bcb5ddaf77828caee4eddc172edaa105/e8e0df1acd07294a3c1fe3307fa36bf2/20aff77f739227f57632486b7bad9d05",
+						"logEvent": {
+							"contentId": "1001@http://c.migu.cn/00ez6J",
+							"contentName": "夕阳之歌专区",
+							"index": "var:index",
+							"subContentId": "",
+							"subContentType": ""
+						},
+						"track": "",
+						"txt": "夕阳之歌专区",
+						"view": "ZJ-Zone-Item",
+						"viewId": "4014-43271607"
+					},
+					{
+						"action": "mgmusic://browser?url=http%3A%2F%2Fh5.nf.migu.cn%2Fapp%2Fv3%2Fp%2Fct%2Fproduct-template%2Findex.html%3Fid%3D90177%26key%3Dtdjzq",
+						"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/bcb5ddaf77828caee4eddc172edaa105/e8e0df1acd07294a3c1fe3307fa36bf2/af3746739e11e824f1238aaba84a8d1f",
+						"logEvent": {
+							"contentId": "1001@http://h5.nf.migu.cn/app/v3/p/ct/product-template/index.html?id=90177&key=tdjzq",
+							"contentName": "民族音乐“天地间”专区",
+							"index": "var:index",
+							"subContentId": "",
+							"subContentType": ""
+						},
+						"track": "",
+						"txt": "民族音乐“天地间”专区",
+						"view": "ZJ-Zone-Item",
+						"viewId": "4014-31712452"
+					},
+					{
+						"action": "mgmusic://browser?url=http%3A%2F%2Fh5.nf.migu.cn%2Fapp%2Fv3%2Fp%2Fct%2Fproduct-template%2Findex.html%3Fid%3D90177%26key%3Dmgzq",
+						"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/bcb5ddaf77828caee4eddc172edaa105/e8e0df1acd07294a3c1fe3307fa36bf2/77faf08c60c79acbba1ade2a001d1f12",
+						"logEvent": {
+							"contentId": "1001@http://h5.nf.migu.cn/app/v3/p/ct/product-template/index.html?id=90177&key=mgzq",
+							"contentName": "芒果专区",
+							"index": "var:index",
+							"subContentId": "",
+							"subContentType": ""
+						},
+						"track": "",
+						"txt": "芒果专区",
+						"view": "ZJ-Zone-Item",
+						"viewId": "4014-39857094"
+					},
+					{
+						"action": "mgmusic://browser?url=http%3A%2F%2Fh5.nf.migu.cn%2Fapp%2Fv3%2Fp%2Fct%2Fproduct-template%2Findex.html%3Fid%3D90177%26key%3Dhyzq",
+						"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/bcb5ddaf77828caee4eddc172edaa105/5adf825e86f8e5f119c8d1157f8a71dd/4364aed608577a1f85a95fe82cd63015",
+						"logEvent": {
+							"contentId": "1001@http://h5.nf.migu.cn/app/v3/p/ct/product-template/index.html?id=90177&key=hyzq",
+							"contentName": "会员专区",
+							"index": "var:index",
+							"subContentId": "",
+							"subContentType": ""
+						},
+						"track": "",
+						"txt": "会员专区",
+						"view": "ZJ-Zone-Item",
+						"viewId": "4014-31712476"
+					},
+					{
+						"action": "mgmusic://browser?url=http%3A%2F%2Fh5.nf.migu.cn%2Fapp%2Fv3%2Fp%2Fct%2Fproduct-template%2Findex.html%3Fid%3D90177%26key%3Dcxzxl",
+						"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/bcb5ddaf77828caee4eddc172edaa105/e8e0df1acd07294a3c1fe3307fa36bf2/dee301ce0ceda38977b6db1a622a2436",
+						"logEvent": {
+							"contentId": "1001@http://h5.nf.migu.cn/app/v3/p/ct/product-template/index.html?id=90177&key=cxzxl",
+							"contentName": "唱响主旋律专区",
+							"index": "var:index",
+							"subContentId": "",
+							"subContentType": ""
+						},
+						"track": "",
+						"txt": "唱响主旋律专区",
+						"view": "ZJ-Zone-Item",
+						"viewId": "4014-42745705"
+					},
+					{
+						"action": "mgmusic://browser?url=http%3A%2F%2Fh5.nf.migu.cn%2Fapp%2Fv3%2Fp%2Fct%2Fproduct-template%2Findex.html%3Fid%3D90177%26key%3DFIFA",
+						"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/bcb5ddaf77828caee4eddc172edaa105/4c1ab6ef8224e2bafccbf9e5e87da3d5/e6671caad36a13adb8e842ee4fdc7f79",
+						"logEvent": {
+							"contentId": "1001@http://h5.nf.migu.cn/app/v3/p/ct/product-template/index.html?id=90177&key=FIFA",
+							"contentName": "世界杯专区",
+							"index": "var:index",
+							"subContentId": "",
+							"subContentType": ""
+						},
+						"track": "",
+						"txt": "世界杯专区",
+						"view": "ZJ-Zone-Item",
+						"viewId": "4014-47163285"
+					}
+				],
+				"view": "ZJ-Zone-Scroll",
+				"viewId": "2011-31414595"
+			},
+			{
+				"contents": [
+					{
+						"contents": [
+							{
+								"action": "mgmusic://title-action-playall?songType=1&columnId=27553319",
+								"action2": "mgmusic://rank-info?id=27553319",
+								"track": "",
+								"txt": "尖叫新歌榜",
+								"txt2": "潮人必听热门新单",
+								"view": "ZJ-Title-PlayAll",
+								"viewId": "4006-31420690"
+							}
+						],
+						"view": "ZJ-Title-PlayAll",
+						"viewId": "2011-31420654"
+					},
+					{
+						"contents": [
+							{
+								"action": "mgmusic://title-action-playall?songType=1&columnId=27553319",
+								"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/8121e8df41a5c12f48b69aea89b71dab/42f3c74550a846e35ab09094b7c7b633/95ab34c667e17aaf2c423add9f074420",
+								"logEvent": {
+									"contentId": "600919000008310843",
+									"contentName": "给未来的自己(Live)",
+									"contentType": "2",
+									"index": "var:index",
+									"songId": "1139856696",
+									"subContentId": "",
+									"subContentType": ""
+								},
+								"qualities": [
+									"pq",
+									"hq",
+									"isq",
+									"asq",
+									"izq24",
+									"azq24"
+								],
+								"resId": "600919000008310843",
+								"showTag": [],
+								"track": "",
+								"txt": "给未来的自己(Live)",
+								"txt2": "梁静茹|潘韵淇|杨灿|灼海豚乐队",
+								"txt3": "2022中国好声音 第11期",
+								"view": "ZJ-Song-Item",
+								"viewId": "4001-1139856696",
+								"vip": ""
+							},
+							{
+								"action": "mgmusic://title-action-playall?songType=1&columnId=27553319",
+								"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/8121e8df41a5c12f48b69aea89b71dab/0b7950be2173f4d90b519685a25f0a58/c03d8bef28c61800e087835f9870b49a",
+								"logEvent": {
+									"contentId": "600919000008306154",
+									"contentName": "辞青",
+									"contentType": "2",
+									"index": "var:index",
+									"songId": "1139855515",
+									"subContentId": "",
+									"subContentType": ""
+								},
+								"qualities": [
+									"pq",
+									"hq",
+									"isq",
+									"asq",
+									"izq24",
+									"azq24"
+								],
+								"resId": "600919000008306154",
+								"showTag": [],
+								"track": "",
+								"txt": "辞青",
+								"txt2": "周笔畅",
+								"txt3": "辞青",
+								"view": "ZJ-Song-Item",
+								"viewId": "4001-1139855515",
+								"vip": ""
+							},
+							{
+								"action": "mgmusic://title-action-playall?songType=1&columnId=27553319",
+								"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/8121e8df41a5c12f48b69aea89b71dab/089fe4caf9f78c1d053b0a306d69750c/9454eafbf04d53024ee2fa112997b5eb",
+								"logEvent": {
+									"contentId": "600919000008286540",
+									"contentName": "最伟大的作品",
+									"contentType": "2",
+									"index": "var:index",
+									"songId": "1139846643",
+									"subContentId": "",
+									"subContentType": ""
+								},
+								"qualities": [
+									"pq",
+									"hq",
+									"isq",
+									"asq",
+									"izq24",
+									"azq24"
+								],
+								"resId": "600919000008286540",
+								"showTag": [
+									"vip"
+								],
+								"track": "",
+								"txt": "最伟大的作品",
+								"txt2": "周杰伦",
+								"txt3": "最伟大的作品",
+								"view": "ZJ-Song-Item",
+								"viewId": "4001-1139846643",
+								"vip": "1"
+							}
+						],
+						"view": "ZJ-Song-Scroll",
+						"viewId": "2009-27553319"
+					},
+					{
+						"contents": [
+							{
+								"action": "mgmusic://title-action-playall?songType=1&columnId=27186466",
+								"action2": "mgmusic://rank-info?id=27186466",
+								"track": "",
+								"txt": "尖叫热歌榜",
+								"txt2": "潮人必听热门新单",
+								"view": "ZJ-Title-PlayAll",
+								"viewId": "4006-31420671"
+							}
+						],
+						"view": "ZJ-Title-PlayAll",
+						"viewId": "2011-31420422"
+					},
+					{
+						"contents": [
+							{
+								"action": "mgmusic://title-action-playall?songType=1&columnId=27186466",
+								"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/8121e8df41a5c12f48b69aea89b71dab/c315492d03aa2db91f9699fbaa8a4677/3d211af8fdd6b01205325c3556f6837c",
+								"logEvent": {
+									"contentId": "600902000006889246",
+									"contentName": "枫",
+									"contentType": "2",
+									"index": "var:index",
+									"songId": "4148",
+									"subContentId": "",
+									"subContentType": ""
+								},
+								"qualities": [
+									"pq",
+									"hq",
+									"isq",
+									"asq",
+									"izq24",
+									"azq24",
+									"iz3d",
+									"az3d"
+								],
+								"resId": "600902000006889246",
+								"showTag": [
+									"vip"
+								],
+								"track": "",
+								"txt": "枫",
+								"txt2": "周杰伦",
+								"txt3": "十一月的萧邦",
+								"view": "ZJ-Song-Item",
+								"viewId": "4001-4148",
+								"vip": "1"
+							},
+							{
+								"action": "mgmusic://title-action-playall?songType=1&columnId=27186466",
+								"img": "http://d.musicapp.migu.cn/prod/file-service/file-down/8121e8df41a5c12f48b69aea89b71dab/9d037468eb3a31bbd27b9d46307d5d8f/e366f5196a3593354f784a20910900e1",
+								"logEvent": {
+									"contentId": "600919000006734729",
+									"contentName": "如愿",
+									"contentType": "2",
+									"index": "var:index",
+									"songId": "1139129660",
+									"subContentId": "",
+									"subContentType": ""
+								},
+								"qualities": [
+									"pq",
+									"hq",
+									"isq",
+									"asq",
+									"izq24",
+									"azq24"
+								],
+								"resId": "600919000006734729",
+								"showTag": [],
+								"track": "",
+								"txt": "如愿",
+								"txt2": "王菲",
+								"txt3": "如愿",
+								"view": "ZJ-Song-Item",
+								"viewId": "4001-1139129660",
+								"vip": ""
+							},
+							{
+								"action": "mgmusic://title-action-playall?songType=1&columnId=27186466",
+								"img": "http://d.musicapp.migu.cn/prod/file-service/file-down/b1899d500dda5db2da11df3efc89cba6/5513f311e612912ed77276103466308a/8ed70a3da4e8e3566cf3d5deac2d6a7e",
+								"logEvent": {
+									"contentId": "600902000006889330",
+									"contentName": "轨迹(电影《寻找周杰伦》主题曲)",
+									"contentType": "2",
+									"index": "var:index",
+									"songId": "1763",
+									"subContentId": "",
+									"subContentType": ""
+								},
+								"qualities": [
+									"pq",
+									"hq",
+									"isq",
+									"asq",
+									"izq24",
+									"azq24",
+									"iz3d",
+									"az3d"
+								],
+								"resId": "600902000006889330",
+								"showTag": [
+									"vip"
+								],
+								"track": "",
+								"txt": "轨迹(电影《寻找周杰伦》主题曲)",
+								"txt2": "周杰伦",
+								"txt3": "寻找周杰伦",
+								"view": "ZJ-Song-Item",
+								"viewId": "4001-1763",
+								"vip": "1"
+							}
+						],
+						"view": "ZJ-Song-Scroll",
+						"viewId": "2009-27186466"
+					},
+					{
+						"contents": [
+							{
+								"action": "mgmusic://title-action-playall?songType=1&columnId=27553408",
+								"action2": "mgmusic://rank-info?id=27553408",
+								"track": "",
+								"txt": "尖叫原创榜",
+								"txt2": "潮人必听热门新单",
+								"view": "ZJ-Title-PlayAll",
+								"viewId": "4006-31420605"
+							}
+						],
+						"view": "ZJ-Title-PlayAll",
+						"viewId": "2011-31419731"
+					},
+					{
+						"contents": [
+							{
+								"action": "mgmusic://title-action-playall?songType=1&columnId=27553408",
+								"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/8121e8df41a5c12f48b69aea89b71dab/42f3c74550a846e35ab09094b7c7b633/95ab34c667e17aaf2c423add9f074420",
+								"logEvent": {
+									"contentId": "600919000008310823",
+									"contentName": "半成品(Live)",
+									"contentType": "2",
+									"index": "var:index",
+									"songId": "1139856680",
+									"subContentId": "",
+									"subContentType": ""
+								},
+								"qualities": [
+									"pq",
+									"hq",
+									"isq",
+									"asq",
+									"izq24",
+									"azq24"
+								],
+								"resId": "600919000008310823",
+								"showTag": [],
+								"track": "",
+								"txt": "半成品(Live)",
+								"txt2": "王泽鹏",
+								"txt3": "2022中国好声音 第11期",
+								"view": "ZJ-Song-Item",
+								"viewId": "4001-1139856680",
+								"vip": ""
+							},
+							{
+								"action": "mgmusic://title-action-playall?songType=1&columnId=27553408",
+								"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/8121e8df41a5c12f48b69aea89b71dab/7a8409557ea0b533b6306646d6ecbb72/d0255fa377da74c0b4a544390ad09a61",
+								"logEvent": {
+									"contentId": "600919000008312358",
+									"contentName": "Say Bye(Live)",
+									"contentType": "2",
+									"index": "var:index",
+									"songId": "1139857560",
+									"subContentId": "",
+									"subContentType": ""
+								},
+								"qualities": [
+									"pq",
+									"hq",
+									"isq",
+									"asq",
+									"izq24",
+									"azq24"
+								],
+								"resId": "600919000008312358",
+								"showTag": [],
+								"track": "",
+								"txt": "Say Bye(Live)",
+								"txt2": "杨灿",
+								"txt3": "2022中国好声音 第12期",
+								"view": "ZJ-Song-Item",
+								"viewId": "4001-1139857560",
+								"vip": ""
+							},
+							{
+								"action": "mgmusic://title-action-playall?songType=1&columnId=27553408",
+								"img": "http://d.musicapp.migu.cn/prod/file-service/file-down01/8121e8df41a5c12f48b69aea89b71dab/c0a547b54d2fa71af734d810dc93ad15/0ebf3d38a7867982bc66c855f0c5747f",
+								"logEvent": {
+									"contentId": "600919000008262677",
+									"contentName": "麒麟",
+									"contentType": "2",
+									"index": "var:index",
+									"songId": "1139797363",
+									"subContentId": "",
+									"subContentType": ""
+								},
+								"qualities": [
+									"pq",
+									"hq"
+								],
+								"resId": "600919000008262677",
+								"showTag": [],
+								"track": "",
+								"txt": "麒麟",
+								"txt2": "早安",
+								"txt3": "中国说唱巅峰对决 第七期",
+								"view": "ZJ-Song-Item",
+								"viewId": "4001-1139797363",
+								"vip": ""
+							}
+						],
+						"view": "ZJ-Song-Scroll",
+						"viewId": "2009-27553408"
+					}
+				],
+				"view": "ZJ-Rank-Compound",
+				"viewId": "2011-31414499"
+			}
+		],
+		"header": {
+			"dataVersion": "1665482874402",
+			"title": "音乐首页V7.0"
+		}
+	}
+}

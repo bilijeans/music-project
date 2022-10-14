@@ -55,7 +55,7 @@
         :key="i.songId"
       >
         <span>{{ index + 1 }}</span>
-        <div class="song-msg">
+        <div class="song-msg" @click="play(i.songId)">
           <div class="songname">{{ i.songName }}</div>
           <div class="song-album">{{ i.album }}</div>
         </div>
@@ -76,7 +76,7 @@
       </div>
     </div>
     <div class="morefunc" v-show="moretab">
-      <div class="morefunc-title">{{name}}</div>
+      <div class="morefunc-title">{{ name }}</div>
       <div class="func">
         <div class="func-item">
           <div>
@@ -199,8 +199,21 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   props: { songsData: Object },
+  methods: {
+    moreFunc(name) {
+      this.moretab = true;
+      this.name = name;
+    },
+    cancelmorefunc() {
+      this.moretab = false;
+    },
+    ...mapActions({
+      play: "getPlayURL",
+    }),
+  },
   data() {
     return {
       moretab: false,
@@ -208,15 +221,6 @@ export default {
     };
   },
   created() {},
-  methods: {
-    moreFunc(name) {
-      this.moretab = true;
-      this.name = name
-    },
-    cancelmorefunc() {
-      this.moretab = false;
-    },
-  },
 };
 </script>
 
@@ -264,7 +268,7 @@ export default {
     background-color: #fff;
     height: calc(100vh - 108px);
     overflow: auto;
-    &::-webkit-scrollbar{
+    &::-webkit-scrollbar {
       width: 0;
     }
     .songs-item:nth-of-type(-n + 3) span {

@@ -4,7 +4,9 @@ import router from './router'
 import store from './store'
 import VueAxiosPlugin from 'vue-axios-plugin'
 import wotUI from './wotui'
+import vantUI from './vantui'
 Vue.use(wotUI)
+Vue.use(vantUI)
 Vue.use(VueAxiosPlugin, {
   // 请求拦截处理
   reqHandleFunc: config => config,
