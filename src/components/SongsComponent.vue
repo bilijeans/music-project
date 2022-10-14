@@ -93,7 +93,6 @@ export default {
   created() {
     // console.log(this.songsData);
   },
-  methods: {},
 };
 </script>
 

@@ -4,14 +4,12 @@ export default {
         playURL: null,
         axios: null,
         status: false,
-        playbarDom:null,
-    },
-    getters: {
-
+        songData: null
     },
     actions: {
         getPlayURL(state, id) {
             console.log(state, id);
+            state.commit("newId", id)
             state.state.axios({
                 methods: "GET",
                 url: `/MIGUM2.0/strategy/listen-url/v2.4?resourceType=2&songId=${id}&toneFlag=ZQ24`,
@@ -23,9 +21,15 @@ export default {
                 },
             }).then(({ data }) => {
                 console.log(data.data);
-                state.commit("newId", id)
                 state.commit("newURL", data.data.url)
-                state.commit("toggleStatus")
+                state.commit("playNow")
+                state.dispatch("getSongData",id)
+            });
+        },
+        getSongData(state,id) {
+            state.state.axios(`/MIGUM3.0/resource/song-relation-resource/v1.0?songId=${id}`).then(({data}) => {
+                console.log(data.data);
+                state.commit("commitSongData",data.data)
             });
         }
     },
@@ -41,12 +45,15 @@ export default {
         getAxios(state, f) {
             state.axios = f
         },
+        commitSongData(state, data) {
+            state.songData = data
+            console.log(state);
+        },
         toggleStatus(state) {
             state.status = !state.status
         },
-        getPlaybarDom(state,dom){
-            state.playbarDom = dom
-            console.log(state);
+        playNow(state){
+            state.status = true
         }
     }
 }

@@ -6,6 +6,10 @@ module.exports = {
     ["import", {
       "libraryName": "wot-design",
       "style": true
-    }]
+    }],
+    ["import", {
+      "libraryName": "wot-design",
+      "style": true
+    }],
   ]
 }

@@ -3,7 +3,6 @@ const { VantResolver } = require('unplugin-vue-components/resolvers');
 const ComponentsPlugin = require('unplugin-vue-components/webpack');
 module.exports = defineConfig({
   transpileDependencies: true,
-<<<<<<< HEAD
   configureWebpack: {
     plugins: [
       ComponentsPlugin({
@@ -25,15 +24,13 @@ module.exports = defineConfig({
         changeOrigin: true,
         pathRewrite: {
           '': ''
-=======
-  devServer:{
-    proxy:{
-      '/bmw':{
-        target:'https://c.musicapp.migu.cn',
-        changeOrigin:true,
-        pathRewrite:{
-          '':''
->>>>>>> 2781ed79901b63a8eefcec3bdc2dcd8afac9700f
+        }
+      },
+      '/bmw': {
+        target: 'https://c.musicapp.migu.cn',
+        changeOrigin: true,
+        pathRewrite: {
+          '': ''
         }
       }
     }
