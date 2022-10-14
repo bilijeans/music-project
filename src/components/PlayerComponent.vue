@@ -8,7 +8,7 @@
       :src="playbar.playURL"
     ></audio>
     <div class="playbar">
-      <div ref="cover" class="cover" :style="{animationPlayState:playbar.status?'running':'paused'}">
+      <div ref="cover" class="play-cover" :style="{animationPlayState:playbar.status?'running':'paused'}">
         <img
           :src="
             playbar.songData ? playbar.songData.albumItem.imgItems[0].img : ''
@@ -87,7 +87,7 @@ export default {
   width: 100vw;
   height: 8vh;
   background-color: rgb(242, 254, 74);
-  .cover {
+  .play-cover {
     width: 50px;
     height: 50px;
     border-radius: 999px;
@@ -134,7 +134,7 @@ export default {
 }
 </style>
 <style>
-.cover {
+.play-cover {
   animation: move 20s linear infinite;
 }
 @keyframes move {

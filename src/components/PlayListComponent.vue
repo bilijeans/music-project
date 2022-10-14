@@ -2,13 +2,13 @@
   <div></div>
 </template>
 <script>
-import {mapState} from 'vuex'
+import { mapState } from "vuex";
 export default {
   data() {
-    return {
-
-    };
+    return {};
   },
-
+  computed:{
+    ...mapState([])
+  }
 };
 </script>
