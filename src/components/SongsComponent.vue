@@ -53,7 +53,7 @@
         :key="i.songId"
       >
         <span>{{ index + 1 }}</span>
-        <div class="song-msg">
+        <div class="song-msg" @click="play(i.songId)">
           <div class="songname">{{ i.songName }}</div>
           <div class="song-album">{{ i.album }}</div>
         </div>
@@ -65,9 +65,14 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   props: { songsData: Object },
-  methods: {},
+  methods: {
+    ...mapActions({
+      play: "getPlayURL",
+    }),
+  },
 };
 </script>
 
