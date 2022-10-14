@@ -39,7 +39,7 @@ export default {
     },
     goToSimilarPage(id, type) {
       this.$router.push({
-        path: "/singer"
+        path: "/browser"
       });
       this.$router.push({
         name: "singerPage",
