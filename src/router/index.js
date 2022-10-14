@@ -1,7 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HomePageView from "../views/home/HomePageView.vue";
-import RankPageView from "../views/rank/RankPageView.vue";
+import RankPageView from "../views/rank/rankPageView.vue";
+import SingerListView from "../views/singer/SingerListView.vue";
+import SingerPageView from "../views/singer/SingerPageView.vue";
+import SingerAlbumSongsView from '../views/singer/SingerAlbumSongsView.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -14,6 +17,23 @@ const routes = [
     path: '/rank',
     name: 'rank',
     component: RankPageView,
+  },
+  {
+    path: '/singer',
+    name: 'singer',
+    component : SingerListView,
+
+  },
+  {
+    path: '/singerPage/:id&:type',
+    name: 'singerPage',
+    component : SingerPageView,
+
+  },
+  {
+    path: '/albumSongs/:id',
+    name: 'albumSongs',
+    component : SingerAlbumSongsView,
   }
 ]
 
