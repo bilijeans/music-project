@@ -50,6 +50,7 @@
     <div class="characteristics">
       <div
         class="characteristics-item"
+        @click="toCharacteristicsList(i.displayLogId.param.rankId)"
         v-for="i in characteristicsList"
         :key="i.displayLogId.param.rankId"
       >
@@ -97,6 +98,7 @@ export default {
   methods: {
     getRankData() {
       this.$axios.get(this.url).then(({ data }) => {
+        // console.log(data.data);
         this.dealwithScreamsData(data.data.contentItemList[1].itemList);
         this.dealwithCharacteristicsData(data.data.contentItemList[3].itemList);
       });
@@ -142,11 +144,14 @@ export default {
       // console.log(this.characteristicsList);
     },
     toScreamsList(id) {
-      this.$router.push({ path: "/rankScreams",query:{id:id}});
+      this.$router.push({ path: "/rankScreams", query: { id: id } });
+    },
+    toCharacteristicsList(id) {
+      this.$router.push({ path: "/rankCharacteristics", query: { id: id}});
+      // this.$router.push({ path: "/rankCharacteristics", query: { id: id}});
     },
     back() {
       this.$router.go(-1);
-      console.log(1);
     },
   },
 };
