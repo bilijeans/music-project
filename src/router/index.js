@@ -2,8 +2,12 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HomePageView from "../views/home/HomePageView.vue";
 import RankPageView from "../views/rank/RankPageView.vue";
+import SingerListView from "../views/singer/SingerListView.vue";
+import SingerPageView from "../views/singer/SingerPageView.vue";
+import SingerAlbumSongsView from '../views/singer/SingerAlbumSongsView.vue'
 import RankScreamsGroup from "../views/rank/RankScreamsGroup.vue";
 import RankCharacteristicsGroup from "../views/rank/RankCharacteristicsGroup.vue";
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -18,6 +22,24 @@ const routes = [
     component: RankPageView,
   },
   {
+    path: '/browser',
+    name: 'browser',
+    component : SingerListView,
+
+  },
+  {
+    path: '/singerPage/:id&:type',
+    name: 'singerPage',
+    component : SingerPageView,
+
+  },
+  {
+    path: '/albumSongs/:id',
+    name: 'albumSongs',
+    component : SingerAlbumSongsView,
+  },
+
+  { 
     path: '/rankScreams', 
     name: 'screams', 
     component: RankScreamsGroup,
