@@ -9,10 +9,6 @@
       <img class="columnTittlePic" :src="columnTittlePic" />
       <div class="s-update">
         <span>{{ updateDate }}</span>
-        <div>
-          <span>实时榜</span>
-          <i class="wd-icon-fill-arrow-down"></i>
-        </div>
       </div>
     </div>
     <div class="s-list">
@@ -81,10 +77,8 @@ export default {
 <style lang="scss" scoped>
 .s-head {
   color: #fff;
-  // position: relative;
   position: fixed;
   top: 0;
-  background-color: #858591;
   z-index: 999;
   width: 100vw;
   i {
@@ -115,19 +109,14 @@ export default {
   }
   .s-update {
     position: absolute;
-    bottom: 190px;
+    bottom: 180px;
     right: 10px;
-    width: 140px;
+    width: 80px;
     font-size: 12px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     color: #fff;
-    div {
-      padding: 6px 8px;
-      border-radius: 999px;
-      background-color: rgba($color: #858591, $alpha: 0.5);
-    }
   }
 }
 </style>
