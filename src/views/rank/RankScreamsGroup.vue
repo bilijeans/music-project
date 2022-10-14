@@ -56,7 +56,7 @@ export default {
   methods: {
     getRankScreamsData() {
       this.$axios.get(this.url).then(({ data }) => {
-        console.log(data.data);
+        // console.log(data.data);
         this.rankData = data.data.columnInfo;
         this.title = this.rankData.title;
         this.songPic = this.rankData.songPic;
@@ -119,16 +119,18 @@ export default {
       justify-content: space-between;
       color: #fff;
       div {
+        display: flex;
+        align-items: center;
         padding: 6px 8px;
         border-radius: 999px;
         background-color: rgba($color: #858591, $alpha: 0.5);
       }
     }
   }
-  .s-list {
-    // position: sticky;
-    // top: 40px;
-    // overflow: hidden;
-  }
+  // .s-list {
+  // position: sticky;
+  // top: 40px;
+  // overflow: hidden;
+  // }
 }
 </style>
