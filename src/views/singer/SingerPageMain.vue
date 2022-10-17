@@ -58,7 +58,7 @@ export default {
 <style lang="scss" scoped>
 .page-main {
   height: 81vh;
-
+  background-color: #fff;
   .singer-mes {
     height: 6vh;
     display: flex;

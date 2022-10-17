@@ -3,12 +3,12 @@
     <header>
       <div class="playAll">
         <div class="playImg">
-          <img src="@/svg/play.svg" alt="" />
+          <img src="@/assets/svg/play.svg" alt="" />
           <span>播放全部</span>
         </div>
         <div class="playAllDownloadAndList">
-          <img src="@/svg/download.svg" alt="" />
-          <img src="@/svg/songList.svg" alt="" />
+          <img src="@/assets/svg/download.svg" alt="" />
+          <img src="@/assets/svg/songList.svg" alt="" />
         </div>
       </div>
     </header>
@@ -29,14 +29,14 @@
                 item.showTag[0] ? item.showTag[0] : ""
               }}</span>
               <span class="threeD">{{ item.showTag[3] ? "3D" : "" }}</span>
-              <span class="second-name">{{ item.txt3 }}·{{ item.txt2 }}</span>
+              <span class="second-name">{{ item.txt3}}·{{ item.txt2}}</span>
             </p>
           </div>
         </div>
 
         <div class="song-content-right">
-          <img src="@/svg/songListPlay.svg" alt="" />
-          <img src="@/svg/songListMore.svg" alt="" @click="changeIsShowMore" />
+          <img src="@/assets/svg/songListPlay.svg" alt="" />
+          <img src="@/assets/svg/songListMore.svg" alt="" @click="changeIsShowMore" />
         </div>
       </div>
 
@@ -66,11 +66,12 @@ export default {
   height: 5vh;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 20px 20px;
 
   .playImg {
     width: 35vw;
-    height: 100%;
+    height: 4vh;
     background-color: #f4f4f5;
     border-radius: 30px;
     display: flex;
@@ -89,7 +90,7 @@ export default {
 
 .songContent {
   height: 7vh;
-  font-weight: 600;
+  font-weight: 500;
   display: flex;
   justify-content: space-between;
   align-items: center;

@@ -4,10 +4,10 @@
       class="album-page-content"
       v-for="i in SingerAlbumList"
       :key="'album' + i.resId"
-      @click="goToSingerAlbumSongs(i.resId)"
+      @click="goToSingerAlbumSongs(i.resId,i.resType)"
     >
       <div class="album-page-content-img">
-        <img :src="i.img" alt="" />
+        <img :src="i.img"  />
       </div>
       <p class="album-name">{{ i.txt }}</p>
       <p class="album-singer-name">{{ i.txt2 }}</p>
@@ -22,11 +22,12 @@ export default {
   },
 
   methods:{
-    goToSingerAlbumSongs(id){
+    goToSingerAlbumSongs(id,type){
         this.$router.push({
             name: 'albumSongs',
             params:{
-                id
+                id,
+                type
             }
         })
     }
@@ -36,6 +37,7 @@ export default {
 
 <style lang="scss" scoped>
 .albumPage {
+  background-color: #fff;
   display: flex;
   justify-content: flex-start;
   flex-wrap: wrap;
@@ -44,10 +46,16 @@ export default {
 .album-page-content {
   height: 25vh;
   width: calc(90vw/3);
-  padding-left: calc(10vw/4);
+  margin-left: calc(10vw/4);
+ 
 
   .album-page-content-img {
-    height: 14vh;
+    height: 13vh;
+     background-image: url(@/assets/album.png);
+     background-size: contain;
+     background-repeat: no-repeat;
+     background-position: calc(7vw/2) 0;
+
     img {
       height: 100%;
       border-radius: 10px;
