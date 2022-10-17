@@ -212,7 +212,11 @@ export default {
     height: 50px;
     border-radius: 999px;
     overflow: hidden;
+<<<<<<< HEAD
     background-image: url("@/assets/album.png");
+=======
+    background-image: url('@/assets/Album.png');
+>>>>>>> d31b65b8e4ea9d8aecce6991ea13ab3cde012fd1
     background-size: cover;
     background-repeat: no-repeat;
     img {

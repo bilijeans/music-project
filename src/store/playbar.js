@@ -33,7 +33,7 @@ export default {
                 }
 
             });
-        },
+        }
     },
     mutations: {
         newId(state, id) {
