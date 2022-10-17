@@ -69,7 +69,10 @@ export default {
 
 <style lang="scss">
 .screamsList {
-  position: relative;
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  overflow: auto;
   .s-head {
     color: #fff;
     position: fixed;

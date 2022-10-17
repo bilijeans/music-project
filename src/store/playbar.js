@@ -3,16 +3,17 @@ export default {
         playId: null,
         playURL: null,
         axios: null,
-        status: false,
-        songData: null
+        songData: null,
+        toneFlag: ['PQ', 'HQ', 'SQ', 'ZQ', 'ZQ24', 'ZQ32'],
+        toneFlagIndex: 5
     },
     actions: {
         getPlayURL(state, id) {
-            // console.log(state, id);
-            state.commit("newId", id)
+            let toneFlag = state.state.toneFlag[state.state.toneFlagIndex]
+
             state.state.axios({
                 methods: "GET",
-                url: `/MIGUM2.0/strategy/listen-url/v2.4?resourceType=2&songId=${id}&toneFlag=ZQ24`,
+                url: `/MIGUM2.0/strategy/listen-url/v2.4?resourceType=2&songId=${id}&toneFlag=${toneFlag}`,
                 headers: {
                     channel: "0146921",
                     aversionid:
@@ -20,40 +21,38 @@ export default {
                     timestamp: Date.parse(new Date()),
                 },
             }).then(({ data }) => {
-                // console.log(data.data);
-                state.commit("newURL", data.data.url)
-                state.commit("playNow")
-                state.dispatch("getSongData",id)
-            });
-        },
-        getSongData(state,id) {
-            state.state.axios(`/MIGUM3.0/resource/song-relation-resource/v1.0?songId=${id}`).then(({data}) => {
-                // console.log(data.data);
-                state.commit("commitSongData",data.data)
+                if (data.data.cannotCode == "440018") {
+                    state.commit("lowerTongFlagIndex")
+                    state.dispatch("getPlayURL", id)
+                } else {
+                    state.commit("newId", id)
+                    state.commit("initTongFlagIndex")
+                    state.commit("newURL", data.data.url)
+                    state.commit("commitSongData", data.data.song)
+                    state.commit("addToList", { ...data.data.song, id: id })
+                }
+
             });
         }
     },
     mutations: {
         newId(state, id) {
             state.playId = id
-            // console.log(state);
         },
         newURL(state, url) {
             state.playURL = url
-            // console.log(state);
         },
         getAxios(state, f) {
             state.axios = f
         },
         commitSongData(state, data) {
             state.songData = data
-            // console.log(state);
         },
-        toggleStatus(state) {
-            state.status = !state.status
+        lowerTongFlagIndex(state) {
+            state.toneFlagIndex = state.toneFlagIndex - 1
         },
-        playNow(state){
-            state.status = true
-        }
+        initTongFlagIndex(state) {
+            state.toneFlagIndex = 5
+        },
     }
 }
