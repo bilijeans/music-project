@@ -1,71 +1,78 @@
 <template>
-  <div class="singerPage">
-    <div v-for="(i,d) in singerPageData.imgs" :key="'singerPage' + d">
-    <img class="bgImage" :src="i.img" />
+  <div class="singerPage" @scroll="scrollHandle($event)">
+    <div class="bgImage">
+      <div ref="bgImgMask" class="bgImage-mask"></div>
+      <img :src="singerPageData.imgs ? singerPageData.imgs[2].img : ''" />
     </div>
     <div class="content">
       <header>
         <div class="head">
           <div class="singerBack" @click="goBack">
-            <img src="@/svg/back.svg" alt="" />
+            <img src="@/assets/svg/back.svg" alt="" />
             <span v-show="show">{{ singerPageData.singer }}</span>
           </div>
           <div class="singerMore">
-            <img src="@/svg/share.svg" alt="" />
-            <img src="@/svg/more.svg" alt="" />
+            <img src="@/assets/svg/share.svg" alt="" />
+            <img src="@/assets/svg/more.svg" alt="" />
           </div>
         </div>
-        <div class="nav">
+        <div class="nav" v-show="!show">
           <div class="singerName">{{ singerPageData.singer }}</div>
           <div class="fans">{{ singerPageData.followNums }}粉丝</div>
           <div class="wall">
-            <img src="@/svg/like.svg" alt="" />
+            <img src="@/assets/svg/like.svg" alt="" />
             <div class="concern" @click="like">+关注</div>
           </div>
         </div>
       </header>
-      <main>
+      <main ref="main">
         <div class="singer-nav">
-          <div
-            :class="'num' + index"
-            v-for="(item, index) in tabName"
-            :key="index"
-          >
-            {{ item.txt2 }}
-          </div>
-          <wd-tabs v-model="tab" swipeable>
-            <wd-tab v-for="item in tabName" :key="item.txt" :title="item.txt">
-              <singer-page-main
-                v-if="tab == 0"
-                :singerPageData="singerPageData"
-                :maskShow="maskShow"
-                :similarSinger="similarSinger"
-                @changeShowMask="getShowMask"
-              ></singer-page-main>
+          <singer-page-nav-view
+           :tabName="tabName"
+           @changeTab="getTab">
+           </singer-page-nav-view>
 
-              <singer-page-songs
-                v-else-if="tab == 1"
-                :singerSongList="singerSongList"
-                @changeIsShowMore="changeSingerPageIsShowMore"
-              ></singer-page-songs>
+           <transition-group ref="nav" name="nav">
+          
+          <singer-page-main
+            v-if="tab == 1"
+            :singerPageData="singerPageData"
+            :maskShow="maskShow"
+            :similarSinger="similarSinger"
+            @changeShowMask="getShowMask"
+            key="main"
+          ></singer-page-main>
 
-              <singer-page-video
-                v-else-if="tab == 2"
-                :singerViedoList="singerViedoList"
-              ></singer-page-video>
-              <singer-album-view
-                v-else
-                :SingerAlbumList="SingerAlbumList"
-              ></singer-album-view>
-            </wd-tab>
-          </wd-tabs>
+          <songs-component
+            v-else-if="tab == 2"
+            :songsData="songsData"
+            key="song"
+          ></songs-component>
+          
+          <singer-page-video
+            v-else-if="tab == 3"
+            :singerViedoList="singerViedoList"
+            key="video"
+          ></singer-page-video>
+
+          <singer-album-view
+            v-else
+            :SingerAlbumList="SingerAlbumList"
+            key="album"
+          ></singer-album-view>
+
+          </transition-group>
         </div>
       </main>
     </div>
 
     <div class="mask" v-show="maskShow">
       <div class="mask-head">
-        <div class="mask-head-img" v-for="(i,d) in singerPageData.imgs" :key="'singerPage1' + d">
+        <div
+          class="mask-head-img"
+          v-for="(i, d) in singerPageData.imgs"
+          :key="'singerPage1' + d"
+        >
           <img :src="i.img" />
 
           <p>{{ singerPageData.singer }}</p>
@@ -80,48 +87,40 @@
         </div>
       </div>
     </div>
-
-    <div class="song-content-more" v-show="isShowMore">
-      <div class="song-content-more-mask" @click="isShowMoreCansel"></div>
-      <div class="song-content-more-content">
-        <div class="song-content-more-content-cansel" @click="isShowMoreCansel">
-          取消
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 
 <script>
+import SongsComponent from '@/components/SongsComponent.vue';
 import SingerAlbumView from "./SingerAlbumView.vue";
 import SingerPageMain from "./SingerPageMain.vue";
-import SingerPageSongs from "./SingerPageSongs.vue";
 import SingerPageVideo from "./SingerPageVideo.vue";
+import SingerPageNavView from "./singerPageNavView.vue";
 export default {
   components: {
     SingerPageMain,
-    SingerPageSongs,
     SingerPageVideo,
     SingerAlbumView,
+    SongsComponent,
+    SingerPageNavView,
   },
 
   data() {
     return {
       show: false,
       maskShow: false,
-      isShowMore: false,
-      tab: 1,
+      tab: 2,
       id: "",
       type: "",
       isLike: false,
       singerPageData: {},
       similarSinger: [],
       tabName: [],
-      singerSongList: [],
+      songsData: {},
       singerSongListPage: 1,
       singerViedoList: [],
       SingerAlbumList: [],
-      SingerAlbumListPage:1
+      SingerAlbumListPage: 1,
     };
   },
   created() {
@@ -176,9 +175,17 @@ export default {
           `/MIGUM2.0/bmw/singer/song/v1.0?pageNo=${this.singerSongListPage}&singerId=${this.id}`
         )
         .then(({ data }) => {
+          let dataList = [];
           data.data.contents[0].contents.forEach((el) => {
-            this.singerSongList.push(el);
+            dataList.push(el.songItem);
           });
+
+          this.songsData = {
+            dataList,
+            totalCount: dataList.length,
+          };
+
+          console.log(this.songsData);
         });
     },
 
@@ -192,10 +199,11 @@ export default {
 
     getAlbumList() {
       this.$axios
-        .get(`/MIGUM2.0/bmw/singer/album/v1.0?pageNo=${this.SingerAlbumListPage}&singerId=${this.id}`)
+        .get(
+          `/MIGUM2.0/bmw/singer/album/v1.0?pageNo=${this.SingerAlbumListPage}&singerId=${this.id}`
+        )
         .then(({ data }) => {
           this.SingerAlbumList = data.data.contents;
-          console.log(data.data.contents);
         });
     },
 
@@ -207,17 +215,24 @@ export default {
       this.maskShow = false;
     },
 
-    changeSingerPageIsShowMore(value) {
-      this.isShowMore = value;
-    },
-
-    isShowMoreCansel() {
-      this.isShowMore = false;
+    getTab(value){
+      this.tab = value
     },
 
     goBack() {
       this.$router.go(-1);
     },
+
+    scrollHandle(e){
+      if(e.target.scrollTop >= 200){
+        e.target.scrollTop = 200;
+         this.show = true;
+         this.$refs.bgImgMask.style.backdropFilter = `blur(5px)`;
+      }else{
+        this.show = false;
+        this.$refs.bgImgMask.style.backdropFilter = `blur(${e.target.scrollTop/40}px)`
+      }
+    }
   },
 };
 </script>
@@ -226,7 +241,8 @@ export default {
 <style lang="scss" scoped>
 .singerPage {
   position: relative;
-
+  height: 100vh;
+  overflow: auto;
   .mask {
     width: 100vw;
     height: 100vh;
@@ -242,30 +258,33 @@ export default {
 
   .bgImage {
     width: 100vw;
-    height: 45vh;
     position: fixed;
     top: 0%;
     left: 0%;
-    filter: blur(0px);
+
+    .bgImage-mask {
+      width: 100%;
+      height: 100%;
+      background-color: rgb(0, 0, 0, 0.3);
+      position: absolute;
+      top: 0%;
+      left: 0%;
+      right: 0%;
+      bottom: 0%;
+    }
+
+    img {
+      width: 100%;
+    }
   }
 
-  .content {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    // background-color: #fff;
-  }
 }
 header {
-  height: 40vh;
-  background-color: rgb(0, 0, 0, 0.3);
-  display: flex;
-  align-items: flex-end;
+  height: 45vh;
+  position: relative;
   .head {
     height: 5vh;
-    width: calc(100vw - 40px);
+    width: 100vw;
     padding: 0 20px;
     display: flex;
     justify-content: space-between;
@@ -299,7 +318,9 @@ header {
   .nav {
     color: #fff;
     width: 100vw;
-    // background-color: rgb(0, 0, 0, 0.3);
+    position: absolute;
+    bottom: 3vh;
+    left:0%;
     .singerName {
       font-size: 30px;
       font-weight: 500;
@@ -342,44 +363,12 @@ header {
   width: 100vw;
   height: 100vh;
   padding: 0 0 20px 0;
+  background-color: #fff;
   position: relative;
-
-  .num0 {
-    display: none;
-  }
-  .num1 {
-    position: absolute;
-    top: 2vh;
-    left: 42vw;
-    z-index: 999;
-    font-size: 12px;
-    color: #999;
-  }
-  .num2 {
-    position: absolute;
-    top: 2vh;
-    left: 67vw;
-    z-index: 999;
-    font-size: 12px;
-    color: #999;
-  }
-  .num3 {
-    position: absolute;
-    top: 2vh;
-    left: 92vw;
-    z-index: 999;
-    font-size: 12px;
-    color: #999;
-  }
 
   .wd-tabs {
     border-top-left-radius: 20px;
     overflow: hidden;
-
-    .singer-nav-content1 {
-      width: 100vw;
-      background-color: #61e93f;
-    }
   }
 }
 
@@ -427,35 +416,19 @@ header {
     width: 40px;
   }
 }
-.song-content-more {
-  position: fixed;
-  bottom: 0%;
-  left: 0%;
-  top: 0%;
-  right: 0%;
-  background-color: rgb(0, 0, 0, 0.3);
-  .song-content-more-mask {
-    width: 100vw;
-    height: 50vh;
-  }
-  .song-content-more-content {
-    width: 100vw;
-    height: 50vh;
-    background-color: #fff;
-    border-top-left-radius: 15px;
-    border-top-right-radius: 15px;
-    position: relative;
 
-    .song-content-more-content-cansel {
-      height: 5vh;
-      width: 100vw;
-      font-size: 18px;
-      font-weight: 550;
-      text-align: center;
-      position: absolute;
-      bottom: 0%;
-      left: 0%;
-    }
-  }
+.songslist {
+  margin: 0;
+  padding: 0;
+}
+
+.nav-enter{
+  transform: translateX(100vw);
+}
+.nav-enter-active{
+  transition: all .5s;
+}
+.nav-enter-to{
+  transform: translateX(0);
 }
 </style>

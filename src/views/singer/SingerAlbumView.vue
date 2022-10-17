@@ -4,10 +4,10 @@
       class="album-page-content"
       v-for="i in SingerAlbumList"
       :key="'album' + i.resId"
-      @click="goToSingerAlbumSongs(i.resId)"
+      @click="goToSingerAlbumSongs(i.resId, i.resType)"
     >
       <div class="album-page-content-img">
-        <img :src="i.img" alt="" />
+        <img :src="i.img" />
       </div>
       <p class="album-name">{{ i.txt }}</p>
       <p class="album-singer-name">{{ i.txt2 }}</p>
@@ -21,21 +21,23 @@ export default {
     SingerAlbumList: Array,
   },
 
-  methods:{
-    goToSingerAlbumSongs(id){
-        this.$router.push({
-            name: 'albumSongs',
-            params:{
-                id
-            }
-        })
-    }
-  }
+  methods: {
+    goToSingerAlbumSongs(id, type) {
+      this.$router.push({
+        name: "albumSongs",
+        params: {
+          id,
+          type,
+        },
+      });
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 .albumPage {
+  background-color: #fff;
   display: flex;
   justify-content: flex-start;
   flex-wrap: wrap;
@@ -43,18 +45,23 @@ export default {
 }
 .album-page-content {
   height: 25vh;
-  width: calc(90vw/3);
-  padding-left: calc(10vw/4);
+  width: calc(90vw / 3);
+  margin-left: calc(10vw / 4);
 
   .album-page-content-img {
-    height: 14vh;
+    height: 12vh;
+    background-image: url(@/assets/Album.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: calc(7vw / 2) 0;
+
     img {
       height: 100%;
       border-radius: 10px;
     }
   }
 
-  .album-name{
+  .album-name {
     font-weight: 600;
     font-size: 14px;
     padding: 2vh 0 1vh 0;
@@ -64,7 +71,7 @@ export default {
     white-space: nowrap;
   }
 
-  .album-singer-name{
+  .album-singer-name {
     font-size: 14px;
   }
 }

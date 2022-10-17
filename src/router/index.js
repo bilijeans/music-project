@@ -34,7 +34,7 @@ const routes = [
 
   },
   {
-    path: '/albumSongs/:id',
+    path: '/albumSongs/:id&:type',
     name: 'albumSongs',
     component : SingerAlbumSongsView,
   },

@@ -33,16 +33,27 @@
 
     <main>
       <div class="singerListContent">
+        <div class="word-nav">
+          <ul>
+            <li
+              v-for="item in singerList"
+              :key="'nav' + item.keyword"
+            >
+              <a :href="'#' + item.keyword">{{ item.keyword }}</a>
+            </li>
+          </ul>
+        </div>
         <div
           class="word-to-select"
           v-for="item in singerList"
+          :id="item.keyword"
           :key="item.keyword"
         >
           <div class="word">{{ item.keyword }}</div>
 
           <div
             class="word-list"
-            v-for="(i,index) in item.value"
+            v-for="(i, index) in item.value"
             :key="item.keyword + index"
             @click="gotoSingerPage(i.resId, i.resType)"
           >
@@ -50,8 +61,6 @@
               <img :src="i.img" />
               <span>{{ i.txt }}</span>
             </div>
-
-            <wd-icon name="arrow-right" color="#ccc"></wd-icon>
           </div>
         </div>
       </div>
@@ -91,19 +100,16 @@ export default {
     };
   },
   created() {
-    
-    if(sessionStorage.getItem('singerList')){
-     let h =JSON.parse(sessionStorage.getItem('singerList')) ;
-     this.tab= h.tab;
-     this.language = h.language;
-     this.sex = h.sex;
-     console.log(this.sex)
-     this.getData()
-    }else{
-      this.getData()
+    if (sessionStorage.getItem("singerList")) {
+      let h = JSON.parse(sessionStorage.getItem("singerList"));
+      this.tab = h.tab;
+      this.language = h.language;
+      this.sex = h.sex;
+      console.log(this.sex);
+      this.getData();
+    } else {
+      this.getData();
     }
-    
-
   },
   methods: {
     getData() {
@@ -158,12 +164,9 @@ export default {
       let singerListLanguage = {
         tab: this.tab,
         language: this.language,
-        sex: this.sex
+        sex: this.sex,
       };
-      sessionStorage.setItem(
-        "singerList",
-        JSON.stringify(singerListLanguage)
-      );
+      sessionStorage.setItem("singerList", JSON.stringify(singerListLanguage));
     },
 
     getSex(value) {
@@ -172,16 +175,15 @@ export default {
       let singerListLanguage = {
         tab: this.tab,
         language: this.language,
-        sex: this.sex
+        sex: this.sex,
       };
-      sessionStorage.setItem(
-        "singerList",
-        JSON.stringify(singerListLanguage)
-      );
+      sessionStorage.setItem("singerList", JSON.stringify(singerListLanguage));
     },
 
     goBack() {
-      this.$router.go(-1);
+      this.$router.push({
+        path: "/home",
+      });
     },
     gotoSingerPage(id, type) {
       this.$router.push({
@@ -288,9 +290,6 @@ nav {
     .word-list {
       height: 8vh;
       padding: 0 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
 
       .word-list-left {
         display: flex;
@@ -307,6 +306,27 @@ nav {
         }
       }
     }
+  }
+}
+
+.word-nav {
+  position: fixed;
+  top: 25vh;
+  right: 0%;
+
+  ul {
+    height: 68vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+
+    
+      a {
+        color: #999;
+        padding: 5px;
+      }
+    
   }
 }
 </style>
