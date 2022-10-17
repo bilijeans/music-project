@@ -8,7 +8,7 @@ export default {
     },
     actions: {
         getPlayURL(state, id) {
-            console.log(state, id);
+            // console.log(state, id);
             state.commit("newId", id)
             state.state.axios({
                 methods: "GET",
@@ -20,7 +20,7 @@ export default {
                     timestamp: Date.parse(new Date()),
                 },
             }).then(({ data }) => {
-                console.log(data.data);
+                // console.log(data.data);
                 state.commit("newURL", data.data.url)
                 state.commit("playNow")
                 state.dispatch("getSongData",id)
@@ -28,7 +28,7 @@ export default {
         },
         getSongData(state,id) {
             state.state.axios(`/MIGUM3.0/resource/song-relation-resource/v1.0?songId=${id}`).then(({data}) => {
-                console.log(data.data);
+                // console.log(data.data);
                 state.commit("commitSongData",data.data)
             });
         }
@@ -36,18 +36,18 @@ export default {
     mutations: {
         newId(state, id) {
             state.playId = id
-            console.log(state);
+            // console.log(state);
         },
         newURL(state, url) {
             state.playURL = url
-            console.log(state);
+            // console.log(state);
         },
         getAxios(state, f) {
             state.axios = f
         },
         commitSongData(state, data) {
             state.songData = data
-            console.log(state);
+            // console.log(state);
         },
         toggleStatus(state) {
             state.status = !state.status
