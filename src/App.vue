@@ -17,7 +17,7 @@ export default {
     if (window.location.pathname == "/") {
       this.$router.push({ path: "/home" });
     }
-    console.log(this.$store);
+    // console.log(this.$store);
     this.getAxios(this.$axios);
   },
   methods: {
