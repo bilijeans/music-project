@@ -1,7 +1,7 @@
 <template>
-  <div class="singerPage">
+  <div class="singerPage" @scroll="scrollHandle($event)">
     <div class="bgImage">
-      <div class="bgImage-mask"></div>
+      <div ref="bgImgMask" class="bgImage-mask"></div>
       <img :src="singerPageData.imgs ? singerPageData.imgs[2].img : ''" />
     </div>
     <div class="content">
@@ -16,7 +16,7 @@
             <img src="@/assets/svg/more.svg" alt="" />
           </div>
         </div>
-        <div class="nav">
+        <div class="nav" v-show="!show">
           <div class="singerName">{{ singerPageData.singer }}</div>
           <div class="fans">{{ singerPageData.followNums }}粉丝</div>
           <div class="wall">
@@ -25,33 +25,43 @@
           </div>
         </div>
       </header>
-      <main>
+      <main ref="main">
         <div class="singer-nav">
           <singer-page-nav-view
            :tabName="tabName"
-           @changeTab="getTab"></singer-page-nav-view>
+           @changeTab="getTab">
+           </singer-page-nav-view>
 
+           <transition-group ref="nav" name="nav">
+          
           <singer-page-main
             v-if="tab == 1"
             :singerPageData="singerPageData"
             :maskShow="maskShow"
             :similarSinger="similarSinger"
             @changeShowMask="getShowMask"
+            key="main"
           ></singer-page-main>
 
           <songs-component
             v-else-if="tab == 2"
             :songsData="songsData"
+            key="song"
           ></songs-component>
-
+          
           <singer-page-video
             v-else-if="tab == 3"
             :singerViedoList="singerViedoList"
+            key="video"
           ></singer-page-video>
+
           <singer-album-view
             v-else
             :SingerAlbumList="SingerAlbumList"
+            key="album"
           ></singer-album-view>
+
+          </transition-group>
         </div>
       </main>
     </div>
@@ -85,7 +95,7 @@ import SongsComponent from '@/components/SongsComponent.vue';
 import SingerAlbumView from "./SingerAlbumView.vue";
 import SingerPageMain from "./SingerPageMain.vue";
 import SingerPageVideo from "./SingerPageVideo.vue";
-import SingerPageNavView from "./singerPageNavView/singerPageNavView.vue";
+import SingerPageNavView from "./singerPageNavView.vue";
 export default {
   components: {
     SingerPageMain,
@@ -212,6 +222,17 @@ export default {
     goBack() {
       this.$router.go(-1);
     },
+
+    scrollHandle(e){
+      if(e.target.scrollTop >= 200){
+        e.target.scrollTop = 200;
+         this.show = true;
+         this.$refs.bgImgMask.style.backdropFilter = `blur(5px)`;
+      }else{
+        this.show = false;
+        this.$refs.bgImgMask.style.backdropFilter = `blur(${e.target.scrollTop/40}px)`
+      }
+    }
   },
 };
 </script>
@@ -220,7 +241,8 @@ export default {
 <style lang="scss" scoped>
 .singerPage {
   position: relative;
-
+  height: 100vh;
+  overflow: auto;
   .mask {
     width: 100vw;
     height: 100vh;
@@ -256,19 +278,10 @@ export default {
     }
   }
 
-  .content {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-  }
 }
 header {
-  height: 40vh;
-  display: flex;
-  align-items: flex-end;
-  padding-bottom: 4vh;
+  height: 45vh;
+  position: relative;
   .head {
     height: 5vh;
     width: 100vw;
@@ -305,6 +318,9 @@ header {
   .nav {
     color: #fff;
     width: 100vw;
+    position: absolute;
+    bottom: 3vh;
+    left:0%;
     .singerName {
       font-size: 30px;
       font-weight: 500;
@@ -347,6 +363,7 @@ header {
   width: 100vw;
   height: 100vh;
   padding: 0 0 20px 0;
+  background-color: #fff;
   position: relative;
 
   .wd-tabs {
@@ -403,5 +420,15 @@ header {
 .songslist {
   margin: 0;
   padding: 0;
+}
+
+.nav-enter{
+  transform: translateX(100vw);
+}
+.nav-enter-active{
+  transition: all .5s;
+}
+.nav-enter-to{
+  transform: translateX(0);
 }
 </style>
