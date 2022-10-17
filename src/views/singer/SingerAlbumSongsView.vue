@@ -1,11 +1,16 @@
 <template>
   <div class="album-songs-page">
-    <div
-      class="album-songs-page-bg"
-      v-for="(i, d) in AblumMes.imgItem"
-      :key="'albumSong' + d"
-    >
-      <img :src="i.img" alt="" />
+    <div class="album-songs-page-bg">
+      <img
+        :src="
+          AblumMes.imgItems
+            ? AblumMes.imgItems[2].img
+            : AblumMes.imgItem
+            ? AblumMes.imgItem[2].img
+            : ''
+        "
+        alt=""
+      />
       <div class="album-songs-page-bg-mask"></div>
     </div>
 
@@ -13,11 +18,11 @@
       <div class="album-songs-page-head">
         <div class="head-back-box">
           <div class="head-back-box-left">
-            <img src="@/svg/back.svg" />
+            <img src="@/assets/svg/back.svg" @click="back" />
             <span>数字专辑</span>
           </div>
-          <div class="head-back-box-righ">
-            <img src="@/svg/more.svg" alt="" />
+          <div class="head-back-box-right">
+            <img src="@/assets/svg/more.svg" alt="" />
           </div>
         </div>
       </div>
@@ -25,68 +30,132 @@
       <div class="album-songs-page-content-main">
         <div class="album-songs-page-content-main-singer">
           <div class="main-singer-left">
-            <div
-              class="main-singer-left-img"
-              v-for="(item, index) in AblumMes.imgItem"
-              :key="index"
-            >
-              <img :src="item.img" alt="" />
+            <div class="main-singer-left-img">
+              <img
+                :src="
+                  AblumMes.imgItems
+                    ? AblumMes.imgItems[2].img
+                    : AblumMes.imgItem
+                    ? AblumMes.imgItem[2].img
+                    : ''
+                "
+              />
             </div>
             <span class="ab-singer">{{ AblumMes.singer }}</span>
-            <img class="r-arrow" src="@/svg/rightArrow.svg" alt="" />
+            <img class="r-arrow" src="@/assets/svg/rightArrow.svg" alt="" />
           </div>
           <div class="main-singer-right">
-            <img src="@/svg/ear.svg" />
-            <span>{{ AblumMes.opNumItem.playNumDesc }}</span>
-            <img src="@/svg/heart.svg" />
-            <span>{{ AblumMes.opNumItem.keepNumDesc }}</span>
+            <img src="@/assets/svg/ear.svg" />
+            <span>{{
+              AblumMes.opNumItem ? AblumMes.opNumItem.playNumDesc : ""
+            }}</span>
+            <img src="@/assets/svg/heart.svg" />
+            <span>{{
+              AblumMes.opNumItem ? AblumMes.opNumItem.keepNumDesc : ""
+            }}</span>
           </div>
         </div>
-       
-       <div class="album-songs-page-album">
-        <p>{{AblumMes.title}}</p>
-        <div class="collect">
-             <img src="@/svg/redHeart.svg">
-             <p>收藏</p>
+
+        <div class="album-songs-page-album">
+          <p class="page-album-name">{{ AblumMes.title }}</p>
+          <div class="collect">
+            <img src="@/assets/svg/redHeart.svg" />
+            <p>收藏</p>
+          </div>
         </div>
-       </div>
+
+        <div class="album-songs-page-share">
+          <div class="share-img">
+            <img src="@/assets/svg/albumShare.svg" />
+            <span>分享</span>
+          </div>
+          <div class="comments-img">
+            <img src="@/assets/svg/albumComments.svg" />
+            <span>{{
+              AblumMes.opNumItem ? AblumMes.opNumItem.commentNum : ""
+            }}</span>
+          </div>
+          <div class="download-img">
+            <img src="@/assets/svg/albumDownLoad.svg" />
+            <span>下载</span>
+          </div>
+        </div>
+
+       <songs-component :songsData='songsData'></songs-component>
+       
 
       </div>
+
+      
     </div>
   </div>
 </template>
 
 <script>
+import SongsComponent from '@/components/SongsComponent.vue';
 export default {
+  components: { SongsComponent },
   data() {
     return {
       albumId: "",
-      ablumSongsList: {},
+      albumType: "",
+      songsData: {},
       AblumMes: {},
     };
   },
   created() {
     this.albumId = this.$route.params.id;
+    this.albumType = this.$route.params.type;
     this.getAblumSongsList();
     this.getAblumMes();
   },
   methods: {
     getAblumSongsList() {
-      this.$axios
-        .get(`/MIGUM2.0/resource/dalbum/song/v2.0?dAlbumId=${this.albumId}`)
-        .then(({ data }) => {
-          this.ablumSongsList = data.data;
-          console.log("data ==> ", data.data);
-        });
+      if (this.albumType == "1") {
+        this.$axios
+          .get(`/MIGUM3.0/resource/dalbum/song/v2.0?dAlbumId=${this.albumId}`)
+          .then(({ data }) => {
+            let dataList = data.data.songList;
+            this.songsData = {
+              dataList,
+              totalCount:data.data.totalCount
+            }
+            console.log(this.songsData);
+          });
+      } else {
+        this.$axios
+          .get(`/MIGUM3.0/resource/album/song/v2.0?albumId=${this.albumId}`)
+          .then(({ data }) => {
+            let dataList = data.data.songList;
+            this.songsData = {
+              dataList,
+              totalCount:data.data.totalCount
+            }
+            console.log(this.songsData);
+          });
+      }
     },
 
     getAblumMes() {
-      this.$axios
-        .get(`/MIGUM2.0/resource/dalbum/v2.0?dAlbumId=${this.albumId}`)
-        .then(({ data }) => {
-          console.log("data2 ==> ", data.data);
-          this.AblumMes = data.data;
-        });
+      if (this.albumType == "1") {
+        this.$axios
+          .get(`/MIGUM3.0/resource/dalbum/v2.0?dAlbumId=${this.albumId}`)
+          .then(({ data }) => {
+            this.AblumMes = data.data;
+            // console.log(this.AblumMes)
+          });
+      } else {
+        this.$axios
+          .get(`/MIGUM3.0/resource/album/v2.0?albumId=${this.albumId}`)
+          .then(({ data }) => {
+            this.AblumMes = data.data;
+            // console.log(this.AblumMes)
+          });
+      }
+    },
+
+    back() {
+      this.$router.go(-1);
     },
   },
 };
@@ -118,7 +187,7 @@ export default {
   height: 18vh;
   .head-back-box {
     height: 10vh;
-    width: 92vw;
+    width: 100vw;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -137,7 +206,6 @@ export default {
 }
 
 .album-songs-page-content-main {
-  height: 50vh;
   width: 100vw;
   border-top-left-radius: 20px;
   background-color: #fff;
@@ -147,6 +215,7 @@ export default {
     border-top-left-radius: 20px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     padding-right: 3vw;
 
     .main-singer-left {
@@ -154,13 +223,13 @@ export default {
       height: 100%;
       border-top-left-radius: 20px;
       position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
 
       .main-singer-left-img {
         height: 30px;
         width: 30px;
-        position: absolute;
-        top: calc(50% - 15px);
-        left: 7vw;
 
         img {
           height: 100%;
@@ -170,61 +239,76 @@ export default {
       }
 
       .ab-singer {
-        font-size: 14px;
+        font-size: 15px;
         color: #999;
-        position: absolute;
-        top: calc(50% - 1vh);
-        left: 18vw;
-      }
-      .r-arrow {
-        position: absolute;
-        top: calc(33%);
-        left: 29vw;
       }
     }
   }
 }
 
-.main-singer-right{
-    width: 40vw;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.main-singer-right {
+  width: 38vw;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
 
-    span{
-        font-size: 14px;
-        color: #999;
-    }
+  span {
+    font-size: 14px;
+    color: #999;
+  }
 }
 
-.album-songs-page-album{
-    height: 10vh;
+.album-songs-page-album {
+  height: 10vh;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 3vw;
+
+  .page-album-name {
+    width: 50vw;
+    font-size: 25px;
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .collect {
+    width: 22vw;
+    height: 100%;
+    border-radius: 999px;
+    box-shadow: 0 0 6px 0 #ccc;
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
     align-items: center;
-    padding: 0 3vw;
 
-    p{
-        font-size: 25px;
-        font-weight: 500;
+    p {
+      font-size: 14px;
+      color: #999;
     }
+  }
+}
 
-    .collect{
-        width: 22vw;
-        height: 100%;
-        border-radius: 999px;
-        box-shadow: 0 0 6px 0 #ccc;
-        display: flex;
-        flex-direction: column;
-        flex-wrap: wrap;
-        justify-content: center;
-        align-items: center;
+.album-songs-page-share {
+  height: 5vh;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  margin-top: 20px;
 
-        p{
-            font-size: 14px;
-            color: #999;
-        }
+  div {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #666;
+  }
+}
 
-    }
+.songslist{
+  margin: 0;
 }
 </style>

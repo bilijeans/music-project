@@ -32,14 +32,16 @@ export default {
 
 <style lang="scss" scoped>
 .videoPage {
+  background-color: #fff;
   display: flex;
   justify-content: flex-start;
   flex-wrap: wrap;
   padding-top: 2vh;
+  height: 100vh;
   .video-content {
     width: 45vw;
     height: 23vh;
-    padding-left: 3vw;
+    margin-left: 3vw;
 
     .video-content-txt {
       padding-top: 1vh;
