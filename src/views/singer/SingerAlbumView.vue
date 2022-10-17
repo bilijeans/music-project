@@ -49,7 +49,7 @@ export default {
   margin-left: calc(10vw / 4);
 
   .album-page-content-img {
-    height: 13vh;
+    height: 12vh;
     background-image: url(@/assets/Album.png);
     background-size: contain;
     background-repeat: no-repeat;
