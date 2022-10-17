@@ -113,11 +113,11 @@ export default {
   },
   watch: {
     playStatus() {
-      console.log(this.playStatus);
+      // console.log(this.playStatus);
       if (this.playStatus) {
         console.log(1);
         this.$nextTick(() => {
-          console.log(this.$refs.cover.style.animationPlayState);
+          // console.log(this.$refs.cover.style.animationPlayState);
           this.$refs.cover.style.animationPlayState = "running";
         });
       } else {
@@ -213,7 +213,6 @@ export default {
     border-radius: 999px;
     overflow: hidden;
     background-image: url('@/assets/Album.png');
-
     background-size: cover;
     background-repeat: no-repeat;
     img {

@@ -38,10 +38,10 @@ export default {
   },
   watch: {
     playId() {
-      console.log(this.listData);
+      // console.log(this.listData);
       this.listData.forEach((e, i) => {
         if (e.songId == this.playId) {
-          console.log(this.$refs.songItem[i]);
+          // console.log(this.$refs.songItem[i]);
           this.$nextTick(() => {
             this.$refs.songItem[i].className = "item active";
           });
@@ -54,10 +54,10 @@ export default {
     },
   },
   created() {
-    console.log(this.listData);
+    // console.log(this.listData);
   },
   mounted() {
-    console.log(this.listData);
+    // console.log(this.listData);
   },
   methods: {
     dealWithSingerName(arr) {
