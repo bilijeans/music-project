@@ -1,6 +1,7 @@
 <template>
   <div class="homepage">
     <banner-component></banner-component>
+    <search-compontents></search-compontents>
     <div class="sub-container">
       <div
         class="sub-item"
@@ -203,9 +204,11 @@
 <script>
 import HomePageData from "@/assets/HomePageData.json";
 import BannerComponent from "@/components/BannerComponent.vue";
+import SearchCompontents from '@/components/SearchCompontents.vue';
 export default {
   components: {
     BannerComponent,
+    SearchCompontents,
   },
   data() {
     return {
