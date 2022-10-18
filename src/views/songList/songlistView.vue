@@ -1,5 +1,5 @@
 <template>
     <div>
-        歌单首页
+        歌单广场
     </div>
 </template>

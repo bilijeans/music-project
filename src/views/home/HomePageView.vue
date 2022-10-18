@@ -90,14 +90,22 @@
       <div class="title">{{ newSongTitle[0].txt }}</div>
       <div class="more">{{ newSongTitle[0].txt2 }}</div>
     </div>
-    <div class="newsongs-item">
-      <div class="newsong-item">
-        <div class="newsong-list" v-for="(i, index) in newSongArr" :key="index">
-          <div class="song-item" v-for="n in newSongArr[index]" :key="n.resId">
-            <div class="songs-img">
+    <div class="home-songs-item">
+      <div class="home-song-item">
+        <div
+          class="home-songs-list"
+          v-for="(i, index) in newSongArr"
+          :key="index"
+        >
+          <div
+            class="home-song-list"
+            v-for="n in newSongArr[index]"
+            :key="n.resId"
+          >
+            <div class="home-songs-img">
               <img :src="n.img" />
             </div>
-            <div class="songs-msg">
+            <div class="home-songs-msg">
               <span class="song">{{ n.txt }}</span>
               <span class="singer-song">{{ n.txt2 }} - {{ n.txt3 }}</span>
             </div>
@@ -113,10 +121,10 @@
       <div class="roost">
         <div class="roost-item" v-for="i in roostData" :key="i.viewId">
           <div class="roost-album">
-            <img src="@/assets/Album.png">
+            <img src="@/assets/Album.png" />
           </div>
           <div class="roost-album">
-            <img src="@/assets/AlbumActive.png">
+            <img src="@/assets/AlbumActive.png" />
           </div>
           <div class="roost-item-img">
             <img :src="i.img" />
@@ -127,11 +135,68 @@
       </div>
     </div>
     <div class="maylike-title">
-      <div class="title">{{maylikeTitle.contents[0].txt}}</div>
+      <div class="title">{{ maylikeTitle.contents[0].txt }}</div>
     </div>
-    <div class="maylike-list">
-      <div class="maylike">
-        <div class="maylike-item"></div>
+    <div class="home-songs-item">
+      <div class="home-song-item">
+        <div
+          class="home-songs-list"
+          v-for="(i, index) in maylikeArr"
+          :key="index"
+        >
+          <div
+            class="home-song-list"
+            v-for="n in maylikeArr[index]"
+            :key="n.resId"
+          >
+            <div class="home-songs-img">
+              <img :src="n.img" />
+            </div>
+            <div class="home-songs-msg">
+              <span class="song">{{ n.txt }}</span>
+              <span class="singer-song">{{ n.txt2 }} - {{ n.txt3 }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="prefecture-title">
+      <div class="title">{{ prefectureTitle.txt }}</div>
+    </div>
+    <div class="prefecture-item">
+      <div class="prefecture-list">
+        <div class="prefecture-img" v-for="i in prefectureData" :key="i.viewId">
+          <img :src="i.img" />
+        </div>
+      </div>
+    </div>
+    <div class="screaming-title">
+      <div class="title">{{ screamingArr[screamIndex].contents[0].txt }}</div>
+      <div class="more">{{ screamingArr[screamIndex].contents[0].txt2 }}</div>
+    </div>
+    <div class="screaming">
+      <div class="home-songs-item" ref="screamBanner">
+        <div class="home-song-item">
+          <div
+            class="home-songs-list"
+            v-for="(i, index) in screamingArr"
+            :key="index"
+          >
+            <div
+              class="home-song-list"
+              v-for="n in screamingArr[index].value"
+              :key="n.resId"
+            >
+              <div class="home-songs-img">
+                <img :src="n.img" />
+              </div>
+              <div class="home-songs-msg">
+                <span class="song">{{ n.txt }}</span>
+                <span class="singer-song">{{ n.txt2 }} - {{ n.txt3 }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -161,7 +226,20 @@ export default {
       roostData: [],
       maylikeTitle: [],
       maylikeData: [],
+      maylikeArr: [],
+      prefectureTitle: [],
+      prefectureData: [],
+      screamingData: [],
+      screamingArr: [],
+      screamIndex: 0,
     };
+  },
+  mounted() {
+    console.log(this.$refs.screamBanner);
+    this.$refs.screamBanner.addEventListener(
+      "scroll",
+      this.getScreamScrollDistance
+    );
   },
   created() {
     this.homePageData = HomePageData.data.contents;
@@ -176,9 +254,13 @@ export default {
     this.roostData = HomePageData.data.contents[10].contents;
     this.maylikeTitle = HomePageData.data.contents[11].contents[0];
     this.maylikeData = HomePageData.data.contents[11].contents[1].contents;
+    this.prefectureTitle = HomePageData.data.contents[12].contents[0];
+    this.prefectureData = HomePageData.data.contents[13].contents;
+    this.screamingData = HomePageData.data.contents[14].contents;
     this.getNumItem(this.recommendSongList);
     this.getNewSongsData(this.newSongData);
-    console.log(this.maylikeData);
+    this.getmaylikeData(this.maylikeData);
+    this.getScreamingData(this.screamingData);
     // console.log(this.homePageData);
     // console.log(Date.parse(new Date()));
     // this.$axios({
@@ -228,7 +310,6 @@ export default {
         });
     },
     getNewSongsData(data) {
-      // console.log(data);
       let oneArr = [];
       let secArr = [];
       let thrArr = [];
@@ -242,238 +323,297 @@ export default {
         }
       });
       this.newSongArr = [oneArr, secArr, thrArr];
-      // console.log(this.newSongArr);
+    },
+    getmaylikeData(data) {
+      let oneArr = [];
+      let secArr = [];
+      let thrArr = [];
+      data.forEach((e, i) => {
+        if (i < 3) {
+          oneArr.push(e);
+        } else if (i < 6) {
+          secArr.push(e);
+        } else {
+          thrArr.push(e);
+        }
+      });
+      this.maylikeArr = [oneArr, secArr, thrArr];
+    },
+    getScreamingData(data) {
+      let firArr = data.filter((e, i) => {
+        return i % 2 == 0;
+      });
+      console.log(firArr);
+      data.forEach((e, i) => {
+        if (i == 1) {
+          firArr[(i - 1) / 2].value = e.contents;
+        } else if (i == 3) {
+          firArr[(i - 1) / 2].value = e.contents;
+        } else if (i == 5) {
+          firArr[(i - 1) / 2].value = e.contents;
+        }
+      });
+      this.screamingArr = firArr;
+      console.log(this.screamingArr);
+    },
+    getScreamScrollDistance() {
+      let windowWidth = document.documentElement.clientWidth;
+      this.screamIndex = parseInt(
+        (this.$refs.screamBanner.scrollLeft + windowWidth * 0.4) /
+          (windowWidth * 0.9)
+      );
     },
   },
 };
 </script>
 <style lang="scss">
-.sub-container {
-  display: flex;
-}
-.container {
-  width: 100vw;
-  overflow: auto;
-  &::-webkit-scrollbar {
-    width: 0;
-    height: 0;
-  }
-}
-.sub-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  img {
-    width: 40%;
-  }
-  .sub-title {
-    font-size: 12px;
-  }
-}
-.recommend-title,
-.newsong,
-.roost-title {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 15px 10px;
-  .more {
-    font-size: 13px;
-    color: #999;
-  }
-}
-.recommend-item {
-  width: 100%;
-  overflow: auto;
-  &::-webkit-scrollbar {
-    width: 0;
-    height: 0;
-  }
-}
-.classify-list {
-  width: 100%;
-  height: 32px;
-  overflow: auto;
-  &::-webkit-scrollbar {
-    width: 0;
-    height: 0;
-  }
-}
-.container {
-  width: 720px;
-  margin: 0 0 0 10px;
-  .recommend-song-list {
+.homepage {
+  .sub-container {
     display: flex;
-    flex-wrap: wrap;
-    // justify-content: space-between;
-    width: 100%;
-    .item {
-      width: 100px;
-      margin: 0 20px 15px 0;
+  }
+  .container,
+  .recommend-item,
+  .roost-list,
+  .prefecture-item {
+    width: 100vw;
+    overflow: auto;
+    &::-webkit-scrollbar {
+      width: 0;
+      height: 0;
     }
-    .cover {
-      position: relative;
-      width: calc(660px / 6);
-      height: calc(660px / 6);
-      margin: 0 0 6px 0;
-      border-radius: 6px;
+  }
+  .sub-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    img {
+      width: 40%;
+    }
+    .sub-title {
+      font-size: 12px;
+    }
+  }
+  .recommend-title,
+  .newsong,
+  .roost-title,
+  .maylike-title,
+  .prefecture-title,
+  .screaming-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 10px;
+    .more {
+      font-size: 13px;
+      color: #999;
+    }
+  }
+  .classify-list {
+    width: 100%;
+    height: 32px;
+    overflow: auto;
+    &::-webkit-scrollbar {
+      width: 0;
+      height: 0;
+    }
+  }
+  .container {
+    width: 720px;
+    margin: 0 0 0 10px;
+    .recommend-song-list {
       display: flex;
-      justify-content: center;
-      align-items: center;
-      // flex: none;
-      overflow: hidden;
-      .glass {
-        position: absolute;
-        top: 0;
-        left: 0;
-        display: block;
-        width: 100%;
-        height: 100%;
-        filter: blur(20px);
-        z-index: -1;
+      flex-wrap: wrap;
+      // justify-content: space-between;
+      width: 100%;
+      .item {
+        width: 100px;
+        margin: 0 20px 15px 0;
       }
-      img {
-        width: 75%;
-        height: 75%;
+      .cover {
+        position: relative;
+        width: calc(660px / 6);
+        height: calc(660px / 6);
+        margin: 0 0 6px 0;
         border-radius: 6px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        // flex: none;
+        overflow: hidden;
+        .glass {
+          position: absolute;
+          top: 0;
+          left: 0;
+          display: block;
+          width: 100%;
+          height: 100%;
+          filter: blur(20px);
+          z-index: -1;
+        }
+        img {
+          width: 75%;
+          height: 75%;
+          border-radius: 6px;
+        }
+        .num {
+          position: absolute;
+          left: 0px;
+          bottom: 0px;
+          color: #fff;
+          font-size: 12px;
+          transform: scale(0.9);
+          svg {
+            width: 10px;
+            height: 10px;
+          }
+        }
       }
-      .num {
-        position: absolute;
-        left: 0px;
-        bottom: 0px;
-        color: #fff;
-        font-size: 12px;
-        transform: scale(0.9);
-        svg {
-          width: 10px;
-          height: 10px;
+      .name {
+        font-size: 13px;
+        line-height: 16px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+      }
+    }
+  }
+  .classify {
+    width: 680px;
+    margin: 0 0 0 15px;
+    display: flex;
+    flex-direction: row;
+    color: #555;
+    .classify-item {
+      width: 70px;
+      margin: 0 15px 0 0;
+      padding: 6px 10px;
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: 6px;
+      box-shadow: 2px 2px 3px #ccc;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      background-color: fff;
+    }
+  }
+  .home-songs-item {
+    width: 100vw;
+    height: 220px;
+    overflow: auto;
+    &::-webkit-scrollbar {
+      width: 0;
+      height: 0;
+    }
+  }
+  .home-song-item {
+    display: flex;
+    width: calc(280vw + 20px);
+  }
+  .home-songs-list {
+    width: 90vw;
+    margin: 0 0 0 10px;
+    display: flex;
+    flex-direction: column;
+    .home-song-list {
+      margin: 10px 0 0 0;
+      display: flex;
+      flex-direction: row;
+      .home-songs-img {
+        width: 60px;
+        height: 60px;
+        img {
+          width: 100%;
+          border-radius: 6px;
+        }
+      }
+      .home-songs-msg {
+        margin: 0 0 0 10px;
+        width: 60vw;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        .song {
+          font-size: 14px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-line-clamp: 1;
+          -webkit-box-orient: vertical;
+        }
+        .singer-song {
+          font-size: 12px;
+          color: #999;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-line-clamp: 1;
+          -webkit-box-orient: vertical;
         }
       }
     }
-    .name {
-      font-size: 13px;
-      line-height: 16px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-    }
   }
-}
-.classify {
-  width: 680px;
-  margin: 0 0 0 15px;
-  display: flex;
-  flex-direction: row;
-  color: #555;
-  .classify-item {
-    width: 70px;
-    margin: 0 15px 0 0;
-    padding: 6px 10px;
-    font-size: 12px;
-    font-weight: 600;
-    border-radius: 6px;
-    box-shadow: 2px 2px 3px #ccc;
+  .roost {
+    margin: 0 0 0 10px;
     display: flex;
-    align-items: center;
-    justify-content: space-around;
-    background-color: fff;
-  }
-}
-.newsongs-item {
-  width: 100vw;
-  height: 220px;
-  overflow: auto;
-  &::-webkit-scrollbar {
-    width: 0;
-    height: 0;
-  }
-}
-.newsong-item {
-  display: flex;
-  width: calc(280vw + 20px);
-}
-.newsong-list {
-  width: 90vw;
-  margin: 0 0 0 10px;
-  display: flex;
-  flex-direction: column;
-  .song-item {
-    margin: 10px 0 0 0;
-    display: flex;
+    width: 960px;
     flex-direction: row;
-    .songs-img {
-      width: 60px;
-      height: 60px;
-      img {
-        width: 100%;
-        border-radius: 6px;
-      }
-    }
-    .songs-msg {
-      margin: 0 0 0 10px;
+    .roost-item {
+      position: relative;
+      margin: 0 20px 0 0;
       display: flex;
       flex-direction: column;
-      justify-content: space-evenly;
-      .song {
-        font-size: 14px;
+      .roost-album {
+        position: absolute;
+        top: 0;
+        right: -15px;
+        width: 100px;
+        z-index: -1;
+        img {
+          width: 100%;
+        }
       }
-      .singer-song {
+      .roost-item-img {
+        width: 100px;
+        img {
+          width: 100%;
+          border-radius: 6px;
+        }
+      }
+      span {
+        display: block;
+        width: 100px;
+        padding: 3px 0;
+        font-size: 13px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .roost-item-singer {
         font-size: 12px;
-        color: #999;
+        color: #ccc;
       }
     }
   }
-}
-.roost-list {
-  width: 100%;
-  overflow: auto;
-  &::-webkit-scrollbar {
-    width: 0;
-    height: 0;
-  }
-}
-.roost {
-  margin: 0 0 0 10px;
-  display: flex;
-  width: 960px;
-  flex-direction: row;
-  .roost-item {
-    position: relative;
-    margin: 0 20px 0 0;
+  .prefecture-list {
+    width: 1426.5px;
+    margin: 0 0 0 10px;
     display: flex;
-    flex-direction: column;
-    .roost-album {
-      position: absolute;
-      top: 0;
-      right: -15px;
-      width: 100px;
-      z-index: -1;
-      img {
-        width: 100%;
-      }
-    }
-    .roost-item-img {
-      width: 100px;
+    flex-wrap: wrap;
+    .prefecture-img {
+      width: 148.5px;
+      height: 81px;
+      margin: 0 10px 10px 0;
       img {
         width: 100%;
         border-radius: 6px;
       }
     }
-    span {
-      display: block;
-      width: 100px;
-      padding: 3px 0;
-      font-size: 13px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .roost-item-singer {
-      font-size: 12px;
-      color: #ccc;
-    }
+  }
+  .screaming {
+    margin: 0 0 45px 0;
   }
 }
 </style>
