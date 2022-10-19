@@ -81,18 +81,14 @@
           </div>
         </div>
 
-       <songs-component :songsData='songsData'></songs-component>
-       
-
+        <songs-component :songsData="songsData"></songs-component>
       </div>
-
-      
     </div>
   </div>
 </template>
 
 <script>
-import SongsComponent from '@/components/SongsComponent.vue';
+import SongsComponent from "@/components/SongsComponent.vue";
 export default {
   components: { SongsComponent },
   data() {
@@ -118,9 +114,9 @@ export default {
             let dataList = data.data.songList;
             this.songsData = {
               dataList,
-              totalCount:data.data.totalCount
-            }
-            console.log(this.songsData);
+              totalCount: data.data.totalCount,
+            };
+            // console.log(this.songsData);
           });
       } else {
         this.$axios
@@ -129,9 +125,9 @@ export default {
             let dataList = data.data.songList;
             this.songsData = {
               dataList,
-              totalCount:data.data.totalCount
-            }
-            console.log(this.songsData);
+              totalCount: data.data.totalCount,
+            };
+            // console.log(this.songsData);
           });
       }
     },
@@ -308,7 +304,7 @@ export default {
   }
 }
 
-.songslist{
+.songslist {
   margin: 0;
 }
 </style>

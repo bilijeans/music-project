@@ -64,7 +64,7 @@
     </div>
     <div class="classify-list">
       <div class="classify">
-        <div class="classify-item">
+        <div class="classify-item" @click="turnToSongList()">
           <svg
             class="icon"
             width="16px"
@@ -232,7 +232,7 @@ export default {
     };
   },
   mounted() {
-    console.log(this.$refs.screamBanner);
+    // console.log(this.$refs.screamBanner);
     this.$refs.screamBanner.addEventListener(
       "scroll",
       this.getScreamScrollDistance
@@ -340,7 +340,7 @@ export default {
       let firArr = data.filter((e, i) => {
         return i % 2 == 0;
       });
-      console.log(firArr);
+      // console.log(firArr);
       data.forEach((e, i) => {
         if (i == 1) {
           firArr[(i - 1) / 2].value = e.contents;
@@ -351,7 +351,7 @@ export default {
         }
       });
       this.screamingArr = firArr;
-      console.log(this.screamingArr);
+      // console.log(this.screamingArr);
     },
     getScreamScrollDistance() {
       let windowWidth = document.documentElement.clientWidth;
@@ -359,6 +359,9 @@ export default {
         (this.$refs.screamBanner.scrollLeft + windowWidth * 0.4) /
           (windowWidth * 0.9)
       );
+    },
+    turnToSongList() {
+      this.$router.push({ path: "/songList" });
     },
   },
 };
