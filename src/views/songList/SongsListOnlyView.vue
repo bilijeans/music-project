@@ -22,13 +22,6 @@
 
       <div class="album-songs-page-content-main">
 
-        <div class="album-songs-page-album">
-          <p class="page-album-name"></p>
-          <div class="collect">
-            <img src="@/assets/svg/redHeart.svg" />
-            <p>收藏</p>
-          </div>
-        </div>
 
         <div class="album-songs-page-share">
           <div class="share-img">
@@ -154,39 +147,7 @@ export default {
   }
 }
 
-.album-songs-page-album {
-  height: 10vh;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 3vw;
 
-  .page-album-name {
-    width: 50vw;
-    font-size: 25px;
-    font-weight: 500;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .collect {
-    width: 22vw;
-    height: 100%;
-    border-radius: 999px;
-    box-shadow: 0 0 6px 0 #ccc;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-
-    p {
-      font-size: 14px;
-      color: #999;
-    }
-  }
-}
 
 .album-songs-page-share {
   height: 5vh;
