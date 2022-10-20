@@ -118,7 +118,6 @@ export default {
   },
   watch: {
     playStatus() {
-      console.log(this.listData);
       if (this.playStatus) {
         this.$nextTick(() => {
           this.$refs.cover.style.animationPlayState = "running";
@@ -145,7 +144,6 @@ export default {
     togglePlay() {
       if (this.$refs.play.src) {
         this.playStatus ? this.$refs.play.pause() : this.$refs.play.play();
-
         this.playStatus = !this.playStatus;
       } else {
         this.playStatus = false;
@@ -163,6 +161,7 @@ export default {
       this.playListShow = false;
     },
     getTitleStyle() {
+      this.titleShow = false
       clearInterval(this.time);
       let windowWidth = document.documentElement.clientWidth;
       let titleWidth = parseInt(
@@ -199,10 +198,11 @@ export default {
         }
       });
       nextSongIndex = nextSongIndex % this.listData.length;
-      this.getPlayURL(this.listData[nextSongIndex].songId);
+      this.playOnList({data:this.listData[nextSongIndex],index:nextSongIndex});
+      this.changeHighNum(nextSongIndex)
     },
-    ...mapMutations(["toggleStatus", "addToList"]),
-    ...mapActions(["getPlayURL"]),
+    ...mapMutations(["toggleStatus", "addToList","changeHighNum"]),
+    ...mapActions(["getPlayURL","playOnList"]),
   },
   beforeDestroy() {
     this.$refs.play.removeEventListener("timeupdate", this.getPlayTime);
@@ -226,7 +226,7 @@ export default {
     height: 50px;
     border-radius: 999px;
     overflow: hidden;
-    background-image: url("@/assets/Album.png");
+    background-image: url("@/assets/SpecialAlbum.svg");
     background-size: cover;
     background-repeat: no-repeat;
     img {

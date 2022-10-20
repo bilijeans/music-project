@@ -13,13 +13,14 @@
           <li
             class="item"
             ref="songItem"
-            v-for="i in listData"
+            :class="{ active: (index == highLight) }"
+            v-for="(i, index) in listData"
             :key="i.songId"
-            @click="playSong(i.songId)"
+            @click="playOnList({data:i,index:index})"
           >
             <span class="name">{{ i.name }}</span>
-            <span class="singer">{{
-              " - " + dealWithSingerName(i.singer)
+            <span v-if="i.singerList[0].name.trim()" class="singer">{{
+              " - " + dealWithSingerName(i.singerList)
             }}</span>
           </li>
         </ul>
@@ -43,24 +44,8 @@ export default {
     ...mapState(["playbar"]),
     ...mapState({
       listData: (state) => state.playList.listData,
+      highLight: (state) => state.playList.highLight,
     }),
-  },
-  watch: {
-    playId() {
-      console.log(this.listData);
-      this.listData.forEach((e, i) => {
-        if (e.songId == this.playId) {
-          console.log(this.$refs.songItem[i]);
-          this.$nextTick(() => {
-            this.$refs.songItem[i].className = "item active";
-          });
-        } else {
-          this.$nextTick(() => {
-            this.$refs.songItem[i].className = "item";
-          });
-        }
-      });
-    },
   },
   created() {
     console.log(this.listData);
@@ -81,20 +66,13 @@ export default {
       // this.show = !this.show
       this.$emit("packUp");
     },
-    playSong(id) {
-      this.listData.forEach((e, i) => {
-        if (e.songId == id) {
-          this.$nextTick(() => {
-            this.$refs.songItem[i].className = "item active";
-          });
-        }
-      });
-      console.log(this.$refs.songItem);
-      this.play(id);
+    playSong(id,num){
+      console.log(id,num);
     },
     ...mapActions({
       play: "getPlayURL",
     }),
+    ...mapActions(["playOnList"])
   },
 };
 </script>
@@ -109,7 +87,7 @@ export default {
   background-color: rgb(255, 255, 255);
   // z-index: 999;
   margin: 0 auto;
-  border-radius: 20px;
+  border-radius: 10px;
   overflow: hidden;
   .list-container {
     background-color: rgb(255, 255, 255);
@@ -134,7 +112,7 @@ export default {
     height: 40px;
     line-height: 40px;
     border-bottom: 1px solid #ccc;
-    .title{
+    .title {
       width: 90%;
       margin: 0 auto;
     }
@@ -142,13 +120,33 @@ export default {
   .items {
     height: calc(60vh - 40px);
     background-color: #fff;
+    overflow: auto;
+    &::-webkit-scrollbar {
+      widows: 0;
+      height: 0;
+    }
     .item {
+      display: flex;
+      align-items: center;
       padding: 10px 20px;
       font-size: 14px;
+      // margin-bottom: 10px;
+      .name {
+        font-size: 15px;
+        display: inline-block;
+        max-width: 70%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
       .singer {
+        margin-left: 10px;
         font-size: 12px;
         color: #999;
       }
+    }
+    .item.active {
+      color: red;
     }
   }
   .list-enter {

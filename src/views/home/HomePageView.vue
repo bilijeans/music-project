@@ -1,6 +1,6 @@
 <template>
   <div class="homepage">
-    <banner-component></banner-component>
+    <banner-component :bannerData="bannerData"></banner-component>
     <div class="sub-container">
       <div
         class="sub-item"
@@ -162,7 +162,7 @@ export default {
   },
   created() {
     this.homePageData = HomePageData.data.contents;
-    this.bannerData = HomePageData.data.contents[1];
+    this.bannerData = HomePageData.data.contents[1].contents;
     this.subData = HomePageData.data.contents[2].contents;
     this.recommendSongListTitle = HomePageData.data.contents[4].contents[0];
     this.recommendSongList = HomePageData.data.contents[5].contents;
