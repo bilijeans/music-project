@@ -7,7 +7,9 @@ import SingerPageView from "../views/singer/SingerPageView.vue";
 import SingerAlbumSongsView from '../views/singer/SingerAlbumSongsView.vue'
 import RankScreamsGroup from "../views/rank/RankScreamsGroup.vue";
 import RankCharacteristicsGroup from "../views/rank/RankCharacteristicsGroup.vue";
-import SearchPageView from '../views/search/SearchPageView.vue'
+import SearchPageView from '../views/search/SearchPageView.vue';
+import SongListView from '../views/songList/SongListView.vue';
+import SongsListOnlyView from '../views/songList/SongsListOnlyView.vue'
 
 Vue.use(VueRouter)
 
@@ -55,6 +57,16 @@ const routes = [
     path:'/search',
     name:'search',
     component: SearchPageView,
+  },
+  {
+    path : '/song-lists',
+    name : 'song-lists',
+    component: SongListView,
+  },
+  {
+    path: '/songListOnly/:id',
+    name: 'songListOnly',
+    component: SongsListOnlyView,
   }
 ]
 
