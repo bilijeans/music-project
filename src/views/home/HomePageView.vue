@@ -65,7 +65,7 @@
     </div>
     <div class="classify-list">
       <div class="classify">
-        <div class="classify-item">
+        <div class="classify-item" @click="goToSongList()">
           <svg
             class="icon"
             width="16px"
@@ -81,7 +81,11 @@
           </svg>
           <span>全部</span>
         </div>
-        <div class="classify-item" v-for="i in classifyData" :key="i.resId">
+        <div
+          class="classify-item"
+          v-for="i in classifyData"
+          :key="i.viewId"
+        >
           {{ i.txt }}
         </div>
       </div>
@@ -204,7 +208,7 @@
 <script>
 import HomePageData from "@/assets/HomePageData.json";
 import BannerComponent from "@/components/BannerComponent.vue";
-import SearchCompontents from '@/components/SearchCompontents.vue';
+import SearchCompontents from "@/components/SearchCompontents.vue";
 export default {
   components: {
     BannerComponent,
@@ -248,6 +252,7 @@ export default {
     this.recommendSongListTitle = HomePageData.data.contents[4].contents[0];
     this.recommendSongList = HomePageData.data.contents[5].contents;
     this.classifyData = HomePageData.data.contents[6].contents;
+    console.log(this.classifyData, "aaa");
     this.newSongTitle = HomePageData.data.contents[7].contents;
     this.newSongData = HomePageData.data.contents[8].contents;
     this.roostTitle = HomePageData.data.contents[9].contents;
@@ -362,6 +367,10 @@ export default {
         (this.$refs.screamBanner.scrollLeft + windowWidth * 0.4) /
           (windowWidth * 0.9)
       );
+    },
+
+    goToSongList() {
+     this.$router.push({path:'/song-lists'})
     },
   },
 };
