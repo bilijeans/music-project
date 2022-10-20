@@ -15,7 +15,7 @@
             d="M128 138.666667c0-47.232 33.322667-66.666667 74.176-43.562667l663.146667 374.954667c40.96 23.168 40.853333 60.8 0 83.882666L202.176 928.896C161.216 952.064 128 932.565333 128 885.333333v-746.666666z"
           />
         </svg>
-        <span
+        <span @click="playList(songsData.dataList)"
           >播放全部 {{ songsData.dataList ? songsData.dataList.length : 0 }}
         </span>
       </div>
@@ -57,7 +57,11 @@
         <span>{{ index + 1 }}</span>
         <div class="song-msg" @click="play(i.songId)">
           <div class="songname">{{ i.songName }}</div>
-          <div class="song-album">{{ i.album }}</div>
+          <div class="song-album">
+            {{
+              i.singerList[0].name.trim() ? dealWithSingerName(i.singerList) : i.album
+            }}
+          </div>
         </div>
         <svg
           @click="moreFunc(i.songName)"
@@ -202,6 +206,17 @@
 import { mapActions } from "vuex";
 export default {
   props: { songsData: Object },
+    data() {
+    return {
+      moretab: false,
+      name: "",
+      songsListData:['wait']
+    };
+  },
+  created(){
+    this.songsListData = this.songsData
+    console.log(this.songsListData);
+  },
   methods: {
     moreFunc(name) {
       this.moretab = true;
@@ -210,17 +225,19 @@ export default {
     cancelmorefunc() {
       this.moretab = false;
     },
+    dealWithSingerName(arr) {
+      let str = "";
+      arr.forEach((e) => {
+        str = str + e.name + "/";
+      });
+      str = str.slice(0, -1);
+      return str;
+    },
     ...mapActions({
       play: "getPlayURL",
     }),
-  },
-  data() {
-    return {
-      moretab: false,
-      name: "",
-    };
-  },
-  created() {},
+    ...mapActions(["playList"])
+  }
 };
 </script>
 
