@@ -235,7 +235,7 @@ export default {
     };
   },
   mounted() {
-    console.log(this.$refs.screamBanner);
+    // console.log(this.$refs.screamBanner);
     this.$refs.screamBanner.addEventListener(
       "scroll",
       this.getScreamScrollDistance
@@ -344,7 +344,7 @@ export default {
       let firArr = data.filter((e, i) => {
         return i % 2 == 0;
       });
-      console.log(firArr);
+      // console.log(firArr);
       data.forEach((e, i) => {
         if (i == 1) {
           firArr[(i - 1) / 2].value = e.contents;
@@ -355,7 +355,7 @@ export default {
         }
       });
       this.screamingArr = firArr;
-      console.log(this.screamingArr);
+      // console.log(this.screamingArr);
     },
     getScreamScrollDistance() {
       let windowWidth = document.documentElement.clientWidth;
@@ -364,7 +364,6 @@ export default {
           (windowWidth * 0.9)
       );
     },
-
     goToSongList() {
       this.$router.push({ path: "/song-lists" });
     },
@@ -428,7 +427,6 @@ export default {
     .recommend-song-list {
       display: flex;
       flex-wrap: wrap;
-      // justify-content: space-between;
       width: 100%;
       .item {
         width: 100px;
@@ -443,7 +441,6 @@ export default {
         display: flex;
         justify-content: center;
         align-items: center;
-        // flex: none;
         overflow: hidden;
         .glass {
           position: absolute;

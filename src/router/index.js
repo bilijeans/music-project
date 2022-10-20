@@ -27,35 +27,40 @@ const routes = [
   {
     path: '/browser',
     name: 'browser',
-    component : SingerListView,
+    component: SingerListView,
 
   },
   {
     path: '/singerPage/:id&:type',
     name: 'singerPage',
-    component : SingerPageView,
+    component: SingerPageView,
 
   },
   {
     path: '/albumSongs/:id&:type',
     name: 'albumSongs',
-    component : SingerAlbumSongsView,
+    component: SingerAlbumSongsView,
   },
 
-  { 
-    path: '/rankScreams', 
-    name: 'screams', 
+  {
+    path: '/rankScreams',
+    name: 'screams',
     component: RankScreamsGroup,
-    props:true,
+    props: true,
   },
   {
-    path: '/rankCharacteristics', 
-    name: 'characteristics', 
+    path: '/rankCharacteristics',
+    name: 'characteristics',
     component: RankCharacteristicsGroup,
   },
   {
-    path:'/search',
-    name:'search',
+    path: '/songList',
+    name: 'songList',
+    component: SongListView,
+  },
+  {
+    path: '/search',
+    name: 'search',
     component: SearchPageView,
   },
   {
