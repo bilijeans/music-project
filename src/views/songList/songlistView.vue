@@ -10,9 +10,9 @@
       <img src="@/assets/nav.svg" @click="isShowNav = !isShowNav" />
     </header>
 
-    <nav>
+    <!-- <nav>
       <banner-component :bannerList="bannerList"></banner-component>
-    </nav>
+    </nav> -->
 
     <main>
       <p class="songsListTitle" ref="songsListTitle"></p>
@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import BannerComponent from "@/components/BannerComponent.vue";
+// import BannerComponent from "@/components/BannerComponent.vue";
 export default {
   data() {
     return {
@@ -61,7 +61,7 @@ export default {
     };
   },
   components: {
-    BannerComponent,
+    // BannerComponent,
   },
   created() {
     this.getHeaderBanner();

@@ -4,6 +4,7 @@
       ref="play"
       Loadstart
       @play="getPlayData"
+      @ended="nextSong"
       autoplay
       :src="playbar.playURL"
     ></audio>
@@ -21,7 +22,7 @@
           "
         />
       </div>
-      <div class="title" ref="title" v-show="playbar.playURL">
+      <div class="play-title" ref="title" v-show="playbar.playURL">
         <div class="span-container" ref="spanTitle">
           <div ref="firstSpan" class="first-span">
             <span class="song-name">
@@ -86,7 +87,7 @@
   </div>
 </template>
 <script>
-import { mapState, mapMutations } from "vuex";
+import { mapState, mapMutations, mapActions } from "vuex";
 import PlayListComponent from "./PlayListComponent.vue";
 export default {
   components: { PlayListComponent },
@@ -110,14 +111,15 @@ export default {
       set() {},
     },
     ...mapState(["playbar"]),
+    ...mapState({
+      listData: (state) => state.playList.listData,
+      songId: (state) => state.playbar.playId,
+    }),
   },
   watch: {
     playStatus() {
-      // console.log(this.playStatus);
       if (this.playStatus) {
-        console.log(1);
         this.$nextTick(() => {
-          // console.log(this.$refs.cover.style.animationPlayState);
           this.$refs.cover.style.animationPlayState = "running";
         });
       } else {
@@ -132,7 +134,6 @@ export default {
       this.duration = this.$refs.play.duration;
       this.playStatus = true;
       this.getTitleStyle();
-      // console.log(1);
       this.$refs.play.addEventListener("timeupdate", this.getPlayTime);
     },
     getPlayTime() {
@@ -143,7 +144,6 @@ export default {
     togglePlay() {
       if (this.$refs.play.src) {
         this.playStatus ? this.$refs.play.pause() : this.$refs.play.play();
-
         this.playStatus = !this.playStatus;
       } else {
         this.playStatus = false;
@@ -161,6 +161,7 @@ export default {
       this.playListShow = false;
     },
     getTitleStyle() {
+      this.titleShow = false
       clearInterval(this.time);
       let windowWidth = document.documentElement.clientWidth;
       let titleWidth = parseInt(
@@ -189,10 +190,23 @@ export default {
         }
       });
     },
-    ...mapMutations(["toggleStatus", "addToList"]),
+    nextSong() {
+      let nextSongIndex = 0;
+      this.listData.forEach((e, i) => {
+        if (e.songId == this.songId) {
+          nextSongIndex = i + 1;
+        }
+      });
+      nextSongIndex = nextSongIndex % this.listData.length;
+      this.playOnList({data:this.listData[nextSongIndex],index:nextSongIndex});
+      this.changeHighNum(nextSongIndex)
+    },
+    ...mapMutations(["toggleStatus", "addToList","changeHighNum"]),
+    ...mapActions(["getPlayURL","playOnList"]),
   },
   beforeDestroy() {
     this.$refs.play.removeEventListener("timeupdate", this.getPlayTime);
+    clearInterval(this.time);
   },
 };
 </script>
@@ -212,7 +226,7 @@ export default {
     height: 50px;
     border-radius: 999px;
     overflow: hidden;
-    background-image: url('@/assets/Album.png');
+    background-image: url("@/assets/SpecialAlbum.svg");
     background-size: cover;
     background-repeat: no-repeat;
     img {
@@ -225,7 +239,7 @@ export default {
       border-radius: 999px;
     }
   }
-  .title {
+  .play-title {
     position: absolute;
     top: calc((6vh - 30px) / 2);
     left: 80px;

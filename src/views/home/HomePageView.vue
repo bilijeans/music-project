@@ -1,7 +1,7 @@
 <template>
   <div class="homepage">
-    <banner-component></banner-component>
     <search-compontents></search-compontents>
+    <banner-component :bannerData="bannerData"></banner-component>
     <div class="sub-container">
       <div
         class="sub-item"
@@ -81,11 +81,7 @@
           </svg>
           <span>全部</span>
         </div>
-        <div
-          class="classify-item"
-          v-for="i in classifyData"
-          :key="i.viewId"
-        >
+        <div class="classify-item" v-for="i in classifyData" :key="i.viewId">
           {{ i.txt }}
         </div>
       </div>
@@ -247,7 +243,7 @@ export default {
   },
   created() {
     this.homePageData = HomePageData.data.contents;
-    this.bannerData = HomePageData.data.contents[1];
+    this.bannerData = HomePageData.data.contents[1].contents;
     this.subData = HomePageData.data.contents[2].contents;
     this.recommendSongListTitle = HomePageData.data.contents[4].contents[0];
     this.recommendSongList = HomePageData.data.contents[5].contents;
@@ -370,7 +366,7 @@ export default {
     },
 
     goToSongList() {
-     this.$router.push({path:'/song-lists'})
+      this.$router.push({ path: "/song-lists" });
     },
   },
 };
