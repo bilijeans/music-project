@@ -47,11 +47,28 @@ export default {
       highLight: (state) => state.playList.highLight,
     }),
   },
+  watch: {
+    playId() {
+      // console.log(this.listData);
+      this.listData.forEach((e, i) => {
+        if (e.songId == this.playId) {
+          // console.log(this.$refs.songItem[i]);
+          this.$nextTick(() => {
+            this.$refs.songItem[i].className = "item active";
+          });
+        } else {
+          this.$nextTick(() => {
+            this.$refs.songItem[i].className = "item";
+          });
+        }
+      });
+    },
+  },
   created() {
-    console.log(this.listData);
+    // console.log(this.listData);
   },
   mounted() {
-    console.log(this.listData);
+    // console.log(this.listData);
   },
   methods: {
     dealWithSingerName(arr) {
