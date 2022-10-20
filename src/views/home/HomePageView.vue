@@ -1,5 +1,6 @@
 <template>
   <div class="homepage">
+    <search-compontents></search-compontents>
     <banner-component></banner-component>
     <div class="sub-container">
       <div
@@ -203,9 +204,11 @@
 <script>
 import HomePageData from "@/assets/HomePageData.json";
 import BannerComponent from "@/components/BannerComponent.vue";
+import SearchCompontents from '@/components/SearchCompontents.vue';
 export default {
   components: {
     BannerComponent,
+    SearchCompontents,
   },
   data() {
     return {
@@ -423,7 +426,6 @@ export default {
     .recommend-song-list {
       display: flex;
       flex-wrap: wrap;
-      // justify-content: space-between;
       width: 100%;
       .item {
         width: 100px;
@@ -438,7 +440,6 @@ export default {
         display: flex;
         justify-content: center;
         align-items: center;
-        // flex: none;
         overflow: hidden;
         .glass {
           position: absolute;

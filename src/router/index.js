@@ -8,6 +8,7 @@ import SingerAlbumSongsView from '../views/singer/SingerAlbumSongsView.vue'
 import RankScreamsGroup from "../views/rank/RankScreamsGroup.vue";
 import RankCharacteristicsGroup from "../views/rank/RankCharacteristicsGroup.vue";
 import songListView from "../views/songList/songListView.vue";
+import SearchPageView from '../views/search/SearchPageView.vue'
 
 Vue.use(VueRouter)
 
@@ -55,6 +56,11 @@ const routes = [
     path: '/songList',
     name: 'songList',
     component: songListView,
+  },
+  {
+    path: '/search',
+    name: 'search',
+    component: SearchPageView,
   }
 ]
 

@@ -32,6 +32,23 @@ module.exports = defineConfig({
         pathRewrite: {
           '': ''
         }
+      },
+      '/v3': {
+        target: 'https://music.migu.cn',
+        changeOrigin: true,
+        headers:{
+          referer:'https://music.migu.cn/v3'
+        },
+        pathRewrite: {
+          '': ''
+        }
+      },
+      '/music_search': {
+        target: 'https://jadeite.migu.cn',
+        changeOrigin: true,
+        pathRewrite: {
+          '': ''
+        }
       }
     }
   }
