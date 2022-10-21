@@ -15,7 +15,7 @@
     </nav>
 
     <main>
-      <p class="songsListTitle" ref="songsListTitle"></p>
+      <p class="songsListTitle">{{ title }}</p>
       <div class="songs-list-contents">
         <div
           class="songs-list"
@@ -23,11 +23,12 @@
           :key="item.logEvent.contentId"
           @click="goToOnlySongsList(item.logEvent.contentId)"
         >
-          <img :src="item.imageUrl" alt="" />
+          <img :src="item.imageUrl" />
           <p class="songs-list-num">{{ item.playNum }}</p>
           <p>{{ item.title }}</p>
         </div>
       </div>
+      <div class="has-not-song" v-show="songList.length == 0">没有啦 テ_デ</div>
     </main>
 
     <transition name="showNav">
@@ -58,6 +59,7 @@ export default {
       nav: [],
       isShowNav: false,
       songList: [],
+      title: "经典老歌",
     };
   },
   components: {
@@ -66,11 +68,8 @@ export default {
   created() {
     this.getHeaderBanner();
     this.getNav();
-  },
-  mounted() {
     this.getSongsList();
   },
-
   methods: {
     goBack() {
       this.$router.go(-1);
@@ -95,7 +94,7 @@ export default {
     },
 
     getSongsList(id, title) {
-      this.$refs.songsListTitle.textContent = title || "经典老歌";
+      this.title = title || "经典老歌";
       id = id || 1000001635;
       this.isShowNav = false;
       this.$axios
@@ -104,6 +103,7 @@ export default {
         )
         .then(({ data }) => {
           this.songList = data.data.contentItemList.itemList;
+          // console.log(this.songList);
         });
     },
 
@@ -208,6 +208,12 @@ footer {
       border-radius: 15px;
     }
   }
+}
+
+.has-not-song {
+  position: fixed;
+  bottom: 8vh;
+  left: 39vw;
 }
 
 .showNav-enter,
