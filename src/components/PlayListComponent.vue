@@ -1,21 +1,31 @@
 <template>
   <transition name="list">
     <div class="wait-song-play-list">
-      <div class="header">
-        <span @click="packUpList">收起</span>
+      <div class="list-container">
+        <div class="header">
+          <div class="title">
+            <span class="listNum">当前播放</span>
+            <span class="num">{{ "(" + listData.length + ")" }}</span>
+          </div>
+        </div>
+        <div class="controls"></div>
+        <ul class="items">
+          <li
+            class="item"
+            ref="songItem"
+            :class="{ active: (index == highLight) }"
+            v-for="(i, index) in listData"
+            :key="i.songId"
+            @click="playOnList({data:i,index:index})"
+          >
+            <span class="name">{{ i.name }}</span>
+            <span v-if="i.singerList[0].name.trim()" class="singer">{{
+              " - " + dealWithSingerName(i.singerList)
+            }}</span>
+          </li>
+        </ul>
       </div>
-      <ul class="items">
-        <li
-          class="item"
-          ref="songItem"
-          v-for="i in listData"
-          :key="i.songId"
-          @click="playSong(i.songId)"
-        >
-          <span class="name">{{ i.name }}</span>
-          <span class="singer">{{ " - " + dealWithSingerName(i.singer) }}</span>
-        </li>
-      </ul>
+      <div @click="packUpList" class="shadow"></div>
     </div>
   </transition>
 </template>
@@ -34,6 +44,7 @@ export default {
     ...mapState(["playbar"]),
     ...mapState({
       listData: (state) => state.playList.listData,
+      highLight: (state) => state.playList.highLight,
     }),
   },
   watch: {
@@ -72,64 +83,102 @@ export default {
       // this.show = !this.show
       this.$emit("packUp");
     },
-    playSong(id) {
-      this.listData.forEach((e, i) => {
-        if (e.songId == id) {
-          this.$nextTick(() => {
-            this.$refs.songItem[i].className = "item active";
-          });
-        }
-      });
-      console.log(this.$refs.songItem);
-      this.play(id);
+    playSong(id,num){
+      console.log(id,num);
     },
     ...mapActions({
       play: "getPlayURL",
     }),
+    ...mapActions(["playOnList"])
   },
 };
 </script>
 <style lang="scss">
 .wait-song-play-list {
   position: fixed;
-  bottom: 0px;
+  bottom: 10px;
   left: 0px;
-  width: 100vw;
+  right: 0px;
+  width: 90vw;
   height: 60vh;
-  background-color: rgba(255, 255, 255);
+  background-color: rgb(255, 255, 255);
+  // z-index: 999;
+  margin: 0 auto;
+  border-radius: 10px;
+  overflow: hidden;
+  .list-container {
+    background-color: rgb(255, 255, 255);
+
+    position: relative;
+    width: 100%;
+    margin: 0 auto;
+  }
+  .shadow {
+    content: "";
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.192);
+    z-index: -1;
+  }
   .header {
     width: 100%;
     height: 40px;
     line-height: 40px;
-    background-color: red;
-    span {
-      position: absolute;
-      right: 20px;
+    border-bottom: 1px solid #ccc;
+    .title {
+      width: 90%;
+      margin: 0 auto;
     }
   }
   .items {
+    height: calc(60vh - 40px);
+    background-color: #fff;
+    overflow: auto;
+    &::-webkit-scrollbar {
+      widows: 0;
+      height: 0;
+    }
     .item {
+      display: flex;
+      align-items: center;
       padding: 10px 20px;
       font-size: 14px;
+      // margin-bottom: 10px;
+      .name {
+        font-size: 15px;
+        display: inline-block;
+        max-width: 70%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
       .singer {
+        margin-left: 10px;
         font-size: 12px;
         color: #999;
       }
     }
+    .item.active {
+      color: red;
+    }
   }
-}
-.list-enter {
-  height: 0px;
-}
+  .list-enter {
+    height: 0px;
+  }
 
-.list-leave {
-  height: 60vh;
-}
-.list-leave-to {
-  height: 0;
-}
-.list-enter-active,
-.list-leave-active {
-  transition: all 0.2s ease-in;
+  .list-leave {
+    height: 60vh;
+  }
+  .list-leave-to {
+    height: 0;
+  }
+  .list-enter-active,
+  .list-leave-active {
+    transition: all 0.2s ease-in;
+  }
 }
 </style>

@@ -116,7 +116,9 @@ export default {
               dataList,
               totalCount: data.data.totalCount,
             };
-            console.log(this.songsData);
+
+            // console.log(this.songsData);
+
           });
       } else {
         this.$axios
@@ -127,7 +129,8 @@ export default {
               dataList,
               totalCount: data.data.totalCount,
             };
-            console.log(this.songsData);
+            // console.log(this.songsData);
+
           });
       }
     },

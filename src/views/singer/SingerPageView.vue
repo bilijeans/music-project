@@ -27,40 +27,36 @@
       </header>
       <main ref="main">
         <div class="singer-nav">
-          <singer-page-nav-view
-           :tabName="tabName"
-           @changeTab="getTab">
-           </singer-page-nav-view>
+          <singer-page-nav-view :tabName="tabName" @changeTab="getTab">
+          </singer-page-nav-view>
 
-           <transition-group ref="nav" name="nav">
-          
-          <singer-page-main
-            v-if="tab == 1"
-            :singerPageData="singerPageData"
-            :maskShow="maskShow"
-            :similarSinger="similarSinger"
-            @changeShowMask="getShowMask"
-            key="main"
-          ></singer-page-main>
+          <transition-group ref="nav" name="nav">
+            <singer-page-main
+              v-if="tab == 1"
+              :singerPageData="singerPageData"
+              :maskShow="maskShow"
+              :similarSinger="similarSinger"
+              @changeShowMask="getShowMask"
+              key="main"
+            ></singer-page-main>
 
-          <songs-component
-            v-else-if="tab == 2"
-            :songsData="songsData"
-            key="song"
-          ></songs-component>
-          
-          <singer-page-video
-            v-else-if="tab == 3"
-            :singerViedoList="singerViedoList"
-            key="video"
-          ></singer-page-video>
+            <songs-component
+              v-else-if="tab == 2"
+              :songsData="songsData"
+              key="song"
+            ></songs-component>
 
-          <singer-album-view
-            v-else
-            :SingerAlbumList="SingerAlbumList"
-            key="album"
-          ></singer-album-view>
+            <singer-page-video
+              v-else-if="tab == 3"
+              :singerViedoList="singerViedoList"
+              key="video"
+            ></singer-page-video>
 
+            <singer-album-view
+              v-else
+              :SingerAlbumList="SingerAlbumList"
+              key="album"
+            ></singer-album-view>
           </transition-group>
         </div>
       </main>
@@ -91,11 +87,12 @@
 </template>
 
 <script>
-import SongsComponent from '@/components/SongsComponent.vue';
+import SongsComponent from "@/components/SongsComponent.vue";
 import SingerAlbumView from "./SingerAlbumView.vue";
 import SingerPageMain from "./SingerPageMain.vue";
 import SingerPageVideo from "./SingerPageVideo.vue";
-import SingerPageNavView from "./singerPageNavView.vue";
+import SingerPageNavView from "./SingerPageNavView.vue";
+
 export default {
   components: {
     SingerPageMain,
@@ -185,7 +182,7 @@ export default {
             totalCount: dataList.length,
           };
 
-          console.log(this.songsData);
+          // console.log(this.songsData);
         });
     },
 
@@ -215,24 +212,26 @@ export default {
       this.maskShow = false;
     },
 
-    getTab(value){
-      this.tab = value
+    getTab(value) {
+      this.tab = value;
     },
 
     goBack() {
       this.$router.go(-1);
     },
 
-    scrollHandle(e){
-      if(e.target.scrollTop >= 200){
+    scrollHandle(e) {
+      if (e.target.scrollTop >= 200) {
         e.target.scrollTop = 200;
-         this.show = true;
-         this.$refs.bgImgMask.style.backdropFilter = `blur(5px)`;
-      }else{
+        this.show = true;
+        this.$refs.bgImgMask.style.backdropFilter = `blur(5px)`;
+      } else {
         this.show = false;
-        this.$refs.bgImgMask.style.backdropFilter = `blur(${e.target.scrollTop/40}px)`
+        this.$refs.bgImgMask.style.backdropFilter = `blur(${
+          e.target.scrollTop / 40
+        }px)`;
       }
-    }
+    },
   },
 };
 </script>
@@ -277,7 +276,6 @@ export default {
       width: 100%;
     }
   }
-
 }
 header {
   height: 45vh;
@@ -320,7 +318,7 @@ header {
     width: 100vw;
     position: absolute;
     bottom: 3vh;
-    left:0%;
+    left: 0%;
     .singerName {
       font-size: 30px;
       font-weight: 500;
@@ -422,13 +420,13 @@ header {
   padding: 0;
 }
 
-.nav-enter{
+.nav-enter {
   transform: translateX(100vw);
 }
-.nav-enter-active{
-  transition: all .5s;
+.nav-enter-active {
+  transition: all 0.5s;
 }
-.nav-enter-to{
+.nav-enter-to {
   transform: translateX(0);
 }
 </style>

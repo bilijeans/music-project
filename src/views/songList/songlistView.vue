@@ -9,11 +9,11 @@
       </div>
       <img src="@/assets/nav.svg" @click="isShowNav = !isShowNav" />
     </header>
-
+         
     <nav>
-      <banner-component :bannerList="bannerList"></banner-component>
+      <song-list-banner :bannerList = 'bannerList'></song-list-banner>
     </nav>
-
+ 
     <main>
       <p class="songsListTitle">{{ title }}</p>
       <div class="songs-list-contents">
@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import BannerComponent from "@/components/BannerComponent.vue";
+import SongListBanner from '@/components/SongListBanner.vue';
 export default {
   data() {
     return {
@@ -63,7 +63,8 @@ export default {
     };
   },
   components: {
-    BannerComponent,
+    SongListBanner
+
   },
   created() {
     this.getHeaderBanner();

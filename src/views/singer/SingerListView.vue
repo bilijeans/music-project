@@ -105,7 +105,7 @@ export default {
       this.tab = h.tab;
       this.language = h.language;
       this.sex = h.sex;
-      console.log(this.sex);
+      // console.log(this.sex);
       this.getData();
     } else {
       this.getData();
@@ -119,7 +119,7 @@ export default {
         )
         .then(({ data }) => {
           this.dealwithData(data.data.contents);
-          console.log(this.singerList);
+          // console.log(this.singerList);
         });
     },
     dealwithData(data) {
