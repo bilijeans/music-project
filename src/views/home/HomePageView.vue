@@ -1,7 +1,22 @@
 <template>
   <div class="homepage">
     <search-compontents></search-compontents>
-    <banner-component :bannerData="bannerData"></banner-component>
+    <van-swipe
+      class="banner-container"
+      :autoplay="3000"
+      indicator-color="#cd3021"
+    >
+      <van-swipe-item
+        v-for="i in bannerData"
+        :key="i.viewId"
+        class="banner-item"
+        :loop="true"
+        :width="351"
+      >
+        <img :src="i.img" />
+        <!-- <div style="text-align:center">{{index}}</div> -->
+      </van-swipe-item>
+    </van-swipe>
     <div class="sub-container">
       <div
         class="sub-item"
@@ -203,11 +218,11 @@
 </template>
 <script>
 import HomePageData from "@/assets/HomePageData.json";
-import BannerComponent from "@/components/BannerComponent.vue";
+// import BannerComponent from "@/components/BannerComponent.vue";
 import SearchCompontents from "@/components/SearchCompontents.vue";
 export default {
   components: {
-    BannerComponent,
+    // BannerComponent,
     SearchCompontents,
   },
   data() {
@@ -374,6 +389,16 @@ export default {
 .homepage {
   .sub-container {
     display: flex;
+  }
+  .banner-container {
+    width: 90vw;
+    border-radius: 10px;
+    margin: 10px auto 30px;
+    img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
   }
   .container,
   .recommend-item,

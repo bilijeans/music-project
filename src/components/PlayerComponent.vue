@@ -12,6 +12,7 @@
       <div
         ref="cover"
         class="play-cover"
+        @click="playInfoShow = true"
         :style="{ animationPlayState: playbar.status ? 'running' : 'paused' }"
       >
         <img
@@ -22,6 +23,17 @@
           "
         />
       </div>
+      <transition name="info">
+        <play-info-component
+          v-show="playInfoShow"
+          :currentRate="currentRate"
+          :currentTime="currentTime"
+          :duration="duration"
+          :playStatus="playStatus"
+          @packUpPlayInfo="pickUpInfo"
+          @togglePlay="togglePlay"
+        ></play-info-component>
+      </transition>
       <div class="play-title" ref="title" v-show="playbar.playURL">
         <div class="span-container" ref="spanTitle">
           <div ref="firstSpan" class="first-span">
@@ -88,9 +100,10 @@
 </template>
 <script>
 import { mapState, mapMutations, mapActions } from "vuex";
+import PlayInfoComponent from "./PlayInfoComponent.vue";
 import PlayListComponent from "./PlayListComponent.vue";
 export default {
-  components: { PlayListComponent },
+  components: { PlayListComponent, PlayInfoComponent },
   data() {
     return {
       duration: 0,
@@ -99,6 +112,7 @@ export default {
       playListShow: false,
       titleShow: false,
       time: null,
+      playInfoShow: false,
     };
   },
   computed: {
@@ -160,8 +174,11 @@ export default {
     pickUpList() {
       this.playListShow = false;
     },
+    pickUpInfo() {
+      this.playInfoShow = false;
+    },
     getTitleStyle() {
-      this.titleShow = false
+      this.titleShow = false;
       clearInterval(this.time);
       let windowWidth = document.documentElement.clientWidth;
       let titleWidth = parseInt(
@@ -198,11 +215,14 @@ export default {
         }
       });
       nextSongIndex = nextSongIndex % this.listData.length;
-      this.playOnList({data:this.listData[nextSongIndex],index:nextSongIndex});
-      this.changeHighNum(nextSongIndex)
+      this.playOnList({
+        data: this.listData[nextSongIndex],
+        index: nextSongIndex,
+      });
+      this.changeHighNum(nextSongIndex);
     },
-    ...mapMutations(["toggleStatus", "addToList","changeHighNum"]),
-    ...mapActions(["getPlayURL","playOnList"]),
+    ...mapMutations(["toggleStatus", "addToList", "changeHighNum"]),
+    ...mapActions(["getPlayURL", "playOnList"]),
   },
   beforeDestroy() {
     this.$refs.play.removeEventListener("timeupdate", this.getPlayTime);
@@ -255,6 +275,20 @@ export default {
     .second-span {
       margin-left: 50px;
     }
+  }
+  .info-enter {
+    height: 0px;
+  }
+
+  .info-leave {
+    height: 60vh;
+  }
+  .info-leave-to {
+    height: 0;
+  }
+  .info-enter-active,
+  .info-leave-active {
+    transition: all 0.2s ease-in;
   }
 }
 .play {
