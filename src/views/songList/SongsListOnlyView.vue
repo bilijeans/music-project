@@ -71,7 +71,7 @@ export default {
               totalCount:data.data.totalCount
             }
 
-            console.log(this.songsData)
+            // console.log(this.songsData)
         });
     },
 

@@ -215,7 +215,7 @@ export default {
   },
   created(){
     this.songsListData = this.songsData
-    console.log(this.songsListData);
+    // console.log(this.songsListData);
   },
   methods: {
     moreFunc(name) {
