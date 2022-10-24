@@ -25,10 +25,10 @@ export default {
     };
   },
   created() {
-    console.log(this.bannerData);
+    // console.log(this.bannerData);
   },
   mounted() {
-    console.log(this.$refs.banner);
+    // console.log(this.$refs.banner);
     this.timer = setInterval(this.bannerMove, 3000);
   },
   methods: {
@@ -55,7 +55,7 @@ export default {
       });
     },
     backToFirstPage(){
-      console.log(1);
+      // console.log(1);
     }
   },
   beforeDestroy() {
