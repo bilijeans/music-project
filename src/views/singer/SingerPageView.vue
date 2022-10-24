@@ -65,11 +65,8 @@
     <div class="mask" v-show="maskShow">
       <div class="mask-head">
         <div
-          class="mask-head-img"
-          v-for="(i, d) in singerPageData.imgs"
-          :key="'singerPage1' + d"
-        >
-          <img :src="i.img" />
+          class="mask-head-img">
+          <img :src="singerPageData.imgs? singerPageData.imgs[2].img : ''" />
 
           <p>{{ singerPageData.singer }}</p>
         </div>
@@ -221,6 +218,7 @@ export default {
     },
 
     scrollHandle(e) {
+      e.target.scrollLeft = 0;
       if (e.target.scrollTop >= 200) {
         e.target.scrollTop = 200;
         this.show = true;

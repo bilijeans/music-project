@@ -37,7 +37,9 @@ export default {
   justify-content: flex-start;
   flex-wrap: wrap;
   padding-top: 2vh;
-  height: 100vh;
+  height: 67vh;
+  overflow: auto;
+
   .video-content {
     width: 45vw;
     height: 23vh;

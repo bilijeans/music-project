@@ -3,24 +3,37 @@
     <header>
       <div class="song-back">
         <div class="song-back-arrow" @click="goBack">
-          <wd-icon name="thin-arrow-left" tag="div" size="20px"></wd-icon>
+          <wd-icon
+            name="thin-arrow-left"
+            tag="div"
+            size="20px"
+            color="#fff"
+          ></wd-icon>
         </div>
         <span>歌单精选</span>
       </div>
       <img src="@/assets/nav.svg" @click="isShowNav = !isShowNav" />
     </header>
-         
+
     <nav>
-      <song-list-banner :bannerList = 'bannerList'></song-list-banner>
+      <song-list-banner :bannerList="bannerList"></song-list-banner>
     </nav>
- 
+
     <main>
+      <div class="recommend">
+        <span
+          v-for="(i, index) in nav"
+          :key="'recommend' + index"
+          @click="getSongsList(i.content[0].texts[1], i.content[0].texts[0])"
+          >{{ i.content[0].texts[0] }}</span
+        >
+      </div>
       <p class="songsListTitle">{{ title }}</p>
       <div class="songs-list-contents">
         <div
           class="songs-list"
           v-for="item in songList"
-          :key="item.logEvent.contentId"
+          :key="'songsList' + item.logEvent.contentId"
           @click="goToOnlySongsList(item.logEvent.contentId)"
         >
           <img :src="item.imageUrl" />
@@ -33,16 +46,34 @@
 
     <transition name="showNav">
       <footer v-show="isShowNav">
-        <div class="nav-content" v-for="(item, index) in nav" :key="index">
-          <p class="nav-title">{{ item.header.title }}</p>
-          <div class="nav-content-text">
+        <div class="nav-content-text" @scroll="showTitle($event)">
+          <div
+            class="nav-content-text-content"
+            v-for="(item, index) in nav"
+            :key="'text' + index"
+            :id="item.header.title"
+          >
             <p
               v-for="i in item.content"
-              :key="i.texts[1]"
+              :key="'text' + i.texts[1]"
+              ref="content"
               @click="getSongsList(i.texts[1], i.texts[0])"
             >
               {{ i.texts[0] }}
             </p>
+          </div>
+        </div>
+        <div class="nav-content">
+          <div
+            class="nav-title"
+            v-for="(item, index) in nav"
+            :key="'title' + index"
+          >
+            <a
+              :class="{ active: index == isShowTitle }"
+              :href="'#' + item.header.title"
+              >{{ item.header.title }}</a
+            >
           </div>
         </div>
       </footer>
@@ -51,7 +82,7 @@
 </template>
 
 <script>
-import SongListBanner from '@/components/SongListBanner.vue';
+import SongListBanner from "@/components/SongListBanner.vue";
 export default {
   data() {
     return {
@@ -60,11 +91,11 @@ export default {
       isShowNav: false,
       songList: [],
       title: "经典老歌",
+      isShowTitle: 0,
     };
   },
   components: {
-    SongListBanner
-
+    SongListBanner,
   },
   created() {
     this.getHeaderBanner();
@@ -73,7 +104,7 @@ export default {
   },
   methods: {
     goBack() {
-      this.$router.go(-1);
+      this.$router.push({ path: "/home" });
     },
     getHeaderBanner() {
       this.$axios
@@ -109,13 +140,34 @@ export default {
     },
 
     goToOnlySongsList(id) {
-      console.log(id);
+      // console.log(id);
       this.$router.push({
         name: "songListOnly",
         params: {
           id,
         },
       });
+    },
+
+    showTitle(e) {
+      console.log(e.target.scrollTop / this.$refs.content[0].offsetHeight);
+      let m = this.$refs.content[0].offsetHeight;
+      let n = e.target.scrollTop;
+      if (n < 6 * m) {
+        this.isShowTitle = 0;
+      } else if (n < 16 * m) {
+        this.isShowTitle = 1;
+      } else if (n < 24 * m) {
+        this.isShowTitle = 2;
+      } else if (n < 43 * m) {
+        this.isShowTitle = 3;
+      } else if (n < 54 * m) {
+        this.isShowTitle = 4;
+      } else if (n < 55 * m) {
+        this.isShowTitle = 5;
+      } else {
+        this.isShowTitle = 6;
+      }
     },
   },
 };
@@ -124,12 +176,15 @@ export default {
 
 <style lang="scss" scoped>
 header {
+  position: sticky;
+  top: 0%;
+  z-index: 3;
   padding: 0 5vw;
   height: 7vh;
   display: flex;
   align-items: center;
   justify-content: space-between;
-
+  background-color: #cd3021;
   .song-back {
     width: 30vw;
     display: flex;
@@ -139,8 +194,13 @@ header {
     span {
       font-size: 22px;
       font-weight: 700;
+      color: #eee;
     }
   }
+}
+
+main {
+  margin-bottom: 7vh;
 }
 
 .songsListTitle {
@@ -149,11 +209,10 @@ header {
   padding: 2vh 5vw;
 }
 .songs-list-contents {
-  height: 60vh;
   width: 100vw;
   display: flex;
   flex-wrap: wrap;
-  overflow: auto;
+  // overflow: auto;
   .songs-list {
     height: 20vh;
     width: 30vw;
@@ -183,30 +242,79 @@ header {
   }
 }
 
-footer {
-  background-color: #fff;
-  position: fixed;
-  bottom: 6vh;
-  left: 0%;
+.recommend {
+  margin: 2vh 0;
+  display: flex;
+  overflow: auto;
+
+  span {
+    white-space: nowrap;
+    padding: 1vh 4vw;
+    box-shadow: 3px 3px 6px 0px #ccc;
+    border-radius: 10px;
+    margin: 1vh 2vw;
+  }
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
-.nav-content {
-  margin: 10px 5px;
+footer {
+  height: 87vh;
+  position: fixed;
+  bottom: 6vh;
+  right: 0%;
+  display: flex;
+  z-index: 2;
+  .nav-content {
+    background-color: #fff;
+    height: 100%;
+    width: 20vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+  }
 
   .nav-title {
-    font-size: 18px;
-    font-weight: 600;
-  }
-  .nav-content-text {
-    margin-top: 1vh;
-    display: flex;
-    justify-content: flex-start;
-    flex-wrap: wrap;
+    a {
+      color: #000;
+      display: inline-block;
+      width: 20vw;
+      font-size: 18px;
+      font-weight: 600;
+      height: 5vh;
+      line-height: 5vh;
+      text-align: center;
 
-    p {
-      font-size: 14px;
-      padding: 1vh 3vw;
-      border-radius: 15px;
+      &.active {
+        color: #fff;
+        background-color: #cd3021;
+      }
+    }
+  }
+
+  .nav-content-text {
+    background-color: rgb(255, 255, 255, 0.9);
+    height: 100%;
+    width: 30vw;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    .nav-content-text-content {
+      display: flex;
+      flex-wrap: wrap;
+
+      p {
+        height: 5vh;
+        width: 30vw;
+        text-align: center;
+        line-height: 5vh;
+      }
     }
   }
 }
@@ -219,7 +327,7 @@ footer {
 
 .showNav-enter,
 .showNav-leave-to {
-  transform: translateY(100%);
+  transform: translateX(100%);
 }
 .showNav-enter-active,
 .showNav-leave-active {
@@ -227,6 +335,6 @@ footer {
 }
 .showNav-enter-to,
 .showNav-leave {
-  transform: translateY(0);
+  transform: translateX(0);
 }
 </style>

@@ -5,6 +5,9 @@ import store from './store'
 import VueAxiosPlugin from 'vue-axios-plugin'
 import wotUI from './wotui'
 import vantUI from './vantui'
+import VueAwesomeSwiper from 'vue-awesome-swiper'
+import 'swiper/css/swiper.css'
+Vue.use(VueAwesomeSwiper)
 Vue.use(wotUI)
 Vue.use(vantUI)
 Vue.use(VueAxiosPlugin, {
