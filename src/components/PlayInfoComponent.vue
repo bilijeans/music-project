@@ -15,19 +15,32 @@
         </p>
       </div>
     </header>
-    <main>
+    <main @click="lrcToggle = !lrcToggle">
       <div
         class="album"
         :style="{ animationPlayState: playStatus ? 'running' : 'paused' }"
+        v-show="!lrcToggle"
       >
         <div class="cover">
           <img
             :src="
               playbar.songData
-                ? 'http://d.musicapp.migu.cn' + playbar.songData.img2
+                ? 'http://d.musicapp.migu.cn' + playbar.songData.img1
                 : ''
             "
           />
+        </div>
+      </div>
+      <div class="song-lrc" v-show="lrcToggle">
+        <div class="lrc-container" v-if="playbar.lrcData">
+          <p
+            class="lrc-item"
+            :class="{ active: highLightLrcIndex == index }"
+            v-for="(item, index) in playbar.lrcData"
+            :key="index"
+          >
+            {{ item.value }}
+          </p>
         </div>
       </div>
     </main>
@@ -70,13 +83,16 @@
           'http://d.musicapp.migu.cn' + playbar.songData.img2
         }) no-repeat`,
         backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backdropFilter: 'blur(1000px)',
-        filter: 'blur(50px)',
+        backgroundPosition: 'center center',
         transform: 'scale(2)',
+        filter: 'blur(0px)',
       }"
     ></div>
   </div>
+  <!--        
+    
+  backdropFilter: 'blur(1000px)',
+ -->
 </template>
 <script>
 import { mapState, mapMutations, mapActions } from "vuex";
@@ -87,7 +103,26 @@ export default {
     duration: Number,
     playStatus: Boolean,
   },
+  data() {
+    return {
+      lrcToggle: false,
+    };
+  },
   computed: {
+    highLightLrcIndex() {
+      console.log(this.currentTime);
+      if (this.playbar.lrcData) {
+        console.log(1);
+        for (let i = 0; i < this.playbar.lrcData.length; i++) {
+          console.log(2);
+          if (this.playbar.lrcData[i].time > this.currentTime) {
+            console.log(3);
+            return i - 1;
+          }
+        }
+      }
+      return 0;
+    },
     ...mapState(["playbar", "playList"]),
   },
   methods: {
@@ -151,7 +186,7 @@ export default {
   header {
     position: relative;
     width: 100vw;
-    height: 5vh;
+    height: 8vh;
     // text-align: center;
     display: flex;
     justify-content: center;
@@ -159,7 +194,8 @@ export default {
     i {
       position: absolute;
       left: 20px;
-      top: calc((5vh - 25px) / 2);
+      // top: calc((8vh - 25px) / 2);
+      bottom: 10px;
       font-size: 25px;
       color: white;
     }
@@ -168,20 +204,20 @@ export default {
       margin-bottom: 4px;
       .name {
         letter-spacing: 1px;
-        font-size: 12px;
+        font-size: 16px;
         color: white;
       }
       .singer {
         margin-top: 5px;
         font-size: 12px;
-        transform: scale(0.8);
-        color: rgba(255, 255, 255, 0.3);
+        // transform: scale(0.9);
+        color: rgba(255, 255, 255, 0.7);
       }
     }
   }
   main {
     width: 100vw;
-    height: 75vh;
+    height: 72vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -201,6 +237,24 @@ export default {
         height: auto;
         // border: 5px solid rgba(128, 128, 128, 0.5);
         border-radius: 999px;
+        // transform: scale(.6);
+      }
+    }
+
+    .lrc-container {
+      width: 100vw;
+      text-align: center;
+      height: 56vh;
+      overflow: auto;
+      &::-webkit-scrollbar {
+        display: none;
+      }
+      .lrc-item {
+        line-height: 4vh;
+        color: #999;
+      }
+      .active {
+        color: #fff;
       }
     }
   }
@@ -331,8 +385,8 @@ export default {
       width: 100%;
       height: 100%;
       z-index: -1;
-      background-image: linear-gradient(black,transparent ,black);
-      // opacity: ;
+      // background-image: linear-gradient(black, white, black);
+      // opacity: 0.7;
     }
   }
 }

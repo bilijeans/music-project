@@ -2,6 +2,8 @@ export default {
     state: {
         playId: null,
         playURL: null,
+        lrcURL: null,
+        lrcData: null,
         axios: null,
         songData: null,
         toneFlag: ['PQ', 'HQ', 'SQ', 'ZQ', 'ZQ24', 'ZQ32'],
@@ -10,7 +12,6 @@ export default {
     actions: {
         getPlayURL(state, id) {
             let toneFlag = state.state.toneFlag[state.state.toneFlagIndex]
-
             state.state.axios({
                 methods: "GET",
                 url: `/MIGUM2.0/strategy/listen-url/v2.4?resourceType=2&songId=${id}&toneFlag=${toneFlag}`,
@@ -28,6 +29,8 @@ export default {
                     state.commit("newId", id)
                     state.commit("initTongFlagIndex")
                     state.commit("newURL", data.data.url)
+                    state.commit("newLrcURL", data.data.lrcUrl)
+                    state.dispatch("getLrcData")
                     state.commit("commitSongData", data.data.song)
                     // state.commit("addToList", { ...data.data.song, id: id })
                     console.log(data, data.data.song.songName);
@@ -60,13 +63,39 @@ export default {
                         state.dispatch("playOnList", obj)
                     }
                 } else {
+                    console.log(data);
                     state.commit("newId", obj.data.songId)
                     state.commit("initTongFlagIndex")
                     state.commit("newURL", data.data.url)
+                    state.commit("newLrcURL", data.data.lrcUrl)
+                    state.dispatch("getLrcData")
                     state.commit("commitSongData", data.data.song)
                     state.commit("changeHighNum", obj.index)
                 }
             });
+        },
+        getLrcData(state) {
+            state.state.axios.get(state.state.lrcURL).then(({ data }) => {
+                let arr = data.split('\n')
+                arr.pop()
+                let lrcData = []
+                console.log(arr);
+                arr.forEach(e => {
+                    let time = e.slice(1, 9)
+                    let lrcStr = e.slice(10, -1)
+                    let min = Number(time.slice(0, 2))
+                    let sec = Number(time.slice(3, 5))
+                    let ms = Number(time.slice(6, 8))
+                    time = min * 60 + sec + ms / 100
+                    lrcData.push({
+                        value: lrcStr,
+                        time: time
+                    })
+                })
+                console.log(lrcData);
+                state.commit("getLrcData", lrcData)
+
+            })
         }
     },
     mutations: {
@@ -75,6 +104,13 @@ export default {
         },
         newURL(state, url) {
             state.playURL = url
+        },
+        newLrcURL(state, url) {
+            console.log(url);
+            state.lrcURL = url
+        },
+        getLrcData(state, data) {
+            state.lrcData = data
         },
         getAxios(state, f) {
             state.axios = f
