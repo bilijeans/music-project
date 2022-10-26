@@ -1,7 +1,7 @@
 <template>
   <div class="album-songs-page">
     <div class="album-songs-page-bg">
-      <img :src="AblumMes.imgItem? AblumMes.imgItem.img : ''" />
+      <img :src="AblumMes.imgItem ? AblumMes.imgItem.img : ''" />
       <div class="album-songs-page-bg-mask"></div>
     </div>
 
@@ -22,7 +22,7 @@
         <div class="album-songs-page-content-main-singer">
           <div class="main-singer-left">
             <div class="main-singer-left-img">
-              <img :src="AblumMes.imgItem? AblumMes.imgItem.img : ''" />
+              <img :src="AblumMes.imgItem ? AblumMes.imgItem.img : ''" />
             </div>
             <span class="ab-singer">{{ AblumMes.ownerName }}</span>
             <img class="r-arrow" src="@/assets/svg/rightArrow.svg" alt="" />
@@ -115,7 +115,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.album-songs-page{
+.album-songs-page {
   width: 100vw;
   height: 100vh;
   overflow: auto;
@@ -150,7 +150,7 @@ export default {
     justify-content: space-between;
     align-items: center;
     padding: 0 4vw;
-    position: fixed;
+    position: sticky;
     top: 4vh;
     left: 0%;
   }
@@ -160,6 +160,11 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    span {
+      font-size: 20px;
+      margin-left: 3vw;
+    }
   }
 }
 
@@ -167,7 +172,6 @@ export default {
   width: 100vw;
   border-top-left-radius: 20px;
   background-color: #fff;
-
   .album-songs-page-content-main-singer {
     height: 8vh;
     border-top-left-radius: 20px;

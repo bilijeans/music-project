@@ -2,7 +2,7 @@
   <div class="singerList">
     <header>
       <div class="singer-back" @click="goBack">
-        <wd-icon name="thin-arrow-left" tag="div" size="20px"></wd-icon>
+        <wd-icon name="thin-arrow-left" tag="div" size="10px"></wd-icon>
       </div>
       <span>歌手</span>
       <div class="singer-search">
@@ -217,7 +217,7 @@ header {
   }
 
   span {
-    transform: translateX(-350%);
+    transform: translateX(-400%);
   }
 
   .singer-search {

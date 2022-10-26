@@ -1,10 +1,18 @@
 <template>
   <div class="banner" @scroll="toHead($event)">
     <swiper class="swiper" :options="swiperOption">
-      <swiper-slide v-for="(i, index) in bannerList" :key="index" >
-        <img :src="i.imageUrl"  @click="goToOnlySongsList(i.actionUrl)"/>
+      <swiper-slide
+        v-for="(i, index) in bannerList"
+        :key="index"
+        :id="i.actionUrl"
+      >
+        <img :src="i.imageUrl" />
+        <div class="swiper-mask"></div>
         <p class="title">{{ i.title }}</p>
-        <p class="num">{{ i.subTitle }}</p>
+        <div class="num">
+          <img src="@/assets/svg/ear2.svg">
+          <p>{{ i.subTitle }}</p>
+        </div>
       </swiper-slide>
     </swiper>
   </div>
@@ -12,27 +20,41 @@
 
 <script>
 export default {
+  mounted() {
+    if (location.href.indexOf("#") <= 0) {
+      location.href = location.href + "#";
+      location.reload();
+    }
+  },
   props: {
     bannerList: Array,
   },
   data() {
+    let self = this;
     return {
+      id: null,
       swiperOption: {
         effect: "coverflow",
         grabCursor: true,
         loop: true,
-        centeredSlides: false,
-        slidesPerView: "3",
-        // autoplay: {
-        //     delay: 2500,
-        //     disableOnInteraction: false
-        //   },
+        centeredSlides: true,
+        slidesPerView: "2",
+        autoplay: {
+            delay: 2500,
+            disableOnInteraction: false
+          },
         coverflowEffect: {
-          rotate: 50,
+          rotate: 20,
           stretch: 0,
           depth: 100,
           modifier: 1,
           slideShadows: true,
+        },
+        on: {
+          click: function () {
+            // console.log(this.realIndex,this.clickedSlide.id)
+            self.goToOnlySongsList(this.clickedSlide.id);
+          },
         },
       },
     };
@@ -52,6 +74,9 @@ export default {
 
 
 <style lang="scss" scoped>
+.banner {
+  margin-top: 7vh;
+}
 .example-3d {
   width: 100%;
   height: 3vh;
@@ -62,7 +87,6 @@ export default {
 .swiper {
   height: 100%;
   width: 100%;
-  background-image: url(@/assets/R-C.png);
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
@@ -70,32 +94,54 @@ export default {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    flex-direction: column;
-    width: 30vw;
-    height: 20vh;
+    // flex-direction: column;
+    // width: 130px !important;
     color: #fff;
     position: relative;
 
-    .title {
+    .swiper-mask {
+      height: 100%;
       width: 100%;
-      height: 3vh;
-      font-size: 14px;
-      line-height: 3vh;
+      background-color: rgb(0, 0, 0, 0.5);
+      border-radius: 10px;
+      position: absolute;
+      top: 0%;
+      left: 0%;
+    }
+
+    .title {
+      width: 30vw;
+      font-size: 18px;
+      font-weight: 800;
+      position: absolute;
+      top: 6vh;
+      left: 11vw;
+      line-height: 4vh;
       overflow: hidden;
       text-overflow: ellipsis;
-      white-space: nowrap;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
     }
     img {
-      height: 15vh;
-      border-radius: 15px;
+      width: 50vw;
+      border-radius: 10px;
     }
 
     .num {
       color: #fff;
       position: absolute;
-      top: calc(27vh / 2);
-      left: 5vw;
+      top: 2vh;
+      left: 4vw;
       font-size: 12px;
+      display: flex;
+      align-items: center;
+
+      img{
+        height: 15px;
+        width: 15px;
+        margin-right: 1vw;
+      }
     }
   }
 }

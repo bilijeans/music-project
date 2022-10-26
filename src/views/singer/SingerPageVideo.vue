@@ -8,7 +8,11 @@
     >
       <div class="video-content-img">
         <img :src="item.img" alt="" />
-        <p class="playNum">{{ item.txt3 }}</p>
+        <div class="playNum">
+          <img src="@/assets/video.svg" alt="">
+          <p>{{ item.txt3 }}</p>
+        </div>
+        
       </div>
       <p class="video-content-txt">{{ item.txt }}</p>
       <p class="video-content-txt2">{{ item.txt2 }}</p>
@@ -72,11 +76,24 @@ export default {
       }
 
       .playNum {
-        font-size: 14px;
+        display: flex;
+        align-items: center;
+        height: 3vh;
+        width: 100%;
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+        background-color: rgba(117, 114, 114, 0.5);
+        font-size: 13px;
         color: #fff;
         position: absolute;
-        bottom: 5%;
-        left: 15%;
+        bottom: 0;
+        left: 0;
+
+        img{
+          height: 20px;
+          width: 20px;
+          margin: 0 1vw 0 2vw;
+        }
       }
     }
   }

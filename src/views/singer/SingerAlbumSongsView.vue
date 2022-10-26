@@ -201,6 +201,12 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+
+    span{
+      font-size: 20px;
+      margin-left: 3vw;
+    }
   }
 }
 
