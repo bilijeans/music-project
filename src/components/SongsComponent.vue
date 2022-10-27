@@ -246,7 +246,7 @@ export default {
 .songslist {
   position: relative;
   width: 100%;
-  margin: 210px 0 0 0;
+  margin: 220px 0 0 0;
   border-top-left-radius: 20px;
   .songs-play {
     position: sticky;

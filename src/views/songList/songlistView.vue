@@ -72,9 +72,6 @@ export default {
   },
 
   methods: {
-    goBack() {
-      this.$router.go(-1);
-    },
     getHeaderBanner() {
       this.$axios
         .get(
@@ -93,7 +90,6 @@ export default {
           // console.log(data.data);
         });
     },
-
     getSongsList(id, title) {
       this.$refs.songsListTitle.textContent = title || "经典老歌";
       id = id || 1000001635;
@@ -106,7 +102,6 @@ export default {
           this.songList = data.data.contentItemList.itemList;
         });
     },
-
     goToOnlySongsList(id) {
       // console.log(id);
       this.$router.push({
@@ -115,6 +110,9 @@ export default {
           id,
         },
       });
+    },
+    goBack() {
+      this.$router.go(-1);
     },
   },
 };
