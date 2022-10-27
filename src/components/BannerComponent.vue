@@ -13,8 +13,8 @@
     </ul> -->
     <van-swipe
       class="banner-container"
-      :autoplay="3000"     
-      indicator-color="#cd3021" 
+      :autoplay="3000"
+      indicator-color="#cd3021"
     >
       <van-swipe-item
         v-for="i in bannerData"
@@ -41,11 +41,11 @@ export default {
     };
   },
   created() {
-    console.log(this.bannerData);
+    // console.log(this.bannerData);
   },
   mounted() {
-    console.log(this.$refs.banner);
-    // this.timer = setInterval(this.bannerMove, 3000);
+    // console.log(this.$refs.banner);
+    this.timer = setInterval(this.bannerMove, 3000);
   },
   methods: {
     bannerMove() {
@@ -71,16 +71,7 @@ export default {
       });
     },
     backToFirstPage() {
-      this.$nextTick(() => {
-        this.$refs.banner.style.transition = "0s";
-        this.$refs.banner.style.left = `-90vw`;
-      });
-      setTimeout(() => {
-        this.$nextTick(() => {
-          this.$refs.banner.style.transition = "all 1s linear";
-        });
-      }, 0);
-      this.index = 1;
+      // console.log(1);
     },
   },
   beforeDestroy() {
@@ -95,7 +86,7 @@ export default {
   margin: 0 auto;
 }
 .banner-container {
-  img{
+  img {
     display: block;
     width: 100%;
     height: auto;

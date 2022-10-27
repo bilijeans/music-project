@@ -55,11 +55,13 @@
         :key="i.songId"
       >
         <span>{{ index + 1 }}</span>
-        <div class="song-msg" @click="play(i.songId)">
+        <div class="song-msg" @click="getPlayURL(i.songId)">
           <div class="songname">{{ i.songName }}</div>
           <div class="song-album">
             {{
-              i.singerList[0].name.trim() ? dealWithSingerName(i.singerList) : i.album
+              i.singerList[0].name.trim()
+                ? dealWithSingerName(i.singerList)
+                : i.album
             }}
           </div>
         </div>
@@ -203,19 +205,19 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapMutations } from "vuex";
 export default {
   props: { songsData: Object },
-    data() {
+  data() {
     return {
       moretab: false,
       name: "",
-      songsListData:['wait']
+      songsListData: ["wait"],
     };
   },
-  created(){
-    this.songsListData = this.songsData
-    console.log(this.songsListData);
+  created() {
+    this.songsListData = this.songsData;
+    // console.log(this.songsListData);
   },
   methods: {
     moreFunc(name) {
@@ -233,11 +235,10 @@ export default {
       str = str.slice(0, -1);
       return str;
     },
-    ...mapActions({
-      play: "getPlayURL",
-    }),
-    ...mapActions(["playList"])
-  }
+    ...mapActions(["getPlayURL"]),
+    ...mapActions(["playList"]),
+    ...mapMutations(["changeHighNum"]),
+  },
 };
 </script>
 

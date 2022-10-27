@@ -4,7 +4,7 @@
       ref="play"
       Loadstart
       @play="getPlayData"
-      @ended="nextSong"
+      @ended="witchNext"
       autoplay
       :src="playbar.playURL"
     ></audio>
@@ -12,7 +12,7 @@
       <div
         ref="cover"
         class="play-cover"
-        @click="playInfoShow = true"
+        @click="showSongInfo"
         :style="{ animationPlayState: playbar.status ? 'running' : 'paused' }"
       >
         <img
@@ -30,8 +30,10 @@
           :currentTime="currentTime"
           :duration="duration"
           :playStatus="playStatus"
+          :loop="loop"
           @packUpPlayInfo="pickUpInfo"
           @togglePlay="togglePlay"
+          @changeLoop="changeLoop"
         ></play-info-component>
       </transition>
       <div class="play-title" ref="title" v-show="playbar.playURL">
@@ -90,11 +92,15 @@
       <div class="song-list" @click="playListShow = true">
         <img class="song-list-btn" src="@/assets/PlayListMusic4.svg" />
       </div>
-      <play-list-component
-        v-show="playListShow"
-        :status="playListShow"
-        @packUp="pickUpList"
-      ></play-list-component>
+      <transition name="list">
+        <play-list-component
+          v-show="playListShow"
+          :status="playListShow"
+          :loop="loop"
+          @packUp="pickUpList"
+          @changeLoop="changeLoop"
+        ></play-list-component>
+      </transition>
     </div>
   </div>
 </template>
@@ -113,6 +119,7 @@ export default {
       titleShow: false,
       time: null,
       playInfoShow: false,
+      loop: 0,
     };
   },
   computed: {
@@ -124,7 +131,7 @@ export default {
       },
       set() {},
     },
-    ...mapState(["playbar"]),
+    ...mapState(["playbar", "playList"]),
     ...mapState({
       listData: (state) => state.playList.listData,
       songId: (state) => state.playbar.playId,
@@ -174,6 +181,13 @@ export default {
     pickUpList() {
       this.playListShow = false;
     },
+    showSongInfo() {
+      if (this.playbar.songData) {
+        this.playInfoShow = true;
+      } else {
+        this.playInfoShow = false;
+      }
+    },
     pickUpInfo() {
       this.playInfoShow = false;
     },
@@ -207,6 +221,22 @@ export default {
         }
       });
     },
+    witchNext() {
+      if (this.loop == 0) {
+        this.playSingleSong();
+      } else if (this.loop == 1) {
+        this.nextSong();
+      } else {
+        this.playRandomSong();
+      }
+    },
+    playSingleSong() {
+      this.playOnList({
+        data: this.listData[this.playList.highLight],
+        index: this.playList.highLight,
+      });
+      this.changeHighNum(this.playList.highLight);
+    },
     nextSong() {
       let nextSongIndex = 0;
       this.listData.forEach((e, i) => {
@@ -220,6 +250,18 @@ export default {
         index: nextSongIndex,
       });
       this.changeHighNum(nextSongIndex);
+    },
+    playRandomSong() {
+      let maxNum = this.playList.listData.length;
+      let randomNum = Math.floor(Math.random() * maxNum);
+      this.playOnList({
+        data: this.listData[randomNum],
+        index: randomNum,
+      });
+      this.changeHighNum(randomNum);
+    },
+    changeLoop() {
+      this.loop = (this.loop + 1) % 3;
     },
     ...mapMutations(["toggleStatus", "addToList", "changeHighNum"]),
     ...mapActions(["getPlayURL", "playOnList"]),

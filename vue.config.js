@@ -1,6 +1,7 @@
 const { defineConfig } = require('@vue/cli-service')
 const { VantResolver } = require('unplugin-vue-components/resolvers');
 const ComponentsPlugin = require('unplugin-vue-components/webpack');
+require('events').EventEmitter.defaultMaxListeners = 0
 module.exports = defineConfig({
   transpileDependencies: true,
   configureWebpack: {

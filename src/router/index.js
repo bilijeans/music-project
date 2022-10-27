@@ -10,6 +10,7 @@ import RankCharacteristicsGroup from "../views/rank/RankCharacteristicsGroup.vue
 import SearchPageView from '../views/search/SearchPageView.vue';
 import SongListView from '../views/songList/SongListView.vue';
 import SongsListOnlyView from '../views/songList/SongsListOnlyView.vue'
+import SearchResultView from '../views/search/SearchResultView.vue'
 
 Vue.use(VueRouter)
 
@@ -72,6 +73,11 @@ const routes = [
     path: '/songListOnly/:id',
     name: 'songListOnly',
     component: SongsListOnlyView,
+  },
+  {
+    path: '/search-result',
+    name: 'search-result',
+    component: SearchResultView,
   }
 ]
 

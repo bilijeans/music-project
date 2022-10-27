@@ -263,7 +263,7 @@ export default {
     this.recommendSongListTitle = HomePageData.data.contents[4].contents[0];
     this.recommendSongList = HomePageData.data.contents[5].contents;
     this.classifyData = HomePageData.data.contents[6].contents;
-    console.log(this.classifyData, "aaa");
+    // console.log(this.classifyData, "aaa");
     this.newSongTitle = HomePageData.data.contents[7].contents;
     this.newSongData = HomePageData.data.contents[8].contents;
     this.roostTitle = HomePageData.data.contents[9].contents;

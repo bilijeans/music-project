@@ -32,13 +32,13 @@ export default {
                     state.commit("newLrcURL", data.data.lrcUrl)
                     state.dispatch("getLrcData")
                     state.commit("commitSongData", data.data.song)
-                    // state.commit("addToList", { ...data.data.song, id: id })
-                    console.log(data, data.data.song.songName);
+                    state.commit("initHighNum")
                     state.dispatch("hasSong", { name: data.data.song.songName, singerList: data.data.song.singerList, songId: id, toneFlag: toneFlag })
                 }
             });
         },
         playOnList(state, obj) {
+            console.log(obj);
             state.state.axios({
                 methods: "GET",
                 url: `/MIGUM2.0/strategy/listen-url/v2.4?resourceType=2&songId=${obj.data.songId}&toneFlag=${obj.data.toneFlag}`,
@@ -79,7 +79,6 @@ export default {
                 let arr = data.split('\n')
                 arr.pop()
                 let lrcData = []
-                console.log(arr);
                 arr.forEach(e => {
                     let time = e.slice(1, 9)
                     let lrcStr = e.slice(10, -1)
@@ -92,10 +91,51 @@ export default {
                         time: time
                     })
                 })
-                console.log(lrcData);
+                lrcData.unshift({
+                    value: '',
+                    time: 0
+                }, {
+                    value: '',
+                    time: 0
+                }, {
+                    value: '',
+                    time: 0
+                }, {
+                    value: '',
+                    time: 0
+                }, {
+                    value: '',
+                    time: 0
+                }, {
+                    value: '',
+                    time: 0
+                })
+                lrcData.push({
+                    value: '',
+                    time: 999
+                }, {
+                    value: '',
+                    time: 999
+                }, {
+                    value: '',
+                    time: 999
+                }, {
+                    value: '',
+                    time: 999
+                }, {
+                    value: '',
+                    time: 999
+                }, {
+                    value: '',
+                    time: 999
+                })
                 state.commit("getLrcData", lrcData)
 
             })
+        },
+        cleanList(state) {
+            state.commit("initPlaybar")
+            state.commit("cleanListData")
         }
     },
     mutations: {
@@ -124,5 +164,12 @@ export default {
         initTongFlagIndex(state) {
             state.toneFlagIndex = 5
         },
+        initPlaybar(state) {
+            state.playId = null
+            state.playURL = null
+            state.lrcURL = null
+            state.lrcData = null
+            state.songData = null
+        }
     }
 }
