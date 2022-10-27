@@ -12,8 +12,6 @@ export default {
     },
     actions: {
         hasSong(state, data) {
-            console.log(3);
-            console.log(state, data);
             let hasSong = false
             let index = 0
             for (let i = 0; i < state.state.listData.length; i++) {
@@ -23,7 +21,6 @@ export default {
                     break
                 }
             }
-            console.log(hasSong);
             if (hasSong) {
                 state.commit("upToList", index)
             } else {
@@ -43,27 +40,49 @@ export default {
             })
             state.commit("changeList", newList)
             state.dispatch("playOnList", { data: newList[0], index: 0 })
+        },
+        deleteSongOnList(state, id) {
+            let index
+            let newList = state.state.listData.filter((e, i) => {
+                if (e.songId == id) {
+                    index = i
+                }
+                return e.songId != id
+            })
+            if (index < state.state.highLight) {
+                state.commit("changeHighNum", state.state.highLight - 1)
+            } else if (index == state.state.highLight) {
+                index = index % state.state.listData.length
+                state.dispatch("playOnList", { data: newList[index], index: index })
+            }
+            state.commit("changeList", newList)
+            console.log(newList, index);
         }
     },
     mutations: {
         addToList(state, data) {
-            console.log(1);
             state.listData = [...[data], ...state.listData]
-            console.log(state, state.listData);
+            console.log(state);
         },
         upToList(state, index) {
-            console.log(2);
             let data = state.listData[index]
             state.listData = [...[data], ...state.listData.slice(0, index), ...state.listData.slice(index + 1)]
+            console.log(state);
+
         },
         changeHighNum(state, num) {
             state.highLight = num
         },
         initHighNum(state) {
             state.highLight = 0
+            console.log(state.highLight);
         },
         changeList(state, data) {
             state.listData = data
+        },
+        cleanListData(state) {
+            state.listData = []
+            state.highLight = 0
         }
 
     }

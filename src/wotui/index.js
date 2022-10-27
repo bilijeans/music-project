@@ -1,6 +1,6 @@
-import { Icon, Tab, Tabs, Popup } from 'wot-design'
+import { Icon, Tab, Tabs, Popup, Progress } from 'wot-design'
 
-const UIComponents = [Icon, Tab, Tabs, Popup]
+const UIComponents = [Icon, Tab, Tabs, Popup, Progress]
 
 const WotUIPlugin = {}
 
