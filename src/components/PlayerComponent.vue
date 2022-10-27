@@ -4,7 +4,7 @@
       ref="play"
       Loadstart
       @play="getPlayData"
-      @ended="nextSong"
+      @ended="witchNext"
       autoplay
       :src="playbar.playURL"
     ></audio>
@@ -12,6 +12,7 @@
       <div
         ref="cover"
         class="play-cover"
+        @click="showSongInfo"
         :style="{ animationPlayState: playbar.status ? 'running' : 'paused' }"
       >
         <img
@@ -22,6 +23,19 @@
           "
         />
       </div>
+      <transition name="info">
+        <play-info-component
+          v-show="playInfoShow"
+          :currentRate="currentRate"
+          :currentTime="currentTime"
+          :duration="duration"
+          :playStatus="playStatus"
+          :loop="loop"
+          @packUpPlayInfo="pickUpInfo"
+          @togglePlay="togglePlay"
+          @changeLoop="changeLoop"
+        ></play-info-component>
+      </transition>
       <div class="play-title" ref="title" v-show="playbar.playURL">
         <div class="span-container" ref="spanTitle">
           <div ref="firstSpan" class="first-span">
@@ -78,19 +92,24 @@
       <div class="song-list" @click="playListShow = true">
         <img class="song-list-btn" src="@/assets/PlayListMusic4.svg" />
       </div>
-      <play-list-component
-        v-show="playListShow"
-        :status="playListShow"
-        @packUp="pickUpList"
-      ></play-list-component>
+      <transition name="list">
+        <play-list-component
+          v-show="playListShow"
+          :status="playListShow"
+          :loop="loop"
+          @packUp="pickUpList"
+          @changeLoop="changeLoop"
+        ></play-list-component>
+      </transition>
     </div>
   </div>
 </template>
 <script>
 import { mapState, mapMutations, mapActions } from "vuex";
+import PlayInfoComponent from "./PlayInfoComponent.vue";
 import PlayListComponent from "./PlayListComponent.vue";
 export default {
-  components: { PlayListComponent },
+  components: { PlayListComponent, PlayInfoComponent },
   data() {
     return {
       duration: 0,
@@ -99,6 +118,8 @@ export default {
       playListShow: false,
       titleShow: false,
       time: null,
+      playInfoShow: false,
+      loop: 0,
     };
   },
   computed: {
@@ -110,7 +131,7 @@ export default {
       },
       set() {},
     },
-    ...mapState(["playbar"]),
+    ...mapState(["playbar", "playList"]),
     ...mapState({
       listData: (state) => state.playList.listData,
       songId: (state) => state.playbar.playId,
@@ -160,8 +181,18 @@ export default {
     pickUpList() {
       this.playListShow = false;
     },
+    showSongInfo() {
+      if (this.playbar.songData) {
+        this.playInfoShow = true;
+      } else {
+        this.playInfoShow = false;
+      }
+    },
+    pickUpInfo() {
+      this.playInfoShow = false;
+    },
     getTitleStyle() {
-      this.titleShow = false
+      this.titleShow = false;
       clearInterval(this.time);
       let windowWidth = document.documentElement.clientWidth;
       let titleWidth = parseInt(
@@ -190,6 +221,22 @@ export default {
         }
       });
     },
+    witchNext() {
+      if (this.loop == 0) {
+        this.playSingleSong();
+      } else if (this.loop == 1) {
+        this.nextSong();
+      } else {
+        this.playRandomSong();
+      }
+    },
+    playSingleSong() {
+      this.playOnList({
+        data: this.listData[this.playList.highLight],
+        index: this.playList.highLight,
+      });
+      this.changeHighNum(this.playList.highLight);
+    },
     nextSong() {
       let nextSongIndex = 0;
       this.listData.forEach((e, i) => {
@@ -198,11 +245,26 @@ export default {
         }
       });
       nextSongIndex = nextSongIndex % this.listData.length;
-      this.playOnList({data:this.listData[nextSongIndex],index:nextSongIndex});
-      this.changeHighNum(nextSongIndex)
+      this.playOnList({
+        data: this.listData[nextSongIndex],
+        index: nextSongIndex,
+      });
+      this.changeHighNum(nextSongIndex);
     },
-    ...mapMutations(["toggleStatus", "addToList","changeHighNum"]),
-    ...mapActions(["getPlayURL","playOnList"]),
+    playRandomSong() {
+      let maxNum = this.playList.listData.length;
+      let randomNum = Math.floor(Math.random() * maxNum);
+      this.playOnList({
+        data: this.listData[randomNum],
+        index: randomNum,
+      });
+      this.changeHighNum(randomNum);
+    },
+    changeLoop() {
+      this.loop = (this.loop + 1) % 3;
+    },
+    ...mapMutations(["toggleStatus", "addToList", "changeHighNum"]),
+    ...mapActions(["getPlayURL", "playOnList"]),
   },
   beforeDestroy() {
     this.$refs.play.removeEventListener("timeupdate", this.getPlayTime);
@@ -255,6 +317,20 @@ export default {
     .second-span {
       margin-left: 50px;
     }
+  }
+  .info-enter {
+    height: 0px;
+  }
+
+  .info-leave {
+    height: 60vh;
+  }
+  .info-leave-to {
+    height: 0;
+  }
+  .info-enter-active,
+  .info-leave-active {
+    transition: all 0.2s ease-in;
   }
 }
 .play {

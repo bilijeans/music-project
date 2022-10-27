@@ -200,7 +200,7 @@
       </div>
       <div class="shadow" v-show="moretab" @click="cancelmorefunc()"></div>
     </div>
-    <div class="album rl" v-if="dataHeader == 'album'">
+    <div class="albums rl" v-if="dataHeader == 'album'">
       <div v-if="searchData">
         <div class="album-item" v-for="i in searchData" :key="i.id">
           <div class="album-img" v-if="i.imgItems">
@@ -677,7 +677,7 @@ export default {
       z-index: 1;
     }
   }
-  .album {
+  .albums {
     width: 95%;
     margin: 10px auto 0;
     .album-item {
