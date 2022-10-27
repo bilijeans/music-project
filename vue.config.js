@@ -36,8 +36,8 @@ module.exports = defineConfig({
       '/v3': {
         target: 'https://music.migu.cn',
         changeOrigin: true,
-        headers:{
-          referer:'https://music.migu.cn/v3'
+        headers: {
+          referer: 'https://music.migu.cn/v3'
         },
         pathRewrite: {
           '': ''
@@ -45,6 +45,20 @@ module.exports = defineConfig({
       },
       '/music_search': {
         target: 'https://jadeite.migu.cn',
+        changeOrigin: true,
+        pathRewrite: {
+          '': ''
+        }
+      },
+      '/v1.0': {
+        target: 'https://pd.musicapp.migu.cn/MIGUM2.0',
+        changeOrigin: true,
+        pathRewrite: {
+          '': ''
+        }
+      },
+      '/singer': {
+        target: 'https://app.c.nf.migu.cn/bmw',
         changeOrigin: true,
         pathRewrite: {
           '': ''
