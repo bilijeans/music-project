@@ -1,76 +1,87 @@
 <template>
-  <transition name="list">
-    <div class="wait-song-play-list">
-      <div class="list-container">
-        <div class="header">
-          <div class="title">
-            <span class="listNum">当前播放</span>
-            <span class="num">{{ "(" + listData.length + ")" }}</span>
-          </div>
+  <div class="wait-song-play-list" @touchStart.stop>
+    <div class="list-container">
+      <div class="header">
+        <div class="title">
+          <span class="listNum">当前播放</span>
+          <span class="num">{{ "(" + listData.length + ")" }}</span>
         </div>
-        <div class="controls"></div>
-        <ul class="items">
-          <li
-            class="item"
-            ref="songItem"
-            :class="{ active: (index == highLight) }"
-            v-for="(i, index) in listData"
-            :key="i.songId"
-            @click="playOnList({data:i,index:index})"
-          >
-            <span class="name">{{ i.name }}</span>
-            <span v-if="i.singerList[0].name.trim()" class="singer">{{
-              " - " + dealWithSingerName(i.singerList)
-            }}</span>
-          </li>
-        </ul>
       </div>
-      <div @click="packUpList" class="shadow"></div>
+      <div class="controls">
+        <div class="loop-status">
+          <div
+            class="btn"
+            :class="{ single: loop == 0, loop: loop == 1, random: loop == 2 }"
+            @click="changeLoop"
+          ></div>
+          <span class="loop-str">{{ loopStatus(loop) }}</span>
+        </div>
+        <div class="list-controls">
+          <div class="btn collect"></div>
+          <div class="btn clean" @click="cleanList"></div>
+        </div>
+      </div>
+      <ul class="items" ref="songItem">
+        <li
+          class="item"
+          :class="{ active: index == playList.highLight }"
+          v-for="(i, index) in playList.listData"
+          :key="i.songId"
+          @click="playOnList({ data: i, index: index })"
+        >
+          <span class="name">{{ i.name }}</span>
+          <span v-if="i.singerList[0].name.trim()" class="singer">{{
+            " - " + dealWithSingerName(i.singerList)
+          }}</span>
+          <div class="delete" @click.stop="deleteSongOnList(i.songId)"></div>
+        </li>
+      </ul>
     </div>
-  </transition>
+    <div @click="packUpList" class="shadow"></div>
+  </div>
 </template>
 <script>
 import { mapState, mapActions } from "vuex";
 export default {
+  props: {
+    loop: Number,
+    status: Boolean,
+  },
   data() {
     return {
       show: true,
     };
   },
+  watch: {
+    status() {
+      if (this.status) {
+        this.$refs.songItem.scrollTop = this.playList.highLight * 35;
+      }
+    },
+  },
   computed: {
     ...mapState({
       playId: (state) => state.playbar.playId,
     }),
-    ...mapState(["playbar"]),
+    ...mapState(["playbar", "playList"]),
     ...mapState({
       listData: (state) => state.playList.listData,
       highLight: (state) => state.playList.highLight,
     }),
   },
-  watch: {
-    playId() {
-      // console.log(this.listData);
-      this.listData.forEach((e, i) => {
-        if (e.songId == this.playId) {
-          // console.log(this.$refs.songItem[i]);
-          this.$nextTick(() => {
-            this.$refs.songItem[i].className = "item active";
-          });
-        } else {
-          this.$nextTick(() => {
-            this.$refs.songItem[i].className = "item";
-          });
-        }
-      });
-    },
-  },
-  created() {
-    // console.log(this.listData);
-  },
-  mounted() {
-    // console.log(this.listData);
-  },
   methods: {
+    loopStatus(num) {
+      if (num == 0) {
+        return "单曲循环";
+      } else if (num == 1) {
+        return "列表循环";
+      } else {
+        return "随机播放";
+      }
+    },
+    changeLoop() {
+      this.$emit("changeLoop");
+    },
     dealWithSingerName(arr) {
       let str = "";
       arr.forEach((e) => {
@@ -81,15 +92,16 @@ export default {
     },
     packUpList() {
       // this.show = !this.show
+      // console.log(1);
       this.$emit("packUp");
     },
-    playSong(id,num){
-      console.log(id,num);
+    playSong(id, num) {
+      console.log(id, num);
     },
     ...mapActions({
       play: "getPlayURL",
     }),
-    ...mapActions(["playOnList"])
+    ...mapActions(["playOnList", "cleanList", "deleteSongOnList"]),
   },
 };
 </script>
@@ -106,6 +118,7 @@ export default {
   margin: 0 auto;
   border-radius: 10px;
   overflow: hidden;
+  z-index: 999;
   .list-container {
     background-color: rgb(255, 255, 255);
 
@@ -125,17 +138,70 @@ export default {
     z-index: -1;
   }
   .header {
+    padding-top: 10px;
     width: 100%;
     height: 40px;
     line-height: 40px;
-    border-bottom: 1px solid #ccc;
+    // border-bottom: 1px solid #ccc;
     .title {
       width: 90%;
       margin: 0 auto;
+      .num {
+        font-size: 12px;
+        color: #999;
+      }
+    }
+  }
+  .controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 50px;
+    padding: 0 20px;
+    // background-color: #999;
+    .btn {
+      width: 22px;
+      height: 22px;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center center;
+    }
+    .loop-status {
+      display: flex;
+      align-items: center;
+    }
+    .loop-str {
+      margin-left: 5px;
+      font-size: 14px;
+    }
+    .list-controls {
+      display: flex;
+      justify-content: space-around;
+      width: 80px;
+    }
+    .loop {
+      background-image: url("@/assets/Sequentialplay.svg");
+    }
+    .single {
+      background-image: url("@/assets/SingleTuneCirculation.svg");
+    }
+    .random {
+      background-image: url("@/assets/RandomPlay.svg");
+    }
+    .collect {
+      width: 18px;
+      height: 18px;
+      background-image: url("@/assets/JoinSongList.svg");
+    }
+    .clean {
+      width: 18px;
+      height: 18px;
+      background-image: url("@/assets/CleaerAway.svg");
     }
   }
   .items {
-    height: calc(60vh - 40px);
+    height: calc(60vh - 90px);
     background-color: #fff;
     overflow: auto;
     &::-webkit-scrollbar {
@@ -143,6 +209,7 @@ export default {
       height: 0;
     }
     .item {
+      position: relative;
       display: flex;
       align-items: center;
       padding: 10px 20px;
@@ -160,6 +227,16 @@ export default {
         margin-left: 10px;
         font-size: 12px;
         color: #999;
+      }
+      .delete {
+        position: absolute;
+        right: 0;
+        width: 15px;
+        height: 15px;
+        background-image: url("@/assets/Delete.svg");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
       }
     }
     .item.active {

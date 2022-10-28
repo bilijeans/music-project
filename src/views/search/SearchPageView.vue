@@ -1,71 +1,109 @@
 <template>
-  <div>
-    <header>
-      <div class="search-head">
-        <i class="wd-icon-thin-arrow-left" @click="goBack()"></i>
-        <div class="search">
-          <i class="wd-icon-search"></i>
-          <input
-            type="search"
-            :placeholder="searchDiscover ? searchDiscover[0].word : ''"
-            maxlength="25"
-            v-model="lenovoAndResultText"
-          />
-        </div>
+  <div class="search">
+    <div class="search-head">
+      <i class="wd-icon-thin-arrow-left" @click="goBack()"></i>
+      <div class="search-input">
+        <input
+          @keydown.enter="goSearchResult(lenovoAndResultText)"
+          type="search"
+          :placeholder="searchDiscover ? searchDiscover[0].word : ''"
+          maxlength="25"
+          v-model="lenovoAndResultText"
+        />
       </div>
-      <div class="search-history">
-        <div class="search-history-head">
-          <span>搜索历史</span>
-          <wd-icon name="delete-thin" color="#999"></wd-icon>
-        </div>
-        <div class="search-history-content">
-          <span>周杰伦</span>
-          <span>周杰</span>
-        </div>
-      </div>
-      <div class="search-found">
-        <p>搜索发现</p>
-        <div class="search-found-contents">
-          <div class="search-found-content" v-if="searchDiscover">
-            <span v-for="(i, index) in searchDiscover" :key="index">{{
-              i.word
-            }}</span>
-          </div>
-          <!-- <div class="search-found-content2"></div> -->
-        </div>
-      </div>
-      <div class="search-quickEntryList">
-        <div class="quickEntryList">
-          <div v-for="i in searchQuickEntryList" :key="i.pageId">
-            <img :src="i.icon" />
-          </div>
-        </div>
-      </div>
-      <div class="search-kind" v-if="searchHotwords">
-        <div class="kind">
-          <div class="search-hotwordList">
-            <div class="title">{{ searchHotwords[0].type }}</div>
+      <svg
+        @click="goSearchResult(lenovoAndResultText)"
+        t="1666577477754"
+        class="icon"
+        viewBox="0 0 1024 1024"
+        version="1.1"
+        xmlns="http://www.w3.org/2000/svg"
+        p-id="12700"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        width="20"
+        height="20"
+      >
+        <path
+          d="M906.666667 170.666667a32 32 0 0 1 32 32v277.333333A160 160 0 0 1 778.666667 640H195.669333l158.72 158.72a32 32 0 0 1 3.072 41.642667l-3.114666 3.584a32 32 0 0 1-41.642667 3.114666l-3.584-3.114666-213.333333-213.333334a32 32 0 0 1-3.114667-41.642666l3.114667-3.584 213.333333-213.333334a32 32 0 0 1 48.341333 41.642667l-3.114666 3.584-158.72 158.72H778.666667a96 96 0 0 0 95.786666-89.429333l0.213334-6.570667v-277.333333a32 32 0 0 1 32-32z"
+          fill="#5C5C66"
+          p-id="12701"
+        ></path>
+      </svg>
+    </div>
+    <div class="search-history" v-if="searchHistoryData[0]">
+      <div class="search-history-head">
+        <span>搜索历史</span>
+        <i class="wd-icon-delete-thin" @click="popChooseDel"></i>
+        <wd-popup
+          class="popup"
+          v-model="show"
+          position="bottom"
+          :style="{ fontSize: '14px', padding: '30px 20px' }"
+        >
+          <div>确定清空全部历史记录？</div>
+          <div
+            class="choose-delete"
+            style="display: flex; margin: 10px 0 0 160px"
+          >
             <div
-              class="songs-list"
-              v-for="(i, index) in searchHotwords[0].hotwordList"
-              :key="i.id"
+              @click="clearSearchResult"
+              style="padding: 10px 20px; color: red"
             >
-              <span class="num">{{ index + 1 }}</span>
-              <span>{{ i.word }}</span>
+              是
             </div>
+            <div @click="show = false" style="padding: 10px 20px">我再想想</div>
           </div>
-          <div class="search-hotwordList">
-            <div class="title">{{ searchHotwords[1].type }}</div>
-            <div
-              class="songs-list"
-              v-for="(i, index) in searchHotwords[1].hotwordList"
-              :key="i.id"
-            >
-              <span class="num">{{ index + 1 }}</span>
-              <span>{{ i.word }}</span>
-            </div>
+        </wd-popup>
+      </div>
+      <div class="search-history-content">
+        <span @click="goSearchResult(i)" v-for="(i, index) in searchHistoryData" :key="index">{{
+          i
+        }}</span>
+      </div>
+    </div>
+    <div class="search-found">
+      <p>搜索发现</p>
+      <div class="search-found-contents">
+        <div class="search-found-content" v-if="searchDiscover">
+          <span v-for="(i, index) in searchDiscover" :key="index">{{
+            i.word
+          }}</span>
+        </div>
+        <!-- <div class="search-found-content2"></div> -->
+      </div>
+    </div>
+    <div class="search-quickEntryList">
+      <div class="quickEntryList">
+        <div v-for="i in searchQuickEntryList" :key="i.pageId">
+          <img :src="i.icon" />
+        </div>
+      </div>
+    </div>
+    <div class="search-kind" v-if="searchHotwords">
+      <div class="kind">
+        <div class="search-hotwordList">
+          <div class="title">{{ searchHotwords[0].type }}</div>
+          <div
+            class="songs-list"
+            v-for="(i, index) in searchHotwords[0].hotwordList"
+            :key="i.id"
+          >
+            <span class="num">{{ index + 1 }}</span>
+            <span>{{ i.word }}</span>
           </div>
-          <!-- <div class="search-vedio">
+        </div>
+        <div class="search-hotwordList">
+          <div class="title">{{ searchHotwords[1].type }}</div>
+          <div
+            class="songs-list"
+            v-for="(i, index) in searchHotwords[1].hotwordList"
+            :key="i.id"
+          >
+            <span class="num">{{ index + 1 }}</span>
+            <span class="name">{{ i.word }}</span>
+          </div>
+        </div>
+        <!-- <div class="search-vedio">
             <div class="title">{{ searchHotwords[2].type }}</div>
             <div
               class="songs-list"
@@ -83,18 +121,19 @@
               <span>{{ i.word }}</span>
             </div>
           </div> -->
-        </div>
       </div>
-      <div class="search-lenovo">
-        <div class="lenovo"></div>
-      </div>
-    </header>
+    </div>
+    <search-lenovo-compontents
+      :lenovoAndResultText="lenovoAndResultText"
+    ></search-lenovo-compontents>
   </div>
 </template>
 
 
 <script>
+import SearchLenovoCompontents from "@/components/SearchLenovoCompontents.vue";
 export default {
+  components: { SearchLenovoCompontents },
   data() {
     return {
       searchData: [],
@@ -105,21 +144,16 @@ export default {
       lenovoAndResultText: "",
       resultPageNo: 1,
       resultPageSize: 10,
+      searchHistoryData: null,
+      show: false,
     };
-  },
-  computed: {
-    lenovoUrl() {
-      return `/music_search/v2/suggest?pageSize=${this.lenovoPageSize}&text=${this.lenovoText}`;
-    },
   },
   created() {
     this.getSearchDetail();
+    this.searchHistoryData =
+      JSON.parse(localStorage.getItem("search_history")) || [];
   },
-  watch: {
-    lenovoUrl() {
-      this.getSearchLenovo();
-    },
-  },
+
   methods: {
     getSearchDetail() {
       this.$axios({
@@ -137,29 +171,52 @@ export default {
         // console.log(this.searchHotwords);
       });
     },
-    getSearchLenovo() {
-      this.$axios({
-        methods: "GET",
-        url: this.lenovoUrl,
-        headers: {
-          ms: "668351B94A56152D0CDAB0EF8838F970",
-          sign: "35292efcb16c82bc246e3e35ff0dc380",
-          uiversion: "A_music_3.12.3",
-          timestamp: "1665307673609",
-        },
-      }).then(({ data }) => {
-        console.log(data);
+    goSearchResult(str) {
+      this.lenovoAndResultText = str
+      if (this.lenovoAndResultText == "") {
+        this.lenovoAndResultText = this.searchDiscover[0].word;
+      }
+      this.searchHistoryData.unshift(this.lenovoAndResultText);
+
+      // console.log(this.searchHistoryData);
+      this.$router.push({
+        path: "/search-result",
+        query: { word: this.lenovoAndResultText },
       });
     },
-    getSearchResult() {},
+    popChooseDel() {
+      this.show = true;
+    },
+    clearSearchResult() {
+      this.searchHistoryData = [];
+      localStorage.setItem(
+        "search_history",
+        JSON.stringify(this.searchHistoryData)
+      );
+    },
     goBack() {
       this.$router.go(-1);
     },
+  },
+  beforeDestroy() {
+    localStorage.setItem(
+      "search_history",
+      JSON.stringify(this.searchHistoryData)
+    );
   },
 };
 </script>
 
 <style lang="scss" scoped>
+.search {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  overflow: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
 .search-head {
   padding: 8px 0;
   display: flex;
@@ -168,25 +225,21 @@ export default {
     padding: 0 10px;
     font-size: 14px;
   }
-  .search {
-    padding: 5px 20px 5px 5px;
+  .search-input {
+    padding: 5px 25px 5px 5px;
     display: flex;
     justify-content: space-around;
     align-items: center;
     font-size: 13px;
     border-bottom: 2px solid #ccc;
-    .wd-icon-search {
-      color: #999;
-    }
     input {
       width: 260px;
       outline: none;
       border: none;
     }
   }
-  span {
-    font-size: 16px;
-    font-weight: 600;
+  svg {
+    margin: 0 0 0 15px;
   }
 }
 .search-history {
@@ -201,17 +254,24 @@ export default {
     }
   }
   .search-history-content {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
+    // display: flex;
+    // align-items: center;
+    // flex-wrap: wrap;
     span {
-      display: inline-block;
+      float: left;
+      display: block;
       font-size: 12px;
-      margin: 10px 6px 0 0;
+      margin: 10px 10px 0 0;
       padding: 10px 20px;
       border-radius: 20px;
       background-color: #f4f4f4;
-      transform: scale(0.9);
+      // transform: scale(0.9);
+      // transform-origin: 10%;
+    }
+    &::after {
+      content: "";
+      clear: both;
+      display: block;
     }
   }
 }
@@ -227,20 +287,17 @@ export default {
     .search-found-content {
       display: flex;
       span {
-        display: inline-block;
+        display: block;
         white-space: nowrap;
         font-size: 12px;
-        margin: 10px 6px 0 0;
+        margin: 10px 10px 0 0;
         padding: 10px 20px;
         background-color: #f4f4f4;
         border-radius: 20px;
-        transform: scale(0.9);
       }
     }
     &::-webkit-scrollbar {
       display: none;
-      // width: 0;
-      // height: 0;
     }
   }
 }
@@ -260,6 +317,11 @@ export default {
       img {
         width: 100%;
       }
+    }
+    &::after {
+      display: block;
+      content: "";
+      clear: both;
     }
   }
 }
@@ -284,7 +346,6 @@ export default {
   border-top-left-radius: 6px;
   border-top-right-radius: 6px;
   border: 1px dotted #ccc;
-  border-bottom: 0;
   .title {
     font-size: 14px;
     font-weight: 600;
@@ -302,6 +363,10 @@ export default {
       overflow: hidden;
       text-overflow: ellipsis;
     }
+    .name {
+      display: block;
+      width: 80%;
+    }
     .num {
       width: 30px;
       text-align: center;
@@ -309,34 +374,6 @@ export default {
   }
   .songs-list:nth-of-type(-n + 4) .num {
     color: #da4165;
-  }
-}
-.search-vedio {
-  width: 250px;
-  margin: 0 15px 0 0;
-  padding: 0 0 20px 0;
-  border-top-left-radius: 6px;
-  border-top-right-radius: 6px;
-  border: 1px dotted #ccc;
-  .title {
-    font-size: 14px;
-    font-weight: 600;
-    padding: 20px 15px 10px 15px;
-    border-radius: 6px;
-    background-image: linear-gradient(#fcd7df, #fff);
-  }
-  .songs-list {
-    display: flex;
-    .songs-img {
-      width: 150px;
-      height: 100px;
-      background-color: pink;
-      img {
-        width: 100%;
-      }
-    }
-    span {
-    }
   }
 }
 </style>

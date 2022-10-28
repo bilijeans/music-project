@@ -1,6 +1,6 @@
 <template>
   <div class="home-banner">
-    <ul class="banner-container" ref="banner">
+    <!-- <ul class="banner-container" ref="banner">
       <li class="banner-item">
         <img :src="bannerData[bannerData.length - 1].img" />
       </li>
@@ -10,7 +10,23 @@
       <li class="banner-item">
         <img :src="bannerData[0].img" />
       </li>
-    </ul>
+    </ul> -->
+    <van-swipe
+      class="banner-container"
+      :autoplay="3000"
+      indicator-color="#cd3021"
+    >
+      <van-swipe-item
+        v-for="i in bannerData"
+        :key="i.viewId"
+        class="banner-item"
+        :loop="true"
+        :width="351"
+      >
+        <img :src="i.img" />
+        <!-- <div style="text-align:center">{{index}}</div> -->
+      </van-swipe-item>
+    </van-swipe>
   </div>
 </template>
 <script>
@@ -25,20 +41,20 @@ export default {
     };
   },
   created() {
-    console.log(this.bannerData);
+    // console.log(this.bannerData);
   },
   mounted() {
-    console.log(this.$refs.banner);
+    // console.log(this.$refs.banner);
     this.timer = setInterval(this.bannerMove, 3000);
   },
   methods: {
     bannerMove() {
       this.index++;
-      if(this.index == this.bannerData.length){
-        this.backToFirstPage()
-      }else{
-        this.next()
+      if (this.index == this.bannerData.length + 2) {
+        this.backToFirstPage();
       }
+      this.next();
+
       // this.$nextTick(() => {
       //   if (this.index == this.bannerData.length - 1) {
       //     this.$refs.banner.style.transition = "0s";
@@ -54,9 +70,9 @@ export default {
         this.$refs.banner.style.left = `${this.index * -90}vw`;
       });
     },
-    backToFirstPage(){
-      console.log(1);
-    }
+    backToFirstPage() {
+      // console.log(1);
+    },
   },
   beforeDestroy() {
     clearInterval(this.timer);
@@ -65,32 +81,15 @@ export default {
 </script>
 <style lang="scss">
 .home-banner {
-  position: relative;
   width: 90vw;
   height: 32vw;
   margin: 0 auto;
-  overflow: hidden;
-  &::-webkit-scrollbar {
-    display: none;
-  }
 }
 .banner-container {
-  position: absolute;
-  top: 0;
-  left: -90vw;
-  display: flex;
-  width: 600vw;
-  transition: all 1s linear;
-  // transition: 0s;
-  // height: 100px;
-  .banner-item {
-    width: 90vw;
-    flex-shrink: 0;
-    img {
-      display: block;
-      width: 100%;
-      height: auto;
-    }
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
   }
 }
 </style>

@@ -270,7 +270,7 @@ export default {
         }
       }, 10);
 
-    }
+    },
   },
 };
 </script>

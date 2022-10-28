@@ -98,12 +98,13 @@ export default {
           };
         });
     },
-
     getAblumMes(id) {
       this.$axios
         .get(`/MIGUM3.0/resource/playlist/v2.0?playlistId=${id}`)
         .then(({ data }) => {
           this.AblumMes = data.data;
+          // console.log(this.songsData)
+
         });
     },
 

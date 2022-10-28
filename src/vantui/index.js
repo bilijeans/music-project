@@ -1,6 +1,6 @@
-import { Circle } from 'vant'
+import { Circle, Progress, Swipe, SwipeItem } from 'vant'
 
-const UIComponents = [Circle]
+const UIComponents = [Circle, Progress, Swipe, SwipeItem]
 
 const VantUIPlugin = {}
 
