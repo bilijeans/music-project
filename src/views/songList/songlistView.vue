@@ -1,5 +1,5 @@
 <template>
-  <div class="song-list-page">
+  <div class="song-list-page" ref="songListPage">
     <header>
       <div class="song-back">
         <div class="song-back-arrow" @click="goBack">
@@ -19,11 +19,13 @@
         src="@/assets/nav.svg"
         @click="isShowNav = !isShowNav"
       />
-      <div class="recommend">
+      <div class="recommend" ref="recommend">
         <p
           v-for="(i, index) in recommendNav"
           :key="'recommend' + index"
-          @click="getSongsListAndActive(i.tagId, index, i.tagName)"
+          ref="recommendContent"
+          :class="{ active: recommendNavActive == index }"
+          @click="getSongsListAndActive(i.tagId, index)"
         >
           {{ i.tagName }}
         </p>
@@ -77,7 +79,7 @@
                   v-for="i in item.content"
                   :key="'text' + i.texts[1]"
                   ref="content"
-                  @click="getSongsList(i.texts[1], i.texts[0])"
+                  @click="changeUnderLine(i.texts[1], i.texts[0])"
                 >
                   {{ i.texts[0] }}
                 </p>
@@ -102,6 +104,7 @@ export default {
       songList: [],
       isShowTitle: 0,
       isShowMask: false,
+      recommendNavActive: 0,
     };
   },
   components: {
@@ -142,9 +145,8 @@ export default {
         });
     },
 
-    getSongsList(id, name) {
+    getSongsList(id) {
       id = id || 1000001635;
-      this.isShowNav = false;
       this.$axios
         .get(
           `/MIGUM3.0/v1.0/template/musiclistplaza-listbytag?pageNumber=3&tagId=${id}`
@@ -153,28 +155,16 @@ export default {
           this.songList = data.data.contentItemList.itemList;
           // console.log(this.songList);
         });
-
-      let add = this.recommendNav.find((i) => {
-        return i.tagName == name;
-      });
-      if (!add) {
-        this.recommendNav = [
-          {
-            tagId: id,
-            tagName: name,
-          },
-          ...this.recommendNav,
-        ];
-
-        console.log(event)
-      }
     },
 
-    getSongsListAndActive(id, index, name) {
-      this.getSongsList(id, name);
-      this.$refs.reUnderLine.style.left = `calc(2vw + ${
-        (index + 1) * 20
-      }vw - 29vw/2)`;
+    getSongsListAndActive(id, index) {
+      this.moveRecommendNav(index);
+
+      this.recommendNavActive = index;
+
+      this.getSongsList(id);
+
+      this.$refs.reUnderLine.style.left = `calc(2vw + ${(index + 1) * 20}vw - 29vw/2)`;
     },
 
     goToOnlySongsList(id) {
@@ -215,6 +205,72 @@ export default {
       this.isShowNav = false;
       this.isShowMask = false;
     },
+
+    changeUnderLine(id, name) {
+      this.$refs.songListPage.scrollTop = 228;
+
+      this.getSongsList(id);
+
+      this.notShowNav();
+
+      let isExist = this.recommendNav.find((i) => {
+        return i.tagName == name;
+      });
+
+      if (!isExist) {
+        this.recommendNavActive = 0;
+
+        this.recommendNav = [
+          {
+            tagId: id,
+            tagName: name,
+          },
+          ...this.recommendNav,
+        ];
+
+        this.$refs.reUnderLine.style.left = `calc(2vw + 20vw - 29vw/2)`;
+      } else {
+        let isExistIndex = this.recommendNav.indexOf(isExist);
+
+        this.recommendNavActive = isExistIndex;
+
+        this.$refs.reUnderLine.style.left = `calc(2vw + ${(isExistIndex + 1) * 20}vw - 29vw/2)`;
+      }
+
+      this.moveRecommendNav(this.recommendNavActive)
+    },
+
+    moveRecommendNav(index){
+      const recommend = this.$refs.recommend;
+
+      const currentRecommend = this.$refs.recommendContent[index];
+
+      const goLeft = currentRecommend.offsetLeft + currentRecommend.offsetWidth / 2 - recommend.offsetWidth / 2;
+
+      const step = 5;
+
+      let timer = setInterval(() => {
+
+        if (recommend.scrollLeft > goLeft) {
+
+          recommend.scrollLeft -= step;
+
+        } else {
+
+          recommend.scrollLeft += step;
+
+        }
+
+        if (Math.abs(recommend.scrollLeft - goLeft) < step || recommend.scrollLeft == 0 ||
+          Math.ceil(recommend.scrollLeft) + recommend.offsetWidth == recommend.scrollWidth
+        ) {
+          window.clearInterval(timer);
+
+          timer = null;
+        }
+      }, 10);
+
+    }
   },
 };
 </script>
@@ -226,7 +282,7 @@ export default {
   height: 100vh;
   overflow: auto;
 
-   &::-webkit-scrollbar {
+  &::-webkit-scrollbar {
     display: none;
   }
 }
@@ -261,7 +317,7 @@ main {
   position: relative;
 
   .main-nav {
-    box-shadow: -1px 0px 0px 0 #ccc;
+    box-shadow: -2px 0px 0px -1px #ccc;
     background-color: #fff;
     width: 7vw;
     position: absolute;
@@ -283,7 +339,7 @@ main {
   flex-wrap: wrap;
   overflow: auto;
 
-   &::-webkit-scrollbar {
+  &::-webkit-scrollbar {
     display: none;
   }
   .songs-list {
@@ -296,14 +352,6 @@ main {
       height: 15vh;
       width: 30vw;
       border-radius: 15px;
-    }
-    p {
-      width: 100%;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
     }
     .songs-list-num {
       position: absolute;
@@ -328,9 +376,15 @@ main {
       }
     }
     .song-list-title {
-      font-size: 15px;
+      width: 100%;
+      font-size: 13px;
       line-height: 20px;
       font-weight: 400;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
     }
   }
 }
@@ -356,6 +410,12 @@ main {
     margin: 2vh 0 1vh 0;
     color: #666;
     flex: 0 0 auto;
+    font-size: 12px;
+
+    &.active {
+      font-size: 15px;
+      font-weight: 600;
+    }
   }
 
   i {
@@ -465,14 +525,20 @@ footer {
   left: 39vw;
 }
 
-.showNav-enter {
+.showNav-enter,
+.showNav-leave-to {
   transform: translateY(100vh);
 }
 .showNav-enter-active {
   transition: all 0.5s;
 }
 
-.showNav-enter-to {
+.showNav-leave-active {
+  transition: all 0.1s;
+}
+
+.showNav-enter-to,
+.showNav-leave {
   transform: translateY(35vh);
 }
 </style>

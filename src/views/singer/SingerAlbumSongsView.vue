@@ -161,6 +161,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.album-songs-page {
+  width: 100vw;
+  height: 100vh;
+  overflow: auto;
+}
 .album-songs-page-bg {
   width: 100vw;
   position: fixed;
@@ -191,7 +196,7 @@ export default {
     justify-content: space-between;
     align-items: center;
     padding: 0 4vw;
-    position: fixed;
+    position: sticky;
     top: 4vh;
     left: 0%;
   }
@@ -202,8 +207,7 @@ export default {
     justify-content: space-between;
     align-items: center;
 
-
-    span{
+    span {
       font-size: 20px;
       margin-left: 3vw;
     }
@@ -214,7 +218,6 @@ export default {
   width: 100vw;
   border-top-left-radius: 20px;
   background-color: #fff;
-
   .album-songs-page-content-main-singer {
     height: 8vh;
     border-top-left-radius: 20px;

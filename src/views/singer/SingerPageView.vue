@@ -294,7 +294,6 @@ header {
       justify-content: space-between;
       align-items: center;
       color: #fff;
-
       span {
         padding: 0 20px;
       }

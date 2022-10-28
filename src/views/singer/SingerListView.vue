@@ -5,7 +5,7 @@
         <wd-icon name="thin-arrow-left" tag="div" size="10px"></wd-icon>
       </div>
       <span>歌手</span>
-      <div class="singer-search">
+      <div class="singer-search" @click="goToSearch">
         <wd-icon name="search" tag="div" size="20px"></wd-icon>
       </div>
     </header>
@@ -194,6 +194,9 @@ export default {
         },
       });
     },
+    goToSearch(){
+      this.$router.push({path:'/search'})
+    }
   },
 };
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <div class="banner" @scroll="toHead($event)">
+  <div class="banner">
     <swiper class="swiper" :options="swiperOption">
       <swiper-slide
         v-for="(i, index) in bannerList"
@@ -32,7 +32,6 @@ export default {
   data() {
     let self = this;
     return {
-      id: null,
       swiperOption: {
         effect: "coverflow",
         grabCursor: true,
@@ -54,9 +53,9 @@ export default {
           click: function () {
             // console.log(this.realIndex,this.clickedSlide.id)
             self.goToOnlySongsList(this.clickedSlide.id);
-          },
-        },
-      },
+          }
+        }
+      }
     };
   },
   methods: {
@@ -65,7 +64,7 @@ export default {
         name: "songListOnly",
         params: {
           id,
-        },
+        }
       });
     },
   },
@@ -94,8 +93,6 @@ export default {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    // flex-direction: column;
-    // width: 130px !important;
     color: #fff;
     position: relative;
 
@@ -111,8 +108,8 @@ export default {
 
     .title {
       width: 30vw;
-      font-size: 18px;
-      font-weight: 800;
+      font-size: 15px;
+      font-weight: 600;
       position: absolute;
       top: 6vh;
       left: 11vw;
