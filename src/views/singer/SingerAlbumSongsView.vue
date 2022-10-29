@@ -22,7 +22,7 @@
             <span>数字专辑</span>
           </div>
           <div class="head-back-box-right">
-            <img src="@/assets/svg/more.svg" alt="" />
+            <img src="@/assets/MoreFunctionWhite.svg" alt="" />
           </div>
         </div>
       </div>

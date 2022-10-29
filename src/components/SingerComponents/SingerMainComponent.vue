@@ -48,7 +48,7 @@ export default {
           type,
         },
       });
-      this.$router.go(0);
+      location.reload()
     },
   },
 };
@@ -105,7 +105,7 @@ export default {
   width: 100vw;
   padding-top: 20px;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
   flex-wrap: wrap;
 
   .similarSingerItem {
@@ -114,7 +114,6 @@ export default {
 
     .similarSingerImg {
       width: 100%;
-      height: 100%;
 
       img {
         width: 100%;
@@ -126,7 +125,7 @@ export default {
     .similarSingerName {
       font-size: 14px;
       font-weight: 300;
-      padding: 20px 0 0 0;
+      padding: 1vh 0 0 0;
       text-align: center;
     }
   }

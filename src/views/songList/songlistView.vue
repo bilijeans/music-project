@@ -262,8 +262,8 @@ export default {
         }
 
         if (Math.abs(recommend.scrollLeft - goLeft) < step || recommend.scrollLeft == 0 ||
-          Math.ceil(recommend.scrollLeft) + recommend.offsetWidth == recommend.scrollWidth
-        ) {
+          Math.ceil(recommend.scrollLeft) + recommend.offsetWidth == recommend.scrollWidth) {
+            
           window.clearInterval(timer);
 
           timer = null;

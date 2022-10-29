@@ -105,17 +105,25 @@ export default {
       this.tab = h.tab;
       this.language = h.language;
       this.sex = h.sex;
-      // console.log(this.sex);
       this.getData();
     } else {
       this.getData();
     }
   },
+  beforeRouteLeave(to,from,next){
+     if(to.name == 'home'){
+
+      sessionStorage.removeItem('singerList');
+
+     }
+
+     next();
+  },
   methods: {
     getData() {
       this.$axios
         .get(
-          `/MIGUM2.0/bmw/singer-index/list/v1.0?tab=${this.language}-${this.sex}`
+          `/MIGUM3.0/bmw/singer-index/list/v1.0?tab=${this.language}-${this.sex}`
         )
         .then(({ data }) => {
           this.dealwithData(data.data.contents);
@@ -160,23 +168,30 @@ export default {
         this.language = "rihan";
       }
 
+      this.sex = 'nan';
+
       this.getData();
+
       let singerListLanguage = {
         tab: this.tab,
         language: this.language,
         sex: this.sex,
       };
+
       sessionStorage.setItem("singerList", JSON.stringify(singerListLanguage));
     },
 
     getSex(value) {
       this.sex = value;
+
       this.getData();
+
       let singerListLanguage = {
         tab: this.tab,
         language: this.language,
         sex: this.sex,
       };
+      
       sessionStorage.setItem("singerList", JSON.stringify(singerListLanguage));
     },
 
@@ -237,7 +252,7 @@ nav {
     height: 6vh;
     border-top-left-radius: 50px;
     border-bottom-left-radius: 50px;
-    box-shadow: -1px 5px 5px 0px rgb(242, 242, 242);
+    box-shadow: 5px 5px 5px 0px rgb(242, 242, 242);
     margin-top: 10px;
     .wd-tabs__nav-item {
       color: red;
@@ -292,7 +307,7 @@ nav {
     }
     .word-list {
       height: 8vh;
-      padding: 0 10px;
+      padding: 5px 10px;
 
       .word-list-left {
         display: flex;
