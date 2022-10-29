@@ -177,12 +177,10 @@ export default {
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
-  //   background-color: cadetblue;
   span {
     font-size: 14px;
     display: block;
     padding: 30px 0 20px;
-    // background-color: antiquewhite;
   }
   .hourupdate {
     font-size: 12px;
@@ -245,7 +243,6 @@ export default {
   margin: 0 auto;
   font-size: 14px;
   padding: 30px 0 20px;
-  //   background-color: darksalmon;
 }
 .characteristics {
   width: 95%;

@@ -1,15 +1,15 @@
 <template>
   <div class="result">
     <div class="search-head">
-      <i class="wd-icon-thin-arrow-left" @click="goBack()"></i>
-      <div class="search-input">
+      <i class="wd-icon-thin-arrow-left" @click="goToLenovo"></i>
+      <div class="search-input" @click="goToLenovo">
         <input
           type="search"
           :placeholder="text"
           maxlength="25"
           v-model="text"
         />
-        <i class="wd-icon-close" @click="goToLenovo"></i>
+        <i class="wd-icon-close"></i>
       </div>
     </div>
     <div class="container">
@@ -22,7 +22,7 @@
         {{ i.showName }}
       </div>
     </div>
-    <div class="song rl" v-show="dataHeader == 'song'">
+    <div class="song rl" v-if="dataHeader == 'song'">
       <div v-if="searchData">
         <div class="song-play">
           <div class="play-all">
@@ -59,8 +59,21 @@
           <div class="song-msg">
             <div class="song-name">{{ i.name }}</div>
             <div class="song-pro">
-              {{ i.singers ? dealWithSingerName(i.singers) : "" }}·
-              {{ i.albums ? i.albums[0].name : "" }}
+              <div
+                class="toneflag"
+                :style="{
+                  backgroundPosition: toneflagChoose(i),
+                  width: toneflagWidth(i),
+                }"
+                v-if="
+                  i.newRateFormats[i.newRateFormats.length - 1]?.formatType !=
+                  'PQ'
+                "
+              ></div>
+              <span
+                >{{ i.singers ? dealWithSingerName(i.singers) : "" }}·
+                {{ i.albums ? i.albums[0].name : "" }}</span
+              >
             </div>
           </div>
           <svg
@@ -205,6 +218,7 @@
         <div class="album-item" v-for="i in searchData" :key="i.id">
           <div class="album-img" v-if="i.imgItems">
             <img :src="i.imgItems[0].img" />
+            <img class="Album-img" src="@/assets/Album.png" />
           </div>
           <div class="album-msg">
             <div class="album-name">{{ i.name }}</div>
@@ -219,7 +233,7 @@
       <div v-else class="noresult">无搜索结果</div>
     </div>
     <div class="mvSong rl" v-if="dataHeader == 'mvSong'">
-      <div v-if="searchData&&searchData.length > 0">
+      <div v-if="searchData && searchData.length > 0">
         <div class="mvSong-item" v-for="i in searchData" :key="i.id">
           <div class="mvSong-img" v-if="i.mvList">
             <img :src="i.mvList[0]?.mvPicUrl[1]?.img" />
@@ -287,7 +301,31 @@
           <div class="songList-msg">
             <div class="songList-title">{{ i.name }}</div>
             <div class="songList-times">
-              {{ i.musicNum }}首 播放{{ dealWithPlayNum(i.playNum) }}次
+              <svg
+                t="1666947494755"
+                class="icon"
+                viewBox="0 0 1024 1024"
+                version="1.1"
+                xmlns="http://www.w3.org/2000/svg"
+                p-id="12298"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                width="16"
+                height="16"
+              >
+                <path
+                  d="M770.051533 313.11157869H254.83220512c-24.00821911 0-43.59774757 19.58952848-43.59774758 43.59774759v494.15690252c0 24.00821911 19.58952848 43.59774757 43.59774758 43.59774759h515.21932788c24.00821911 0 43.59774757-19.58952848 43.59774761-43.59774759V356.85661596c0-24.15550879-19.58952848-43.74503728-43.59774761-43.74503727z m15.7599966 537.75465011c0 8.69009158-7.06990501 15.75999659-15.7599966 15.75999659H254.83220512c-8.69009158 0-15.75999659-7.06990501-15.7599966-15.75999659V356.85661596c0-8.69009158 7.06990501-15.75999659 15.7599966-15.75999661h515.21932788c8.69009158 0 15.75999659 7.06990501 15.7599966 15.75999661v494.00961284zM277.22023765 255.52131075h470.29597313c7.65906378 0 13.99252034-6.1861669 13.99252032-13.99252032s-6.1861669-13.99252034-13.99252032-13.99252037H277.22023765c-7.65906378 0-13.99252034 6.1861669-13.99252034 13.99252037s6.33345658 13.99252034 13.99252034 13.99252032zM321.84901307 168.62039497h381.03842231c6.92261532 0 12.51962347-5.59700814 12.51962346-12.51962348s-5.59700814-12.51962347-12.51962346-12.51962346H321.84901307c-6.92261532 0-12.51962347 5.59700814-12.51962347 12.51962346s5.59700814 12.51962347 12.51962347 12.51962348z"
+                  fill="#FF2C2C"
+                  p-id="12299"
+                ></path>
+                <path
+                  d="M634.10315118 451.71117489l-194.56967758 31.96186226c-3.38766283 0.58915875-5.89158752 3.5349525-5.89158751 6.92261531v173.94912129c0 13.40336159-9.72111939 24.74466755-22.9771913 26.6594335l-19.00036972 2.79850407c-16.20186565 2.35663501-28.13233036 16.34915535-28.13233037 32.55102099v3.38766281c0 20.17868721 17.96934191 35.64410444 37.85344978 32.55102102l24.89195723-3.68224219c22.97719129-3.38766283 39.9155054-23.12448098 39.91550538-46.39625166V563.35675824c0-3.5349525 2.50392469-6.48074626 5.89158751-6.92261533l129.61492527-21.20971503c4.27140094-0.73644845 8.24822251 2.65121438 8.24822251 6.92261531v94.55997958c0 13.40336159-9.72111939 24.74466755-22.97719129 26.65943349l-19.00036975 2.79850406c-16.20186565 2.35663501-28.13233036 16.34915535-28.13233035 32.55102101v3.3876628c0 20.17868721 17.96934191 35.64410444 37.85344976 32.55102103l24.89195723-3.68224221c22.97719129-3.38766283 39.9155054-23.12448098 39.9155054-46.39625166V458.63379022c-0.1472897-4.41869063-4.12411126-7.65906378-8.3955122-6.92261533z"
+                  fill="#FF2C2C"
+                  p-id="12300"
+                ></path>
+              </svg>
+              <span>
+                {{ i.musicNum }}首 播放{{ dealWithPlayNum(i.playNum) }}次
+              </span>
             </div>
             <div class="songList-ts">{{ dealWithSongListTS(i.ts) }}</div>
           </div>
@@ -302,13 +340,17 @@
     <div class="singer rl" v-if="dataHeader == 'singer'">
       <div v-if="searchData">
         <div class="singer-item" v-for="i in searchData" :key="i.id">
-          <div class="singer-img" v-if="singerData">
-            <img :src="singerData[0]?.contents[0].img2" />
+          <div class="singer-img" v-if="singerInfo[i.id]">
+            <img :src="singerInfo[i.id][0].contents[0].img2" />
           </div>
           <div class="singer-msg" v-if="singerData">
             <div class="singer-name">{{ i.name }}</div>
             <div class="singer-contents">
-              {{ dealWithSingerInfo(singerData[1].contents) }}
+              {{
+                singerInfo[i.id]
+                  ? dealWithSingerInfo(singerInfo[i.id][1].contents)
+                  : ""
+              }}
             </div>
           </div>
           <i class="wd-icon-arrow-right"></i>
@@ -320,6 +362,7 @@
 </template>
 
 <script>
+import { debounce } from "lodash-es";
 // import SearchCompontents from "@/components/SearchCompontents.vue";
 export default {
   data() {
@@ -373,10 +416,12 @@ export default {
       moretab: false,
       name: "",
       singerData: null,
+      singerInfo: {},
     };
   },
   created() {
     this.text = this.$route.query.word;
+    this.getSearchResultData = debounce(this.getSearchResultData, 1500);
   },
   computed: {
     resultUrl() {
@@ -385,6 +430,7 @@ export default {
   },
   watch: {
     resultUrl() {
+      this.searchData = [];
       this.getSearchResultData();
     },
   },
@@ -392,10 +438,13 @@ export default {
     getSearchResultData() {
       this.$axios.get(this.resultUrl).then(({ data }) => {
         // console.log(data);
-        this.searchData = data[this.dataHeader + "ResultData"].result;
-        console.log(this.searchData);
+        this.searchData = data[this.dataHeader + "ResultData"]?.result;
+        // console.log(this.searchData);
         if (this.dataHeader == "singer" && this.searchData) {
-          this.getSingerInfo(this.searchData[0].id);
+          // this.getSingerInfo(this.searchData[0].id);
+          this.searchData.forEach((e) => {
+            this.getSingerInfo(e.id);
+          });
         }
       });
     },
@@ -464,12 +513,19 @@ export default {
     },
     // 请求歌手信息
     getSingerInfo(id) {
-      id = Number(id);
-      this.$axios.get(`/bmw/singer/info/v1.0?singerId=${id}`).then((data) => {
-        // console.log(data);
-        this.singerData = data.data.data.contents;
-        console.log(this.singerData);
-      });
+      this.$axios
+        .get(`/bmw/singer/info/v1.0?singerId=${id}`)
+        .then(({ data }) => {
+          // console.log(data);
+          this.singerData = data.data.contents;
+          // console.log(this.singerData);
+          this.setInSingerInfo(id, data.data.contents);
+        });
+    },
+    // 处理歌手信息
+    setInSingerInfo(id, data) {
+      this.singerInfo[id] = data;
+      // console.log(this.singerInfo);
     },
     // 处理歌手信息
     dealWithSingerInfo(contents) {
@@ -481,13 +537,37 @@ export default {
       });
       return str;
     },
+    // 歌曲音质图片
+    toneflagChoose(i) {
+      let toneflag = i.newRateFormats[i.newRateFormats.length - 1].formatType;
+      if (toneflag == "ZQ") {
+        return "-117px 0";
+      } else if (toneflag == "SQ") {
+        return "-25px 0";
+      } else if (toneflag == "HQ") {
+        return "-49px 0";
+      } else {
+        return "";
+      }
+    },
+    // 歌曲音质图片宽度
+    toneflagWidth(i) {
+      let toneflag = i.newRateFormats[i.newRateFormats.length - 1].formatType;
+      if (toneflag == "ZQ") {
+        return "32px";
+      } else {
+        return "20px";
+      }
+    },
     goToLenovo() {
       this.$router.push({
         path: "/search",
       });
     },
-    goBack() {
-      this.$router.go(-1);
+    goBackHome() {
+      this.$router.push({
+        path: "/home",
+      });
     },
   },
 };
@@ -497,8 +577,11 @@ export default {
 .result {
   background-color: #f7f7f7;
   .rl {
-    height: calc(100vh - 116px);
+    height: calc(100vh - 141px);
     overflow: auto;
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
   .noresult {
     text-align: center;
@@ -560,7 +643,7 @@ export default {
     }
   }
   .song {
-    width: 90%;
+    width: 95%;
     margin: 10px auto 0;
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
@@ -601,12 +684,28 @@ export default {
           text-overflow: ellipsis;
         }
         .song-pro {
+          display: flex;
+          align-items: center;
           padding: 5px 0;
           font-size: 12px;
           color: #666;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
+          .toneflag {
+            background-image: url("@/assets/acousticfidelity.png");
+            background-repeat: no-repeat;
+            background-size: 148px 12px;
+            height: 12px;
+            margin: 0 5px 0 0;
+          }
+          span {
+            width: 80%;
+            display: block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
         }
       }
     }
@@ -621,7 +720,6 @@ export default {
       border-top-right-radius: 8px;
       background-color: #fff;
       z-index: 999;
-
       .morefunc-title {
         padding: 15px;
         font-size: 13px;
@@ -678,7 +776,7 @@ export default {
     }
   }
   .albums {
-    width: 95%;
+    width: 90%;
     margin: 10px auto 0;
     .album-item {
       display: flex;
@@ -686,14 +784,24 @@ export default {
       justify-content: space-between;
       padding: 10px 0;
       .album-img {
+        position: relative;
         img {
+          position: relative;
+          z-index: 2;
           display: block;
           width: 20vw;
           border-radius: 6px;
         }
+        .Album-img {
+          z-index: 1;
+          position: absolute;
+          top: 0;
+          right: -13px;
+        }
       }
       .album-msg {
-        width: 70%;
+        width: 65%;
+        margin: -0 0 0 10px;
         .album-name {
           font-size: 15px;
           white-space: nowrap;
@@ -796,7 +904,7 @@ export default {
       }
       .songList-msg {
         width: 65%;
-        margin: 0 0 0 10px;
+        margin: -0 0 0 10px;
         .songList-title {
           padding: 2px;
           font-size: 15px;
@@ -805,10 +913,13 @@ export default {
           text-overflow: ellipsis;
         }
         .songList-times {
+          display: flex;
+          align-items: center;
           padding: 2px;
           font-size: 13px;
         }
         .songList-ts {
+          margin: 20px 0 0;
           padding: 2px;
           font-size: 12px;
           color: #999;
