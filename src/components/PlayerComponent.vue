@@ -34,6 +34,7 @@
           @packUpPlayInfo="pickUpInfo"
           @togglePlay="togglePlay"
           @changeLoop="changeLoop"
+          @stopPlay="stopPlay"
         ></play-info-component>
       </transition>
       <div class="play-title" ref="title" v-show="playbar.playURL">
@@ -99,6 +100,7 @@
           :loop="loop"
           @packUp="pickUpList"
           @changeLoop="changeLoop"
+          @stopPlay="stopPlay"
         ></play-list-component>
       </transition>
     </div>
@@ -263,6 +265,11 @@ export default {
     changeLoop() {
       this.loop = (this.loop + 1) % 3;
     },
+    stopPlay(){
+      // console.log(11);
+      this.playStatus = false
+      this.$refs.play.pause()
+    },
     ...mapMutations(["toggleStatus", "addToList", "changeHighNum"]),
     ...mapActions(["getPlayURL", "playOnList"]),
   },
@@ -280,6 +287,7 @@ export default {
   height: 6vh;
   background-color: rgb(255, 255, 255);
   border-top: 1px solid rgba(123, 123, 123, 0.4);
+  z-index: 200;
   .play-cover {
     position: absolute;
     top: calc(((6vh - 50px) / 2) - 10px);

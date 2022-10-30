@@ -52,7 +52,8 @@ export default {
             if (index < state.state.highLight) {
                 state.commit("changeHighNum", state.state.highLight - 1)
             } else if (index == state.state.highLight) {
-                index = index % state.state.listData.length
+                index = index % (state.state.listData.length - 1)
+                console.log(index, state.state.listData.length);
                 state.dispatch("playOnList", { data: newList[index], index: index })
             }
             state.commit("changeList", newList)

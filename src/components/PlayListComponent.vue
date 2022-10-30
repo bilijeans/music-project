@@ -18,7 +18,7 @@
         </div>
         <div class="list-controls">
           <div class="btn collect"></div>
-          <div class="btn clean" @click="cleanList"></div>
+          <div class="btn clean" @click="cleanListBtn"></div>
         </div>
       </div>
       <ul class="items" ref="songItem">
@@ -33,7 +33,7 @@
           <span v-if="i.singerList[0].name.trim()" class="singer">{{
             " - " + dealWithSingerName(i.singerList)
           }}</span>
-          <div class="delete" @click.stop="deleteSongOnList(i.songId)"></div>
+          <div class="delete" @click.stop="deleteSong(i.songId)"></div>
         </li>
       </ul>
     </div>
@@ -95,8 +95,16 @@ export default {
       // console.log(1);
       this.$emit("packUp");
     },
-    playSong(id, num) {
-      console.log(id, num);
+    cleanListBtn() {
+      this.$emit("stopPlay");
+      this.cleanList();
+    },
+    deleteSong(id) {
+      if (this.playList.listData.length == 1) {
+        this.cleanListBtn()
+      } else {
+        this.deleteSongOnList(id);
+      }
     },
     ...mapActions({
       play: "getPlayURL",
@@ -205,8 +213,7 @@ export default {
     background-color: #fff;
     overflow: auto;
     &::-webkit-scrollbar {
-      widows: 0;
-      height: 0;
+      display: none;
     }
     .item {
       position: relative;
@@ -224,13 +231,13 @@ export default {
         text-overflow: ellipsis;
       }
       .singer {
-        margin-left: 10px;
+        margin-left: 5px;
         font-size: 12px;
         color: #999;
       }
       .delete {
         position: absolute;
-        right: 0;
+        right: 10px;
         width: 15px;
         height: 15px;
         background-image: url("@/assets/Delete.svg");

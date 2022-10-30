@@ -11,6 +11,8 @@ import SearchPageView from '../views/search/SearchPageView.vue';
 import SongListView from '../views/songList/SongListView.vue';
 import SongsListOnlyView from '../views/songList/SongsListOnlyView.vue'
 import SearchResultView from '../views/search/SearchResultView.vue'
+import RadioStation from '../views/station/StationIndex.vue'
+import RadioDetail from '../views/station/StationDetail.vue'
 
 Vue.use(VueRouter)
 
@@ -20,6 +22,18 @@ const routes = [
     name: 'home',
     component: HomePageView,
   },
+  {
+    path: '/scene-radio',
+    name: 'scene-radio',
+    component: RadioStation,
+  },
+
+  {
+    path: '/radio-detail',
+    name: 'radio-detail',
+    component: RadioDetail
+  },
+
   {
     path: '/rank',
     name: 'rank',
@@ -65,8 +79,8 @@ const routes = [
     component: SearchPageView,
   },
   {
-    path : '/song-lists',
-    name : 'song-lists',
+    path: '/song-lists',
+    name: 'song-lists',
     component: SongListView,
   },
   {

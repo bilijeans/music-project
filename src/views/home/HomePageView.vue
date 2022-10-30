@@ -251,10 +251,10 @@ export default {
   },
   mounted() {
     // console.log(this.$refs.screamBanner);
-    this.$refs.screamBanner.addEventListener(
-      "scroll",
-      this.getScreamScrollDistance
-    );
+    // this.$refs.screamBanner.addEventListener(
+    //   "scroll",
+    //   this.getScreamScrollDistance
+    // );
   },
   created() {
     this.homePageData = HomePageData.data.contents;
@@ -303,7 +303,7 @@ export default {
       }
       //   action = action.replace("-", "");
       action = "/" + action;
-      // console.log(action);
+      console.log(action);
       this.$router.push({ path: action });
     },
     getNumItem(data) {
@@ -383,6 +383,8 @@ export default {
       this.$router.push({ path: "/song-lists" });
     },
   },
+  beforeDestroy(){
+  }
 };
 </script>
 <style lang="scss">
