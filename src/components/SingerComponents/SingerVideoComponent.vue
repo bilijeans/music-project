@@ -4,15 +4,21 @@
       class="video-content"
       v-for="item in singerViedoList"
       :key="'v' + item.resId"
-      @click="getVideoUrl(item.action)"
+      @click="
+        goToVideoPage({
+          id: item.resId,
+          singerName: item.txt2,
+          mes: item.txt,
+          image: item.img,
+        })
+      "
     >
       <div class="video-content-img">
         <img :src="item.img" alt="" />
         <div class="playNum">
-          <img src="@/assets/video.svg" alt="">
+          <img src="@/assets/video.svg" alt="" />
           <p>{{ item.txt3 }}</p>
         </div>
-        
       </div>
       <p class="video-content-txt">{{ item.txt }}</p>
       <p class="video-content-txt2">{{ item.txt2 }}</p>
@@ -27,8 +33,16 @@ export default {
   },
 
   methods: {
-    getVideoUrl(value) {
-      console.log("视频Url ==>", value);
+    goToVideoPage({ id, singerName, mes, image }) {
+      this.$router.push({
+        path: "/video",
+        query: {
+          id,
+          singerName,
+          mes,
+          image,
+        },
+      });
     },
   },
 };
@@ -89,7 +103,7 @@ export default {
         bottom: 0;
         left: 0;
 
-        img{
+        img {
           height: 20px;
           width: 20px;
           margin: 0 1vw 0 2vw;

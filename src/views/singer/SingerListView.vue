@@ -202,7 +202,7 @@ export default {
     },
     gotoSingerPage(id, type) {
       this.$router.push({
-        name: "singerPage",
+        name: "SingerPage",
         params: {
           id,
           type,

@@ -11,6 +11,7 @@ import SearchPageView from '../views/search/SearchPageView.vue';
 import SongListView from '../views/songList/SongListView.vue';
 import SongsListOnlyView from '../views/songList/SongsListOnlyView.vue'
 import SearchResultView from '../views/search/SearchResultView.vue'
+import VideoPageView from '../views/video/VideoPageView.vue'
 
 Vue.use(VueRouter)
 
@@ -32,8 +33,8 @@ const routes = [
 
   },
   {
-    path: '/singerPage/:id&:type',
-    name: 'singerPage',
+    path: '/SingerPage/:id&:type',
+    name: 'SingerPage',
     component: SingerPageView,
 
   },
@@ -78,6 +79,11 @@ const routes = [
     path: '/search-result',
     name: 'search-result',
     component: SearchResultView,
+  },
+  {
+    path: '/video',
+    name: 'video',
+    component: VideoPageView,
   }
 ]
 

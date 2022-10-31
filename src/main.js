@@ -7,6 +7,7 @@ import wotUI from './wotui'
 import vantUI from './vantui'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 import 'swiper/css/swiper.css'
+import 'video.js/dist/video-js.css'
 Vue.use(VueAwesomeSwiper)
 Vue.use(wotUI)
 Vue.use(vantUI)

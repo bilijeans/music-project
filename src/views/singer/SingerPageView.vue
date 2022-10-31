@@ -120,6 +120,7 @@ export default {
   created() {
     this.id = this.$route.params.id;
     this.type = this.$route.params.type;
+    console.log(this.$route.params);
     this.getSingerPersonalPage();
     this.getSimilarSinger();
     this.getAllNum();
