@@ -11,6 +11,7 @@ import SearchPageView from '../views/search/SearchPageView.vue';
 import SongListView from '../views/songList/SongListView.vue';
 import SongsListOnlyView from '../views/songList/SongsListOnlyView.vue'
 import SearchResultView from '../views/search/SearchResultView.vue'
+import MoreFuncComment from '../views/comment/MoreFuncComment.vue'
 
 Vue.use(VueRouter)
 
@@ -78,6 +79,11 @@ const routes = [
     path: '/search-result',
     name: 'search-result',
     component: SearchResultView,
+  },
+  {
+    path: '/morefunc-comment',
+    name: 'morefunc-comment',
+    component: MoreFuncComment,
   }
 ]
 

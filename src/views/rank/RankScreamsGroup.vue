@@ -54,6 +54,7 @@ export default {
       this.$axios.get(this.url).then(({ data }) => {
         // console.log(data.data.columnInfo.dataList.length);
         this.rankData = data.data.columnInfo;
+        // console.log(this.rankData);
         this.title = this.rankData.title;
         this.songPic = this.rankData.songPic;
         this.columnTittlePic = this.rankData.columnTittlePic;

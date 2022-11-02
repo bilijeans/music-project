@@ -274,6 +274,7 @@ export default {
 </script>
 <style lang="scss">
 .playbar {
+  z-index: 20;
   position: fixed;
   bottom: -1px;
   width: 100vw;
