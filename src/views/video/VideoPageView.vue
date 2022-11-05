@@ -1,85 +1,109 @@
 <template>
   <div class="video-page">
-    <div class="video-mask" @click="isPlayOrNot"></div>
-    <header>
-      <div class="back-left-arrow" @click="goBack">
-        <wd-icon name="arrow-left" color="#fff"></wd-icon>
-      </div>
-      <div class="more">
-        <img src="@/assets/MoreFunctionWhite.svg" alt="" />
-      </div>
-    </header>
-    <main>
-      <video
-        ref="video"
-        class="video-js video"
-        :poster="videoPage ? videoPage.image : ''"
-        data-setup="{}"
-      ></video>
-
-      <div class="play-video" v-show="isPlay">
-        <img src="@/assets/videoPlay.svg" />
-      </div>
-    </main>
-    <footer>
-      <div class="message-box">
-        <p class="mv" v-show="!isSliding">MV</p>
-        <p class="mes" v-show="!isSliding">
-          {{ videoPage ? videoPage.mes : "" }}
-        </p>
-        <div class="singerName" v-show="!isSliding">
-          <p>{{ videoPage ? videoPage.singerName : "" }}</p>
-          <wd-icon
-            class="arrow-right"
-            name="arrow-right"
-            color="#fff"
-            size="12px"
-          ></wd-icon>
-        </div>
-      </div>
-
-      <div
-        class="slider-box"
-        @touchstart="downHandel"
-        @touchmove="moveHandel"
-        @touchend="upHandel"
-      >
-        <div class="currentTime" v-show="isSliding">
-          <span class="current-time"
-            >{{ time.currentTime.min }}:{{ time.currentTime.second }}
-          </span>
-          <span> / {{ time.duration.min }}:{{ time.duration.second }}</span>
-        </div>
-        <div class="slide">
-          <div class="silde-active" ref="slideActive">
-            <i></i>
+    <van-swipe
+      style="height: 100vh"
+      vertical
+      @change="onChange"
+      :show-indicators="false"
+    >
+      <van-swipe-item v-for="(i, index) in allVideo" :key="index">
+        <div class="video-mask" @click="isPlayOrNot"></div>
+        <header>
+          <div class="back-left-arrow" @click="goBack">
+            <wd-icon name="arrow-left" color="#fff"></wd-icon>
           </div>
-        </div>
-      </div>
+          <div class="more">
+            <img src="@/assets/MoreFunctionWhite.svg" alt="" />
+          </div>
+        </header>
+        <main>
+          <video
+            ref="video"
+            class="video-js video"
+            :poster="i.img"
+            data-setup="{}"
+          ></video>
 
-      <div class="footer-bottom">
-        <div class="scroll-name" v-show="!isSliding">
-          <img src="/img/like.e498651b.svg" alt="" />
-          <div class="scroll-text">
-            <p ref="scrollText">
-              <span
-                class="s-text"
-                ref="sText"
-                :class="{ animationActive: isShorter }"
-                >{{ videoPage ? videoPage.mes : "" }}</span
-              >
+          <div class="land-scape">
+            <img src="@/assets/landScape.svg" alt="" />
+          </div>
+
+          <div class="comment-list">
+            <div class="video-heart">
+            <div
+              :class="{ likeActive: isLike }"
+              @click="isLike = !isLike"
+            ></div>
+            </div>
+            <img src="@/assets/videoComment.svg" alt="" />
+            <img src="@/assets/videoShare.svg" alt="" />
+          </div>
+
+          <div class="play-video" v-show="isPlay">
+            <img src="@/assets/videoPlay.svg" />
+          </div>
+        </main>
+        <footer>
+          <div class="message-box">
+            <p class="mv" v-show="!isSliding">MV</p>
+            <p class="mes" v-show="!isSliding">
+              {{ i.txt }}
             </p>
+            <div class="singerName" v-show="!isSliding">
+              <p>{{ i.txt2 }}</p>
+              <wd-icon
+                class="arrow-right"
+                name="arrow-right"
+                color="#fff"
+                size="12px"
+              ></wd-icon>
+            </div>
           </div>
-        </div>
-        <div
-          class="revolve-image"
-          :class="{ active: isPlay }"
-          v-show="!isSliding"
-        >
-          <img :src="videoPage ? videoPage.image : ''" />
-        </div>
-      </div>
-    </footer>
+
+          <div
+            class="slider-box"
+            @touchstart="downHandel"
+            @touchmove="moveHandel"
+            @touchend="upHandel"
+          >
+            <div class="currentTime" v-show="isSliding">
+              <span class="current-time"
+                >{{ time.currentTime.min }}:{{ time.currentTime.second }}
+              </span>
+              <span> / {{ time.duration.min }}:{{ time.duration.second }}</span>
+            </div>
+            <div class="slide">
+              <div class="silde-active" ref="slideActive">
+                <i></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="footer-bottom">
+            <div class="scroll-name" v-show="!isSliding">
+              <img src="/img/like.e498651b.svg" alt="" />
+              <div class="scroll-text">
+                <p ref="scrollText">
+                  <span
+                    class="s-text"
+                    ref="sText"
+                    :class="{ animationActive: isShorter }"
+                    >{{ i.txt }}</span
+                  >
+                </p>
+              </div>
+            </div>
+            <div
+              class="revolve-image"
+              :class="{ active: isPlay }"
+              v-show="!isSliding"
+            >
+              <img :src="videoMessage.singers? videoMessage.singers[0].avatar : ''" />
+            </div>
+          </div>
+        </footer>
+      </van-swipe-item>
+    </van-swipe>
   </div>
 </template>
 
@@ -87,8 +111,10 @@
 export default {
   data() {
     return {
-      id: null,
+      index: 0,
+      allVideo: [],
       videoPage: {},
+      videoMessage:{},
       videoUrl: "",
       isPlay: false,
       isShorter: false,
@@ -105,46 +131,61 @@ export default {
         },
       },
       isSliding: false,
+      isLike: false,
     };
   },
   created() {
-    this.id = this.$route.query.id;
+    this.videoListHandel();
+    this.getVideoMessage();
     this.getVideoPage();
   },
   methods: {
+    videoListHandel() {
+      let tapIndex = this.$route.query.index;
+      let allVideoArr = this.$route.query.videoList;
+      console.log(tapIndex, allVideoArr);
+      let handelArrStart = [];
+      let handelArrEnd = [];
+      if (tapIndex != 0) {
+        handelArrStart = allVideoArr.slice(0, tapIndex);
+        handelArrEnd = allVideoArr.slice(tapIndex);
+        handelArrStart.forEach((i) => {
+          handelArrEnd.push(i);
+        });
+      }
+
+      this.allVideo = handelArrEnd;
+    },
+    getVideoMessage(){
+      let id = this.allVideo[this.index].resId;
+       this.$axios
+       .get(`/MIGUM3.0/bmw/mv/by-contentId/v1.0?contentId=${id}&resourceType=D`)
+       .then(({data}) => {
+        this.videoMessage = data.data
+        console.log(this.videoMessage)
+       })
+    },
     getVideoPage() {
+      let id = this.allVideo[this.index].resId;
       this.$axios({
         methods: "GET",
-        url: `MIGUM3.0/strategy/mvplayinfo/by-priority/v1.0?canFallback=true&contentId=${this.id}&formatType=PQ`,
+        url: `MIGUM3.0/strategy/mvplayinfo/by-priority/v1.0?canFallback=true&contentId=${id}&formatType=PQ`,
         headers: {
           channel: "0146921",
         },
       }).then(({ data }) => {
         this.videoPage = data.data;
-
         this.videoUrl = this.videoPage.playUrl.slice(31);
-
-        let mes = this.$route.query.mes;
-
-        let singerName = this.$route.query.singerName;
-
-        let image = this.$route.query.image;
-
-        this.videoPage = {
-          ...this.videoPage,
-          mes,
-          singerName,
-          image,
-        };
-
         this.$nextTick(() => {
-          let video = this.$refs.video;
+          let video = this.$refs.video[this.index];
           let url = "/apiV/" + this.videoUrl;
           this.player = this.$video(video, {
             controls: false,
             autoplay: true,
             muted: true,
             loop: true,
+            width: "auto",
+            height: "300",
           });
           this.player.src([
             {
@@ -173,7 +214,10 @@ export default {
     },
 
     scrollTitleHandel() {
-      if (this.$refs.scrollText.clientWidth > this.$refs.sText.offsetWidth) {
+      if (
+        this.$refs.scrollText[this.index].clientWidth >
+        this.$refs.sText[this.index].offsetWidth
+      ) {
         this.isShorter = true;
       }
     },
@@ -184,7 +228,7 @@ export default {
         return;
       }
       this.timer = setInterval(() => {
-        this.$refs.slideActive.style.width = `${
+        this.$refs.slideActive[this.index].style.width = `${
           (this.player.currentTime() / this.player.duration()) * 100
         }%`;
       }, 10);
@@ -202,7 +246,7 @@ export default {
       let setTime = parseInt((pageX * this.player.duration()) / windowX);
       this.player.currentTime(setTime);
       let current = parseInt(this.player.currentTime());
-      let duration = this.player.duration();
+      let duration = parseInt(this.player.duration());
       let currentMin = 0;
       let currentSecond = current;
       let min = 0;
@@ -234,7 +278,7 @@ export default {
       let setTime = parseInt((pageX * this.player.duration()) / windowX);
       this.player.currentTime(setTime);
       let current = parseInt(this.player.currentTime());
-      let duration = this.player.duration();
+      let duration = parseInt(this.player.duration());
       let currentMin = 0;
       let currentSecond = current;
       let min = 0;
@@ -263,10 +307,19 @@ export default {
     upHandel() {
       this.isSliding = false;
     },
+
+    onChange(index) {
+      this.index = index;
+      this.isPlay = false;
+      clearInterval(this.timer);
+      this.getVideoPage();
+    },
   },
 
   destroyed() {
-    this.player.dispose();
+    if(this.player){
+     this.player.dispose();
+    }
     if (this.timer) {
       clearInterval(this.timer);
     }
@@ -281,10 +334,6 @@ export default {
   position: absolute;
   top: 7vh;
   z-index: 22;
-}
-.video {
-  height: 30vh;
-  width: 100vw;
 }
 .video-page {
   position: fixed;
@@ -304,10 +353,29 @@ export default {
   right: 3vw;
 }
 main {
-  height: 30vh;
   width: 100vw;
   position: absolute;
   top: 25vh;
+  display: flex;
+  justify-content: center;
+
+  .land-scape {
+    position: absolute;
+    top: 14vh;
+    left: 5vw;
+    z-index: 30;
+  }
+
+  .comment-list {
+    height: 20vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: absolute;
+    right: 5vw;
+    top: 30vh;
+    z-index: 30;
+  }
 
   .play-video {
     position: absolute;
@@ -479,6 +547,75 @@ footer {
         position: absolute;
         right: 0;
         top: -80%;
+      }
+    }
+  }
+}
+
+.video-heart {
+  height: 32px;
+  width: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  div {
+    height: 32px;
+    width: 32px;
+    background-image: url(@/assets/videoHeart.svg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+
+    &.likeActive {
+      animation: like 1s linear;
+      background-image: url(@/assets/videoRedHeart.svg);
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center center;
+    }
+
+    @keyframes like {
+      from {
+        background-image: url(@/assets/videoHeart.svg);
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center center;
+      }
+
+      25% {
+        height: 35px;
+        width: 35px;
+        background-image: url(@/assets/videoRedHeart.svg);
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center center;
+      }
+
+      50% {
+        height: 27px;
+        width: 27px;
+        background-image: url(@/assets/videoRedHeart.svg);
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center center;
+      }
+
+      75% {
+        height: 35px;
+        width: 35px;
+        background-image: url(@/assets/videoRedHeart.svg);
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center center;
+      }
+
+      to {
+        height: 27px;
+        width: 27px;
+        background-image: url(@/assets/videoRedHeart.svg);
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center center;
       }
     }
   }
