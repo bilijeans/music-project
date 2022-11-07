@@ -2,10 +2,8 @@
   <div>
     <audio
       ref="play"
-      Loadstart
       @play="getPlayData"
       @ended="witchNext"
-      autoplay
       :src="playbar.playURL"
     ></audio>
     <div class="playbar">
@@ -124,6 +122,19 @@ export default {
       loop: 0,
     };
   },
+  created() {
+    if (localStorage.getItem("playlist")) {
+      let data = JSON.parse(localStorage.getItem("playlist"));
+      // console.log(data, data.listData[data.highLight]);
+      this.playFirst({
+        data: data.listData[data.highLight],
+        index: data.highLight,
+      });
+     }
+  },
+  mounted(){
+    this.getElement(this.$refs.play)
+  },
   computed: {
     currentRate: {
       get() {
@@ -133,7 +144,7 @@ export default {
       },
       set() {},
     },
-    ...mapState(["playbar", "playList"]),
+    ...mapState(["playbar", "playList","user"]),
     ...mapState({
       listData: (state) => state.playList.listData,
       songId: (state) => state.playbar.playId,
@@ -153,11 +164,16 @@ export default {
     },
   },
   methods: {
+    statrPlay(){
+      this.$refs.play.play()
+    },
     getPlayData() {
       this.duration = this.$refs.play.duration;
       this.playStatus = true;
       this.getTitleStyle();
       this.$refs.play.addEventListener("timeupdate", this.getPlayTime);
+      // localStorage.setItem("playlist", JSON.stringify(this.playList));
+      this.freshLatelyData(this.playList.listData[this.playList.highLight])
     },
     getPlayTime() {
       this.currentTime = this.$refs.play.currentTime
@@ -265,13 +281,13 @@ export default {
     changeLoop() {
       this.loop = (this.loop + 1) % 3;
     },
-    stopPlay(){
+    stopPlay() {
       // console.log(11);
-      this.playStatus = false
-      this.$refs.play.pause()
+      this.playStatus = false;
+      this.$refs.play.pause();
     },
-    ...mapMutations(["toggleStatus", "addToList", "changeHighNum"]),
-    ...mapActions(["getPlayURL", "playOnList"]),
+    ...mapMutations(["toggleStatus", "addToList", "changeHighNum","getElement","freshLatelyData"]),
+    ...mapActions(["getPlayURL", "playOnList","playFirst"]),
   },
   beforeDestroy() {
     this.$refs.play.removeEventListener("timeupdate", this.getPlayTime);

@@ -13,6 +13,8 @@ import SongsListOnlyView from '../views/songList/SongsListOnlyView.vue'
 import SearchResultView from '../views/search/SearchResultView.vue'
 import RadioStation from '../views/station/StationIndex.vue'
 import RadioDetail from '../views/station/StationDetail.vue'
+import UserIndexView from '../views/user/UserIndexView.vue'
+import UserLatelyPlay from "../views/user/UserLatelyPlay.vue"
 
 Vue.use(VueRouter)
 
@@ -21,11 +23,17 @@ const routes = [
     path: '/home',
     name: 'home',
     component: HomePageView,
+    meta: {
+      index: 0
+    }
   },
   {
     path: '/scene-radio',
     name: 'scene-radio',
     component: RadioStation,
+    meta: {
+      index: 1
+    }
   },
 
   {
@@ -38,23 +46,33 @@ const routes = [
     path: '/rank',
     name: 'rank',
     component: RankPageView,
+    meta: {
+      index: 1
+    }
   },
   {
     path: '/browser',
     name: 'browser',
     component: SingerListView,
-
+    meta: {
+      index: 1
+    }
   },
   {
     path: '/singerPage/:id&:type',
     name: 'singerPage',
     component: SingerPageView,
-
+    meta: {
+      index: 2
+    }
   },
   {
     path: '/albumSongs/:id&:type',
     name: 'albumSongs',
     component: SingerAlbumSongsView,
+    meta: {
+      index: 3
+    }
   },
 
   {
@@ -62,6 +80,9 @@ const routes = [
     name: 'screams',
     component: RankScreamsGroup,
     props: true,
+    meta: {
+      index: 2
+    }
   },
   {
     path: '/rankCharacteristics',
@@ -72,26 +93,58 @@ const routes = [
     path: '/songList',
     name: 'songList',
     component: SongListView,
+    meta: {
+      index: 1
+    }
   },
   {
     path: '/search',
     name: 'search',
     component: SearchPageView,
+    meta: {
+      index: 1
+    }
   },
   {
     path: '/song-lists',
     name: 'song-lists',
     component: SongListView,
+    meta: {
+      index: 1
+    }
   },
   {
     path: '/songListOnly/:id',
     name: 'songListOnly',
     component: SongsListOnlyView,
+    meta: {
+      index: 2
+    }
   },
   {
     path: '/search-result',
     name: 'search-result',
     component: SearchResultView,
+    meta: {
+      index: 2
+    }
+  },
+  {
+    path: '/user',
+    name: 'user',
+    component: UserIndexView,
+    meta: {
+      index: 1
+    }
+  },
+  {
+    path: '/user-lately-play',
+    name: 'user-lately-play',
+    component: UserLatelyPlay,
+    meta: {
+      index: 5
+    }
+
   }
 ]
 
