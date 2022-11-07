@@ -15,7 +15,7 @@
       <i class="wd-icon-arrow-right"></i>
     </div>
     <div class="comment-hotComments">
-      <div class="comment-title">精彩评论</div>
+      <div class="comment-title" v-if="hotComments[0]">精彩评论</div>
       <div class="comment-item" v-for="i in hotComments" :key="i.commentId">
         <div class="comment-usermsg">
           <div class="item-img">
@@ -65,14 +65,19 @@
                 ></span
               >{{ n.replyInfo }}
             </div>
-            <div @click="moreReply(n.replyId)" class="reply-nums" v-if="i.replyTotalCount != 0">
+            <div
+              @click="moreReply(i.commentId)"
+              class="reply-nums"
+              v-if="i.replyTotalCount != 0"
+            >
               查看 {{ i.replyTotalCount }} 条回复 >
             </div>
           </div>
         </div>
       </div>
-      <comment-component :hotComments="hotComments"></comment-component>
-      <div class="comment-title">全部评论 ({{ data.commentNums }})</div>
+      <div class="comment-title" v-if="allComments[0]">
+        全部评论 ({{ data.commentNums }})
+      </div>
       <div class="comment-item" v-for="i in allComments" :key="i.commentId">
         <div class="comment-usermsg">
           <div class="item-img">
@@ -120,12 +125,31 @@
                 ></span
               >{{ n.replyInfo }}
             </div>
-            <div class="reply-nums" v-if="i.replyTotalCount != 0">
+            <div
+              @click="moreReply(i.commentId)"
+              class="reply-nums"
+              v-if="i.replyTotalCount != 0"
+            >
               查看 {{ i.replyTotalCount }} 条回复 >
             </div>
           </div>
         </div>
       </div>
+      <transition name="comment">
+        <div class="comment-component" v-if="moreComment" @touchend.stop>
+          <comment-component
+            @touchend.stop
+            :moreCommentId="moreCommentId"
+            @cancelMaskLayer="cancelMaskLayer"
+          ></comment-component></div
+      ></transition>
+      <!-- 遮罩层 -->
+      <div
+        class="comment-mask-layer"
+        v-if="moreComment"
+        @click="cancelMaskLayer"
+        @touchend.stop
+      ></div>
     </div>
   </div>
 </template>
@@ -135,19 +159,19 @@ import CommentComponent from "@/components/CommentComponent.vue";
 export default {
   data() {
     return {
-      //   song: "",
       id: "",
       data: "",
       songMsg: "",
       hotComments: [],
       allComments: "",
+      moreComment: false,
+      moreCommentId: null,
     };
   },
   components: {
     CommentComponent,
   },
   created() {
-    // this.song = this.$route.query.name;
     this.id = this.$route.query.id;
     // console.log(this.$route.query.id);
   },
@@ -164,14 +188,14 @@ export default {
   methods: {
     getCommentData() {
       this.$axios.get(this.commentUrl).then(({ data }) => {
-        console.log(data.data);
+        // console.log(data.data);
         this.data = data.data;
         this.songMsg = this.data.targetInfo;
         this.hotComments = this.data.hotComments;
         this.allComments = this.data.comments;
       });
     },
-    // 处理人数
+    // 处理点赞人数
     dealWithPlayNum(num) {
       let num1 = 0;
       let num2 = 0;
@@ -187,6 +211,14 @@ export default {
         return num;
       }
     },
+    moreReply(id) {
+      // console.log(id);
+      this.moreComment = true;
+      this.moreCommentId = id;
+    },
+    cancelMaskLayer() {
+      this.moreComment = false;
+    },
     back() {
       this.$router.go(-1);
     },
@@ -194,7 +226,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .comment-head {
   z-index: 1;
   position: fixed;
@@ -354,5 +386,40 @@ export default {
     font-size: 14px;
     color: #ff5d7f;
   }
+}
+.comment-component {
+  padding: 0 0 55px 0;
+  position: fixed;
+  // top: 46px;
+  bottom: 0;
+  left: 0;
+  z-index: 20;
+  width: 100vw;
+  height: calc(100vh - 46px);
+  background-color: #fff;
+  overflow: auto;
+}
+.comment-mask-layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(204, 204, 204, 0.4);
+}
+
+.comment-enter {
+  height: 0px;
+}
+.comment-leave {
+  height:  calc(100vh - 46px);
+}
+.comment-leave-to {
+  height: 0;
+}
+.comment-enter-active,
+.comment-leave-active {
+  transition: all 0.2s ease-in;
 }
 </style>

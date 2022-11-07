@@ -407,6 +407,7 @@ export default {
 </script>
 <style lang="scss">
 .homepage {
+  padding: 0 0 55px 0;
   .search-nav {
     padding: 10px;
     display: flex;
@@ -684,9 +685,6 @@ export default {
         border-radius: 6px;
       }
     }
-  }
-  .screaming {
-    margin: 0 0 45px 0;
   }
 }
 </style>

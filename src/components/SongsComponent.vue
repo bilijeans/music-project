@@ -58,7 +58,17 @@
         <div class="song-msg" @click="getPlayURL(i.songId)">
           <div class="songname">{{ i.songName }}</div>
           <div class="song-album" v-if="i.singerList">
-            <div class="">音质!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</div>
+            <div
+              class="toneflag"
+              :style="{
+                backgroundPosition: toneflagChoose(i),
+                width: toneflagWidth(i),
+              }"
+              v-if="
+                i.audioFormats[i.audioFormats.length - 1]?.formatType != 'PQ' &&
+                i.audioFormats[i.audioFormats.length - 1]?.formatType != 'Z3D'
+              "
+            ></div>
             <div>
               {{
                 i.singerList[0].name.trim()
@@ -129,6 +139,28 @@ export default {
       str = str.slice(0, -1);
       return str;
     },
+    // 歌曲音质图片
+    toneflagChoose(i) {
+      let toneflag = i.audioFormats[i.audioFormats.length - 1].formatType;
+      if (toneflag == "ZQ24") {
+        return "-117px 0";
+      } else if (toneflag == "SQ") {
+        return "-25px 0";
+      } else if (toneflag == "HQ") {
+        return "-49px 0";
+      } else {
+        return "";
+      }
+    },
+    // 歌曲音质图片宽度
+    toneflagWidth(i) {
+      let toneflag = i.audioFormats[i.audioFormats.length - 1].formatType;
+      if (toneflag == "ZQ24") {
+        return "32px";
+      } else {
+        return "20px";
+      }
+    },
     ...mapActions(["getPlayURL"]),
     ...mapActions(["playList"]),
     ...mapMutations(["changeHighNum"]),
@@ -140,7 +172,7 @@ export default {
 .songslist {
   position: relative;
   width: 100%;
-  margin: 220px 0 0 0;
+  margin: 220px 0 51px 0;
   border-top-left-radius: 20px;
   .songs-play {
     position: sticky;
@@ -215,6 +247,13 @@ export default {
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
+          .toneflag {
+            background-image: url("@/assets/acousticfidelity.png");
+            background-repeat: no-repeat;
+            background-size: 148px 12px;
+            height: 12px;
+            margin: 0 5px 0 0;
+          }
         }
       }
     }
