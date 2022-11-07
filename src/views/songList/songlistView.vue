@@ -10,9 +10,9 @@
       <img src="@/assets/nav.svg" @click="isShowNav = !isShowNav" />
     </header>
 
-    <nav>
+    <!-- <nav>
       <banner-component :bannerList="bannerList"></banner-component>
-    </nav>
+    </nav> -->
 
     <main>
       <p class="songsListTitle" ref="songsListTitle"></p>

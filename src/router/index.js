@@ -1,20 +1,22 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HomePageView from "../views/home/HomePageView.vue";
-import RankPageView from "../views/rank/RankPageView.vue";
+import RankPageView from "../views/rank/rankPageView.vue";
 import SingerListView from "../views/singer/SingerListView.vue";
 import SingerPageView from "../views/singer/SingerPageView.vue";
 import SingerAlbumSongsView from '../views/singer/SingerAlbumSongsView.vue'
 import RankScreamsGroup from "../views/rank/RankScreamsGroup.vue";
 import RankCharacteristicsGroup from "../views/rank/RankCharacteristicsGroup.vue";
 import SearchPageView from '../views/search/SearchPageView.vue';
-import SongListView from '../views/songList/SongListView.vue';
+import SongListView from '../views/songList/songlistView.vue';
 import SongsListOnlyView from '../views/songList/SongsListOnlyView.vue'
 import SearchResultView from '../views/search/SearchResultView.vue'
 import RadioStation from '../views/station/StationIndex.vue'
 import RadioDetail from '../views/station/StationDetail.vue'
 import UserIndexView from '../views/user/UserIndexView.vue'
 import UserLatelyPlay from "../views/user/UserLatelyPlay.vue"
+import MoreFuncComment from '../views/comment/MoreFuncComment.vue'
+import CharacteristicsGroup from '../views/rank/CharacteristicsGroup.vue'
 
 Vue.use(VueRouter)
 
@@ -90,6 +92,11 @@ const routes = [
     component: RankCharacteristicsGroup,
   },
   {
+    path: '/characteristics-group',
+    name: 'characteristics-group',
+    component: CharacteristicsGroup,
+  },
+  {
     path: '/songList',
     name: 'songList',
     component: SongListView,
@@ -144,8 +151,12 @@ const routes = [
     meta: {
       index: 5
     }
-
-  }
+  },
+  {
+    path: '/morefunc-comment',
+    name: 'morefunc-comment',
+    component: MoreFuncComment,
+  },
 ]
 
 const router = new VueRouter({

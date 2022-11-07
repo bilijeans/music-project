@@ -22,9 +22,6 @@ import SongsComponent from "@/components/SongsComponent.vue";
 export default {
   data() {
     return {
-      // week: 0,
-      // type: 101,
-      // pageNo: 1,
       id: "",
       needAll: 0,
       resourceType: 2009,
@@ -41,11 +38,11 @@ export default {
   },
   computed: {
     url() {
-      return `https://app.c.nf.migu.cn/MIGUM3.0/v1.0/template/rank-detail?columnId=${this.id}&id=${this.id}&needAll=${this.needAll}&resourceType=${this.resourceType}&templateVersion=${this.templateVersion}`;
+      return `/MIGUM3.0/v1.0/template/rank-detail?columnId=${this.id}&id=${this.id}&needAll=${this.needAll}&resourceType=${this.resourceType}&templateVersion=${this.templateVersion}`;
     },
-    incomngUrl() {
-      return `/bmw/popularity-week-rank/h5/v1.0?week=${this.week}&type=${this.type}&pageNo=${this.pageNo}`;
-    },
+    // incomingUrl() {
+    //   return `/bmw/popularity-week-rank/h5/v1.0?week=${this.week}&type=${this.type}&pageNo=${this.pageNo}`;
+    // },
   },
   watch: {
     url() {
@@ -59,7 +56,7 @@ export default {
   methods: {
     getRankCharacteristicsData() {
       this.$axios.get(this.url).then(({ data }) => {
-        console.log(data.data.columnInfo);
+        // console.log(data.data.columnInfo);
         this.rankData = data.data.columnInfo;
         this.title = this.rankData.title;
         this.songPic = this.rankData.songPic;

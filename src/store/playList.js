@@ -58,7 +58,7 @@ export default {
                 state.dispatch("playOnList", { data: newList[index], index: index })
             }
             state.commit("changeList", newList)
-            console.log(newList, index);
+            // console.log(newList, index);
         }
     },
     mutations: {
@@ -72,12 +72,12 @@ export default {
         },
         addToList(state, data) {
             state.listData = [...[data], ...state.listData]
-            console.log(state);
+            // console.log(state);
         },
         upToList(state, index) {
             let data = state.listData[index]
             state.listData = [...[data], ...state.listData.slice(0, index), ...state.listData.slice(index + 1)]
-            console.log(state);
+            // console.log(state);
 
         },
         changeHighNum(state, num) {
@@ -86,7 +86,7 @@ export default {
         },
         initHighNum(state) {
             state.highLight = 0
-            console.log(state.highLight);
+            // console.log(state.highLight);
         },
         changeList(state, data) {
             state.listData = data
