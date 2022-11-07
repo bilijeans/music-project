@@ -2,10 +2,9 @@
   <div class="videoPage">
     <div
       class="video-content"
-      v-for="(item,index) in singerViedoList"
+      v-for="(item, index) in singerViedoList"
       :key="'v' + item.resId"
-      @click="
-        goToVideoPage(index)"
+      @click="goToVideoPage(index)"
     >
       <div class="video-content-img">
         <img :src="item.img" alt="" />
@@ -25,24 +24,14 @@ export default {
   props: {
     singerViedoList: Array,
   },
-
-  created(){
-    this.videoList = this.singerViedoList
-  },
-
-  data(){
-    return{
-      videoList:[]
-    }
-  },
-
   methods: {
     goToVideoPage(index) {
+      let jsonData = JSON.stringify({ data: this.singerViedoList });
       this.$router.push({
         path: "/video",
         query: {
-          videoList: this.videoList,
-          index
+          videoList: jsonData,
+          index,
         },
       });
     },

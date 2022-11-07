@@ -7,33 +7,33 @@
       :show-indicators="false"
     >
       <van-swipe-item v-for="(i, index) in allVideo" :key="index">
-        <div class="video-mask" @click="isPlayOrNot"></div>
+        <div class="video-mask" @click="isPlayOrNot" v-show="!isLand"></div>
         <header>
-          <div class="back-left-arrow" @click="goBack">
+          <div class="back-left-arrow" @click="goBack" v-show="!isLand">
             <wd-icon name="arrow-left" color="#fff"></wd-icon>
           </div>
-          <div class="more">
+          <div class="more" v-show="!isLand">
             <img src="@/assets/MoreFunctionWhite.svg" alt="" />
           </div>
         </header>
-        <main>
+        <main :class="{ landActive: isLand }">
           <video
             ref="video"
             class="video-js video"
             :poster="i.img"
-            data-setup="{}"
+            data-setup='{"aspectRatio":"3:2"}'
           ></video>
 
-          <div class="land-scape">
+          <div class="land-scape" @click="setLand" v-show="!isLand">
             <img src="@/assets/landScape.svg" alt="" />
           </div>
 
-          <div class="comment-list">
+          <div class="comment-list" v-show="!isLand">
             <div class="video-heart">
-            <div
-              :class="{ likeActive: isLike }"
-              @click="isLike = !isLike"
-            ></div>
+              <div
+                :class="{ likeActive: isLike }"
+                @click="isLike = !isLike"
+              ></div>
             </div>
             <img src="@/assets/videoComment.svg" alt="" />
             <img src="@/assets/videoShare.svg" alt="" />
@@ -43,7 +43,7 @@
             <img src="@/assets/videoPlay.svg" />
           </div>
         </main>
-        <footer>
+        <footer v-show="!isLand">
           <div class="message-box">
             <p class="mv" v-show="!isSliding">MV</p>
             <p class="mes" v-show="!isSliding">
@@ -98,10 +98,68 @@
               :class="{ active: isPlay }"
               v-show="!isSliding"
             >
-              <img :src="videoMessage.singers? videoMessage.singers[0].avatar : ''" />
+              <img
+                :src="
+                  videoMessage.singers ? videoMessage.singers[0].avatar : ''
+                "
+              />
             </div>
           </div>
         </footer>
+
+        <div class="landing-page" v-show="isLand">
+          <div class="land-footer">
+            <div
+              class="land-play"
+              :class="{ landPause: isPlay }"
+              @click="videoLandPlayOrNot"
+            ></div>
+
+            <div class="land-slide-box" @touchstart="landDownHandel">
+              <div class="land-slider">
+                <div class="land-slider-active" ref="landSlideActive">
+                  <i></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="land-time">
+              <span class="current-time">
+                {{ time.currentTime.min }}:{{ time.currentTime.second }}
+              </span>
+              <span>
+                / {{ time.duration.min }}:{{ time.duration.second }}
+              </span>
+            </div>
+
+            <div class="definition">
+              <p
+                class="default-definition"
+                @click="isChooseDefinition = !isChooseDefinition"
+              >
+                {{ Definition }}
+              </p>
+              <div class="select-definition" v-show="isChooseDefinition">
+                <p
+                  v-for="(item, index) in videoMessage.rateFormats"
+                  :key="index"
+                  @click="pickDefinition(item.formatDesc,item.formatType)"
+                >
+                  {{ item.formatDesc }}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="land-header">
+            <div class="land-back-left-arrow" @click="cancelFullScreen">
+              <wd-icon name="arrow-left" color="#fff"></wd-icon>
+            </div>
+            <div class="land-more">
+              <img src="@/assets/MoreFunctionWhite.svg" alt="" />
+            </div>
+          </div>
+        </div>
       </van-swipe-item>
     </van-swipe>
   </div>
@@ -114,7 +172,7 @@ export default {
       index: 0,
       allVideo: [],
       videoPage: {},
-      videoMessage:{},
+      videoMessage: {},
       videoUrl: "",
       isPlay: false,
       isShorter: false,
@@ -130,8 +188,13 @@ export default {
           second: "00",
         },
       },
+      getLandTime: null,
       isSliding: false,
       isLike: false,
+      isLand: false,
+      isChooseDefinition: false,
+      Definition: "标清",
+      DefinitionE:'PQ'
     };
   },
   created() {
@@ -143,9 +206,9 @@ export default {
     videoListHandel() {
       let tapIndex = this.$route.query.index;
       let allVideoArr = this.$route.query.videoList;
-      console.log(tapIndex, allVideoArr);
+      allVideoArr = JSON.parse(allVideoArr).data;
       let handelArrStart = [];
-      let handelArrEnd = [];
+      let handelArrEnd = allVideoArr;
       if (tapIndex != 0) {
         handelArrStart = allVideoArr.slice(0, tapIndex);
         handelArrEnd = allVideoArr.slice(tapIndex);
@@ -156,20 +219,22 @@ export default {
 
       this.allVideo = handelArrEnd;
     },
-    getVideoMessage(){
+    getVideoMessage() {
       let id = this.allVideo[this.index].resId;
-       this.$axios
-       .get(`/MIGUM3.0/bmw/mv/by-contentId/v1.0?contentId=${id}&resourceType=D`)
-       .then(({data}) => {
-        this.videoMessage = data.data
-        console.log(this.videoMessage)
-       })
+      this.$axios
+        .get(
+          `/MIGUM3.0/bmw/mv/by-contentId/v1.0?contentId=${id}&resourceType=D`
+        )
+        .then(({ data }) => {
+          this.videoMessage = data.data;
+          console.log(this.videoMessage);
+        });
     },
     getVideoPage() {
       let id = this.allVideo[this.index].resId;
       this.$axios({
         methods: "GET",
-        url: `MIGUM3.0/strategy/mvplayinfo/by-priority/v1.0?canFallback=true&contentId=${id}&formatType=PQ`,
+        url: `MIGUM3.0/strategy/mvplayinfo/by-priority/v1.0?canFallback=true&contentId=${id}&formatType=${this.DefinitionE}`,
         headers: {
           channel: "0146921",
         },
@@ -184,8 +249,8 @@ export default {
             autoplay: true,
             muted: true,
             loop: true,
-            width: "auto",
-            height: "300",
+            // width: "atuo",
+            // height: "300",
           });
           this.player.src([
             {
@@ -314,14 +379,88 @@ export default {
       clearInterval(this.timer);
       this.getVideoPage();
     },
+
+    setLand() {
+      this.isLand = !this.isLand;
+      clearInterval(this.timer);
+      this.timer = setInterval(() => {
+        this.$refs.landSlideActive[this.index].style.height = `${
+          (this.player.currentTime() / this.player.duration()) * 100
+        }%`;
+      }, 10);
+
+      this.getLandTime = setInterval(() => {
+        let current = parseInt(this.player.currentTime());
+        let duration = parseInt(this.player.duration());
+        let currentMin = 0;
+        let currentSecond = current;
+        let min = 0;
+        let second = duration;
+        if (current > 60) {
+          currentMin = parseInt(current / 60);
+          currentSecond = current % 60;
+        }
+        if (duration > 60) {
+          min = parseInt(duration / 60);
+          second = duration % 60;
+        }
+
+        this.time = {
+          currentTime: {
+            min: currentMin > 9 ? currentMin : "0" + currentMin,
+            second: currentSecond > 9 ? currentSecond : "0" + currentSecond,
+          },
+          duration: {
+            min: min > 9 ? min : "0" + min,
+            second: second > 9 ? second : "0" + second,
+          },
+        };
+      });
+    },
+
+    cancelFullScreen() {
+      clearInterval(this.getLandTime);
+      clearInterval(this.timer);
+      this.isLand = !this.isLand;
+      this.playProgress();
+    },
+
+    videoLandPlayOrNot() {
+      this.isPlay = !this.isPlay;
+      if (this.player.paused()) {
+        this.player.play();
+      } else {
+        this.player.pause();
+      }
+    },
+
+    pickDefinition(formatDesc,formatType){
+       this.Definition = formatDesc;
+       this.isChooseDefinition = !this.isChooseDefinition;
+       this.DefinitionE = formatType;
+    },
+
+    landDownHandel(e) {
+      if (this.player.paused()) {
+        this.isPlay = false;
+        this.player.play();
+      }
+      let sliderY = e.targetTouches[0].pageY;
+      let sliderHeight = e.targetTouches[0].target.clientHeight;
+      let setTime = parseInt((sliderY * this.player.duration()) / sliderHeight);
+      this.player.currentTime(setTime);
+    },
   },
 
   destroyed() {
-    if(this.player){
-     this.player.dispose();
+    if (this.player) {
+      this.player.dispose();
     }
     if (this.timer) {
       clearInterval(this.timer);
+    }
+    if (this.getLandTime) {
+      clearInterval(this.getLandTime);
     }
   },
 };
@@ -347,6 +486,7 @@ export default {
   top: 3vh;
   left: 3vw;
 }
+
 .more {
   position: absolute;
   top: 3vh;
@@ -354,10 +494,19 @@ export default {
 }
 main {
   width: 100vw;
+  height: 35vh;
   position: absolute;
   top: 25vh;
   display: flex;
   justify-content: center;
+  align-items: center;
+
+  &.landActive {
+    left: -34vw;
+    width: 167vw;
+    height: 50vh;
+    transform: rotateZ(90deg);
+  }
 
   .land-scape {
     position: absolute;
@@ -567,7 +716,7 @@ footer {
     background-position: center center;
 
     &.likeActive {
-      animation: like 1s linear;
+      animation: like 0.5s linear;
       background-image: url(@/assets/videoRedHeart.svg);
       background-repeat: no-repeat;
       background-size: cover;
@@ -616,6 +765,135 @@ footer {
         background-repeat: no-repeat;
         background-size: cover;
         background-position: center center;
+      }
+    }
+  }
+}
+
+.landing-page {
+  height: 100vh;
+  width: 100vw;
+  position: absolute;
+  top: 0%;
+  display: flex;
+  justify-content: space-between;
+  .land-header {
+    height: 100vh;
+    width: 10vw;
+    background-color: rgba(0, 0, 0, 0.5);
+    .land-back-left-arrow {
+      transform: rotateZ(90deg);
+      position: absolute;
+      top: 1vh;
+      right: 3vw;
+    }
+    .land-more {
+      transform: rotateZ(90deg);
+      position: absolute;
+      bottom: 1vh;
+      right: 3vw;
+    }
+  }
+
+  .land-footer {
+    height: 100vh;
+    width: 10vw;
+    background-color: rgba(0, 0, 0, 0.5);
+    position: relative;
+
+    .land-play {
+      height: 32px;
+      width: 32px;
+      background-image: url(@/assets/videoFullScreenPlay.svg);
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: cover;
+      transform: rotateZ(90deg);
+      position: absolute;
+      top: 1vh;
+      left: 1vw;
+
+      &.landPause {
+        background-image: url(@/assets/videoFullScreenPuase.svg);
+      }
+    }
+
+    .definition {
+      position: absolute;
+      left: 0vw;
+      bottom: 4vh;
+      transform: rotateZ(90deg);
+      .default-definition {
+        color: #fff;
+        padding: 1px 2px;
+        white-space: nowrap;
+        border-radius: 5px;
+        border: 2px solid #fff;
+      }
+
+      .select-definition {
+        width: 20vw;
+        background-color: #333;
+        display: flex;
+        flex-direction: column-reverse;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        bottom: 3vh;
+        left: -5vw;
+        p {
+          color: #fff;
+          padding: 1px 2px;
+          margin: 5px 0;
+          white-space: nowrap;
+          border-radius: 5px;
+          border: 2px solid #fff;
+        }
+      }
+    }
+
+    .land-time {
+      color: #fff;
+      font-size: 12px;
+      width: 10vh;
+      transform: rotateZ(90deg);
+      position: absolute;
+      bottom: 12vh;
+      left: -6vw;
+    }
+  }
+}
+.land-slide-box {
+  height: calc(80vh - 32px - 2vh);
+  width: 10vw;
+  position: absolute;
+  top: calc(2vh + 32px);
+  right: 0%;
+  display: flex;
+  justify-content: center;
+
+  .land-slider {
+    height: 100%;
+    width: 1vw;
+    background-color: #666;
+    border-radius: 20px;
+
+    .land-slider-active {
+      width: 100%;
+      height: 0%;
+      background-color: #fff;
+      border-radius: 20px;
+      position: relative;
+
+      i {
+        display: inline-block;
+        height: 10px;
+        width: 10px;
+        border-radius: 999px;
+        background-color: #fff;
+        position: absolute;
+        bottom: 0;
+        right: -3px;
       }
     }
   }
