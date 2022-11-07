@@ -1,16 +1,20 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HomePageView from "../views/home/HomePageView.vue";
-import RankPageView from "../views/rank/RankPageView.vue";
+import RankPageView from "../views/rank/rankPageView.vue";
 import SingerListView from "../views/singer/SingerListView.vue";
 import SingerPageView from "../views/singer/SingerPageView.vue";
 import SingerAlbumSongsView from '../views/singer/SingerAlbumSongsView.vue'
 import RankScreamsGroup from "../views/rank/RankScreamsGroup.vue";
 import RankCharacteristicsGroup from "../views/rank/RankCharacteristicsGroup.vue";
 import SearchPageView from '../views/search/SearchPageView.vue';
-import SongListView from '../views/songList/SongListView.vue';
+import SongListView from '../views/songList/songlistView.vue';
 import SongsListOnlyView from '../views/songList/SongsListOnlyView.vue'
 import SearchResultView from '../views/search/SearchResultView.vue'
+import RadioStation from '../views/station/StationIndex.vue'
+import RadioDetail from '../views/station/StationDetail.vue'
+import UserIndexView from '../views/user/UserIndexView.vue'
+import UserLatelyPlay from "../views/user/UserLatelyPlay.vue"
 import VideoPageView from '../views/video/VideoPageView.vue'
 import MoreFuncComment from '../views/comment/MoreFuncComment.vue'
 import CharacteristicsGroup from '../views/rank/CharacteristicsGroup.vue'
@@ -23,28 +27,56 @@ const routes = [
     path: '/home',
     name: 'home',
     component: HomePageView,
+    meta: {
+      index: 0
+    }
   },
+  {
+    path: '/scene-radio',
+    name: 'scene-radio',
+    component: RadioStation,
+    meta: {
+      index: 1
+    }
+  },
+
+  {
+    path: '/radio-detail',
+    name: 'radio-detail',
+    component: RadioDetail
+  },
+
   {
     path: '/rank',
     name: 'rank',
     component: RankPageView,
+    meta: {
+      index: 1
+    }
   },
   {
     path: '/browser',
     name: 'browser',
     component: SingerListView,
-
+    meta: {
+      index: 1
+    }
   },
   {
     path: '/SingerPage/:id&:type',
     name: 'SingerPage',
     component: SingerPageView,
-
+    meta: {
+      index: 2
+    }
   },
   {
     path: '/albumSongs/:id&:type',
     name: 'albumSongs',
     component: SingerAlbumSongsView,
+    meta: {
+      index: 3
+    }
   },
 
   {
@@ -52,6 +84,9 @@ const routes = [
     name: 'screams',
     component: RankScreamsGroup,
     props: true,
+    meta: {
+      index: 2
+    }
   },
   {
     path: '/rankCharacteristics',
@@ -67,26 +102,57 @@ const routes = [
     path: '/songList',
     name: 'songList',
     component: SongListView,
+    meta: {
+      index: 1
+    }
   },
   {
     path: '/search',
     name: 'search',
     component: SearchPageView,
+    meta: {
+      index: 1
+    }
   },
   {
     path: '/song-lists',
     name: 'song-lists',
     component: SongListView,
+    meta: {
+      index: 1
+    }
   },
   {
     path: '/songListOnly/:id',
     name: 'songListOnly',
     component: SongsListOnlyView,
+    meta: {
+      index: 2
+    }
   },
   {
     path: '/search-result',
     name: 'search-result',
     component: SearchResultView,
+    meta: {
+      index: 2
+    }
+  },
+  {
+    path: '/user',
+    name: 'user',
+    component: UserIndexView,
+    meta: {
+      index: 1
+    }
+  },
+  {
+    path: '/user-lately-play',
+    name: 'user-lately-play',
+    component: UserLatelyPlay,
+    meta: {
+      index: 5
+    }
   },
   {
 

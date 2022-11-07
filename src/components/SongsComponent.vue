@@ -119,7 +119,11 @@ export default {
     SongsMoreFunc,
   },
   created() {
-    // console.log(this.songsData);
+    this.songsListData = this.songsData;
+    console.log(this.songsData,1);
+  },
+  mounted(){
+    console.log(this.songsData);
   },
   methods: {
     moreFunc(name, id) {

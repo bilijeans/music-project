@@ -53,7 +53,7 @@
       </div>
     </main>
     <footer>
-      <div class="nav">
+      <div class="nav" v-if="!lrcToggle">
         <div class="nav-item like"></div>
         <div class="nav-item comment"></div>
         <div class="nav-item tone-flag"></div>
@@ -128,6 +128,7 @@
         :loop="loop"
         @packUp="pickUpList"
         @changeLoop="changeLoop"
+        @stopPlay="stopPlay"
       ></play-list-component>
     </transition>
     <div
@@ -183,11 +184,14 @@ export default {
   watch: {
     currentTime() {
       if (this.currentTime < 1) {
-        this.$refs.lrc.scrollTop = 0;
-        this.titleShow = false;
-        this.getTitleStyle();
+        if (this.$refs.lrc) {
+          this.$refs.lrc.scrollTop = 0;
+          this.titleShow = false;
+          this.getTitleStyle();
+        } else {
+          return false;
+        }
       }
-      // this.moveLrc();
     },
     highLightLrcIndex() {
       this.moveLrc();
@@ -205,7 +209,11 @@ export default {
       for (let i = 0; i < this.highLightLrcIndex - 6; i++) {
         height += this.$refs.lrcItem[i]?.offsetHeight;
       }
-      this.$refs.lrc.scrollTop = height;
+      if (this.$refs.lrc) {
+        this.$refs.lrc.scrollTop = height;
+      } else {
+        return false;
+      }
     },
     pickUp() {
       this.$emit("packUpPlayInfo");
@@ -216,6 +224,10 @@ export default {
     getTitleStyle() {
       this.titleShow = false;
       clearInterval(this.time);
+      // console.log(this.$refs.firstSpan);
+      if (!this.$refs.firstSpan) {
+        return false;
+      }
       let windowWidth = document.documentElement.clientWidth;
       let titleWidth = parseInt(
         window.getComputedStyle(this.$refs.firstSpan).width
@@ -285,6 +297,9 @@ export default {
         index: preSongIndex,
       });
       this.changeHighNum(preSongIndex);
+    },
+    stopPlay() {
+      this.$emit("stopPlay");
     },
     changeLoop() {
       this.$emit("changeLoop");

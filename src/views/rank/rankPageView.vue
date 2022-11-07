@@ -103,7 +103,7 @@ export default {
   methods: {
     getRankData() {
       this.$axios.get(this.url).then(({ data }) => {
-        // console.log(data.data);
+        console.log(data.data);
         this.dealwithScreamsData(data.data.contentItemList[1].itemList);
         this.dealwithCharacteristicsData(data.data.contentItemList[3].itemList);
       });

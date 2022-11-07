@@ -22,7 +22,7 @@
         <div class="album-songs-page-content-main-singer">
           <div class="main-singer-left">
             <div class="main-singer-left-img">
-              <img :src="AblumMes.imgItem ? AblumMes.imgItem.img : ''" />
+              <img :src="AblumMes.ownerPic ? AblumMes.ownerPic : ''" />
             </div>
             <span class="ab-singer">{{ AblumMes.ownerName }}</span>
             <img class="r-arrow" src="@/assets/svg/rightArrow.svg" alt="" />
@@ -50,11 +50,11 @@
         <div class="album-songs-page-share">
           <div class="share-img">
             <img src="@/assets/svg/albumShare.svg" />
-            <span>分享</span>
+            <span>分享{{AblumMes?.opNumItem?.shareNum}}</span>
           </div>
           <div class="comments-img">
             <img src="@/assets/svg/albumComments.svg" />
-            <span></span>
+            <span>{{AblumMes?.opNumItem?.commentNum}}</span>
           </div>
           <div class="download-img">
             <img src="@/assets/svg/albumDownLoad.svg" />

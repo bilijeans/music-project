@@ -157,6 +157,7 @@ export default {
         });
     },
 
+
     getSongsListAndActive(id, index) {
       this.moveRecommendNav(index);
 
@@ -176,6 +177,7 @@ export default {
         },
       });
     },
+
 
     showTitle(e) {
       // console.log(e.target.scrollTop/ this.$refs.content[0].offsetHeight);

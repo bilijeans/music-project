@@ -40,6 +40,7 @@ export default {
             })
             state.commit("changeList", newList)
             state.dispatch("playOnList", { data: newList[0], index: 0 })
+
         },
         deleteSongOnList(state, id) {
             let index
@@ -52,7 +53,8 @@ export default {
             if (index < state.state.highLight) {
                 state.commit("changeHighNum", state.state.highLight - 1)
             } else if (index == state.state.highLight) {
-                index = index % state.state.listData.length
+                index = index % (state.state.listData.length - 1)
+                console.log(index, state.state.listData.length);
                 state.dispatch("playOnList", { data: newList[index], index: index })
             }
             state.commit("changeList", newList)
@@ -60,6 +62,14 @@ export default {
         }
     },
     mutations: {
+        initPlaylist(state) {
+            let data = localStorage.getItem("playlist") ? JSON.parse(localStorage.getItem("playlist")) : {
+                listData: [],
+                highLight: 0
+            }
+            state.listData = data.listData
+            state.highLight = data.highLight
+        },
         addToList(state, data) {
             state.listData = [...[data], ...state.listData]
             // console.log(state);
@@ -72,6 +82,7 @@ export default {
         },
         changeHighNum(state, num) {
             state.highLight = num
+            localStorage.setItem("playlist", JSON.stringify(state));
         },
         initHighNum(state) {
             state.highLight = 0
@@ -79,10 +90,15 @@ export default {
         },
         changeList(state, data) {
             state.listData = data
+            localStorage.setItem("playlist", JSON.stringify({
+                listData: data,
+                highLight: 0
+            }));
         },
         cleanListData(state) {
             state.listData = []
             state.highLight = 0
+            localStorage.removeItem("playlist");
         }
 
     }

@@ -10,7 +10,7 @@
         <div class="swiper-mask"></div>
         <p class="title">{{ i.title }}</p>
         <div class="num">
-          <img src="@/assets/svg/ear2.svg">
+          <img src="@/assets/svg/ear2.svg" />
           <p>{{ i.subTitle }}</p>
         </div>
       </swiper-slide>
@@ -33,15 +33,16 @@ export default {
     let self = this;
     return {
       swiperOption: {
+        initialSlide: 2,
         effect: "coverflow",
         grabCursor: true,
         loop: true,
         centeredSlides: true,
         slidesPerView: "2",
         autoplay: {
-            delay: 2500,
-            disableOnInteraction: false
-          },
+          delay: 2500,
+          disableOnInteraction: false,
+        },
         coverflowEffect: {
           rotate: 20,
           stretch: 0,
@@ -53,9 +54,9 @@ export default {
           click: function () {
             // console.log(this.realIndex,this.clickedSlide.id)
             self.goToOnlySongsList(this.clickedSlide.id);
-          }
-        }
-      }
+          },
+        },
+      },
     };
   },
   methods: {
@@ -64,7 +65,7 @@ export default {
         name: "songListOnly",
         params: {
           id,
-        }
+        },
       });
     },
   },
@@ -134,7 +135,7 @@ export default {
       display: flex;
       align-items: center;
 
-      img{
+      img {
         height: 15px;
         width: 15px;
         margin-right: 1vw;

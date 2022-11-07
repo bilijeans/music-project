@@ -3,6 +3,7 @@
     <van-swipe
       style="height: 100vh"
       vertical
+      :touchable="vertical"
       @change="onChange"
       :show-indicators="false"
     >
@@ -178,6 +179,7 @@ export default {
       isShorter: false,
       player: null,
       timer: null,
+      vertical:true,
       time: {
         currentTime: {
           min: "00",
@@ -381,6 +383,7 @@ export default {
     },
 
     setLand() {
+      this.vertical = false
       this.isLand = !this.isLand;
       clearInterval(this.timer);
       this.timer = setInterval(() => {
@@ -419,6 +422,7 @@ export default {
     },
 
     cancelFullScreen() {
+      this.vertical = true
       clearInterval(this.getLandTime);
       clearInterval(this.timer);
       this.isLand = !this.isLand;
