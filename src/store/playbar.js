@@ -38,7 +38,7 @@ export default {
             });
         },
         playOnList(state, obj) {
-            console.log(obj);
+            // console.log(obj);
             state.state.axios({
                 methods: "GET",
                 url: `/MIGUM2.0/strategy/listen-url/v2.4?resourceType=2&songId=${obj.data.songId}&toneFlag=${obj.data.toneFlag}`,
@@ -63,7 +63,7 @@ export default {
                         state.dispatch("playOnList", obj)
                     }
                 } else {
-                    console.log(data);
+                    // console.log(data);
                     state.commit("newId", obj.data.songId)
                     state.commit("initTongFlagIndex")
                     state.commit("newURL", data.data.url)
@@ -146,7 +146,7 @@ export default {
             state.playURL = url
         },
         newLrcURL(state, url) {
-            console.log(url);
+            // console.log(url);
             state.lrcURL = url
         },
         getLrcData(state, data) {

@@ -1,7 +1,7 @@
 <template>
   <div class="search">
     <div class="search-head">
-      <i class="wd-icon-thin-arrow-left" @click="goBack()"></i>
+      <i class="wd-icon-thin-arrow-left" @click="goBackHome()"></i>
       <div class="search-input">
         <input
           @keydown.enter="goSearchResult(lenovoAndResultText)"
@@ -56,20 +56,25 @@
         </wd-popup>
       </div>
       <div class="search-history-content">
-        <span @click="goSearchResult(i)" v-for="(i, index) in searchHistoryData" :key="index">{{
-          i
-        }}</span>
+        <span
+          @click="goSearchResult(i)"
+          v-for="(i, index) in searchHistoryData"
+          :key="index"
+          >{{ i }}</span
+        >
       </div>
     </div>
     <div class="search-found">
       <p>搜索发现</p>
       <div class="search-found-contents">
         <div class="search-found-content" v-if="searchDiscover">
-          <span v-for="(i, index) in searchDiscover" :key="index">{{
-            i.word
-          }}</span>
+          <span
+            @click="goSearchResult(i.word)"
+            v-for="(i, index) in searchDiscover"
+            :key="index"
+            >{{ i.word }}</span
+          >
         </div>
-        <!-- <div class="search-found-content2"></div> -->
       </div>
     </div>
     <div class="search-quickEntryList">
@@ -89,7 +94,7 @@
             :key="i.id"
           >
             <span class="num">{{ index + 1 }}</span>
-            <span>{{ i.word }}</span>
+            <span @click="goSearchResult(i.word)">{{ i.word }}</span>
           </div>
         </div>
         <div class="search-hotwordList">
@@ -100,27 +105,11 @@
             :key="i.id"
           >
             <span class="num">{{ index + 1 }}</span>
-            <span class="name">{{ i.word }}</span>
+            <span class="name" @click="goSearchResult(i.word)">{{
+              i.word
+            }}</span>
           </div>
         </div>
-        <!-- <div class="search-vedio">
-            <div class="title">{{ searchHotwords[2].type }}</div>
-            <div
-              class="songs-list"
-              v-for="(i, index) in searchHotwords[2].hotwordList"
-              :key="i.id"
-            >
-              <div class="songs-img">
-                <img src="" />
-                <span class="num">{{ index + 1 }}</span>
-                <div>
-                  <svg></svg>
-                  <span>1111111</span>
-                </div>
-              </div>
-              <span>{{ i.word }}</span>
-            </div>
-          </div> -->
       </div>
     </div>
     <search-lenovo-compontents
@@ -128,7 +117,6 @@
     ></search-lenovo-compontents>
   </div>
 </template>
-
 
 <script>
 import SearchLenovoCompontents from "@/components/SearchLenovoCompontents.vue";
@@ -153,7 +141,6 @@ export default {
     this.searchHistoryData =
       JSON.parse(localStorage.getItem("search_history")) || [];
   },
-
   methods: {
     getSearchDetail() {
       this.$axios({
@@ -172,7 +159,7 @@ export default {
       });
     },
     goSearchResult(str) {
-      this.lenovoAndResultText = str
+      this.lenovoAndResultText = str;
       if (this.lenovoAndResultText == "") {
         this.lenovoAndResultText = this.searchDiscover[0].word;
       }
@@ -194,8 +181,10 @@ export default {
         JSON.stringify(this.searchHistoryData)
       );
     },
-    goBack() {
-      this.$router.go(-1);
+    goBackHome() {
+      this.$router.push({
+        path: "/home",
+      });
     },
   },
   beforeDestroy() {
@@ -236,6 +225,9 @@ export default {
       width: 260px;
       outline: none;
       border: none;
+      &::-webkit-search-cancel-button {
+        display: none;
+      }
     }
   }
   svg {
