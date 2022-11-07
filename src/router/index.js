@@ -11,8 +11,10 @@ import SearchPageView from '../views/search/SearchPageView.vue';
 import SongListView from '../views/songList/SongListView.vue';
 import SongsListOnlyView from '../views/songList/SongsListOnlyView.vue'
 import SearchResultView from '../views/search/SearchResultView.vue'
+import VideoPageView from '../views/video/VideoPageView.vue'
 import MoreFuncComment from '../views/comment/MoreFuncComment.vue'
 import CharacteristicsGroup from '../views/rank/CharacteristicsGroup.vue'
+
 
 Vue.use(VueRouter)
 
@@ -34,8 +36,8 @@ const routes = [
 
   },
   {
-    path: '/singerPage/:id&:type',
-    name: 'singerPage',
+    path: '/SingerPage/:id&:type',
+    name: 'SingerPage',
     component: SingerPageView,
 
   },
@@ -87,10 +89,19 @@ const routes = [
     component: SearchResultView,
   },
   {
+
+    path: '/video',
+    name: 'video',
+    component: VideoPageView,
+  },
+
+  {
+
     path: '/morefunc-comment',
     name: 'morefunc-comment',
     component: MoreFuncComment,
   },
+
 ]
 
 const router = new VueRouter({

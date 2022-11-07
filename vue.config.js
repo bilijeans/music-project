@@ -64,6 +64,13 @@ module.exports = defineConfig({
         pathRewrite: {
           '': ''
         }
+      },
+      '/apiV':{
+        target:'http://freevod.nf.migu.cn:8080',
+        changeOrigin:true,
+        pathRewrite:{
+          '/apiV':''
+        }
       }
     }
   }

@@ -46,13 +46,14 @@ export default {
 <style lang="scss" scoped>
 .singer-page-nav {
   width: 100vw;
-  background-color: #fff;
+   background-color: #fff;
   border-top-left-radius: 20px;
 
   .singer-page-nav-content {
     height: 7vh;
     display: flex;
     position: relative;
+   
 
     div {
       width: 25vw;
