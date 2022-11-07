@@ -42,6 +42,8 @@ export default {
   justify-content: flex-start;
   flex-wrap: wrap;
   padding-top: 2vh;
+  height: 67vh;
+  overflow: auto;
 }
 .album-page-content {
   height: 25vh;
@@ -73,6 +75,9 @@ export default {
 
   .album-singer-name {
     font-size: 14px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }
 </style>

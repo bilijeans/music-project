@@ -15,8 +15,10 @@ import RadioStation from '../views/station/StationIndex.vue'
 import RadioDetail from '../views/station/StationDetail.vue'
 import UserIndexView from '../views/user/UserIndexView.vue'
 import UserLatelyPlay from "../views/user/UserLatelyPlay.vue"
+import VideoPageView from '../views/video/VideoPageView.vue'
 import MoreFuncComment from '../views/comment/MoreFuncComment.vue'
 import CharacteristicsGroup from '../views/rank/CharacteristicsGroup.vue'
+
 
 Vue.use(VueRouter)
 
@@ -61,8 +63,8 @@ const routes = [
     }
   },
   {
-    path: '/singerPage/:id&:type',
-    name: 'singerPage',
+    path: '/SingerPage/:id&:type',
+    name: 'SingerPage',
     component: SingerPageView,
     meta: {
       index: 2
@@ -153,10 +155,19 @@ const routes = [
     }
   },
   {
+
+    path: '/video',
+    name: 'video',
+    component: VideoPageView,
+  },
+
+  {
+
     path: '/morefunc-comment',
     name: 'morefunc-comment',
     component: MoreFuncComment,
   },
+
 ]
 
 const router = new VueRouter({

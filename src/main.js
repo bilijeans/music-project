@@ -5,6 +5,12 @@ import store from './store'
 import VueAxiosPlugin from 'vue-axios-plugin'
 import wotUI from './wotui'
 import vantUI from './vantui'
+import VueAwesomeSwiper from 'vue-awesome-swiper'
+import 'swiper/css/swiper.css'
+import videojs from 'video.js'
+Vue.prototype.$video = videojs
+import 'video.js/dist/video-js.css'
+Vue.use(VueAwesomeSwiper)
 Vue.use(wotUI)
 Vue.use(vantUI)
 Vue.use(VueAxiosPlugin, {

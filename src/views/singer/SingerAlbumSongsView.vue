@@ -22,7 +22,7 @@
             <span>数字专辑</span>
           </div>
           <div class="head-back-box-right">
-            <img src="@/assets/svg/more.svg" alt="" />
+            <img src="@/assets/MoreFunctionWhite.svg" alt="" />
           </div>
         </div>
       </div>
@@ -116,7 +116,9 @@ export default {
               dataList,
               totalCount: data.data.totalCount,
             };
+
             // console.log(this.songsData);
+
           });
       } else {
         this.$axios
@@ -128,6 +130,7 @@ export default {
               totalCount: data.data.totalCount,
             };
             // console.log(this.songsData);
+
           });
       }
     },
@@ -158,6 +161,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.album-songs-page {
+  width: 100vw;
+  height: 100vh;
+  overflow: auto;
+}
 .album-songs-page-bg {
   width: 100vw;
   position: fixed;
@@ -188,7 +196,7 @@ export default {
     justify-content: space-between;
     align-items: center;
     padding: 0 4vw;
-    position: fixed;
+    position: sticky;
     top: 4vh;
     left: 0%;
   }
@@ -198,6 +206,11 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    span {
+      font-size: 20px;
+      margin-left: 3vw;
+    }
   }
 }
 
@@ -205,7 +218,6 @@ export default {
   width: 100vw;
   border-top-left-radius: 20px;
   background-color: #fff;
-
   .album-songs-page-content-main-singer {
     height: 8vh;
     border-top-left-radius: 20px;
@@ -237,6 +249,11 @@ export default {
       .ab-singer {
         font-size: 15px;
         color: #999;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 12vw;
+        height: 2vh;
       }
     }
   }

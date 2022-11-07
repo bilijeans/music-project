@@ -12,8 +12,8 @@
             <span v-show="show">{{ singerPageData.singer }}</span>
           </div>
           <div class="singerMore">
-            <img src="@/assets/svg/share.svg" alt="" />
-            <img src="@/assets/svg/more.svg" alt="" />
+            <!-- <img src="@/assets/svg/share.svg" alt="" /> -->
+            <img src="@/assets/MoreFunctionWhite.svg" alt="" />
           </div>
         </div>
         <div class="nav" v-show="!show">
@@ -21,24 +21,24 @@
           <div class="fans">{{ singerPageData.followNums }}粉丝</div>
           <div class="wall">
             <img src="@/assets/svg/like.svg" alt="" />
-            <div class="concern" @click="like">+关注</div>
+            <div class="concern" @click="like">关注</div>
           </div>
         </div>
       </header>
-      <main ref="main">
+      <main>
         <div class="singer-nav">
-          <singer-page-nav-view :tabName="tabName" @changeTab="getTab">
-          </singer-page-nav-view>
+          <singer-nav-component :tabName="tabName" @changeTab="getTab">
+          </singer-nav-component>
 
           <transition-group ref="nav" name="nav">
-            <singer-page-main
+            <singer-main-component
               v-if="tab == 1"
               :singerPageData="singerPageData"
               :maskShow="maskShow"
               :similarSinger="similarSinger"
               @changeShowMask="getShowMask"
               key="main"
-            ></singer-page-main>
+            ></singer-main-component>
 
             <songs-component
               v-else-if="tab == 2"
@@ -46,17 +46,17 @@
               key="song"
             ></songs-component>
 
-            <singer-page-video
+            <singer-video-component
               v-else-if="tab == 3"
               :singerViedoList="singerViedoList"
               key="video"
-            ></singer-page-video>
+            ></singer-video-component>
 
-            <singer-album-view
+            <singer-album-component
               v-else
               :SingerAlbumList="SingerAlbumList"
               key="album"
-            ></singer-album-view>
+            ></singer-album-component>
           </transition-group>
         </div>
       </main>
@@ -65,11 +65,8 @@
     <div class="mask" v-show="maskShow">
       <div class="mask-head">
         <div
-          class="mask-head-img"
-          v-for="(i, d) in singerPageData.imgs"
-          :key="'singerPage1' + d"
-        >
-          <img :src="i.img" />
+          class="mask-head-img">
+          <img :src="singerPageData.imgs? singerPageData.imgs[2].img : ''" />
 
           <p>{{ singerPageData.singer }}</p>
         </div>
@@ -88,17 +85,18 @@
 
 <script>
 import SongsComponent from "@/components/SongsComponent.vue";
-import SingerAlbumView from "./SingerAlbumView.vue";
-import SingerPageMain from "./SingerPageMain.vue";
-import SingerPageVideo from "./SingerPageVideo.vue";
-import SingerPageNavView from "./singerPageNavView.vue";
+import SingerAlbumComponent from "@/components/SingerComponents/SingerAlbumComponent.vue";
+import SingerMainComponent from "@/components/SingerComponents/SingerMainComponent.vue";
+import SingerVideoComponent from "@/components/SingerComponents/SingerVideoComponent.vue";
+import SingerNavComponent from "@/components/SingerComponents/SingerNavComponent.vue";
+
 export default {
   components: {
-    SingerPageMain,
-    SingerPageVideo,
-    SingerAlbumView,
+    SingerMainComponent,
+    SingerVideoComponent,
+    SingerAlbumComponent,
     SongsComponent,
-    SingerPageNavView,
+    SingerNavComponent,
   },
 
   data() {
@@ -136,14 +134,14 @@ export default {
         e.target.textContent = "已关注";
         e.target.style.backgroundColor = "rgb(151, 149, 149,.5)";
       } else {
-        e.target.textContent = "+关注";
+        e.target.textContent = "关注";
         e.target.style.backgroundColor = "#e93f59";
       }
     },
     getSingerPersonalPage() {
       this.$axios
         .get(
-          `/MIGUM2.0/v1.0/content/resourceinfo.do?resourceId=${this.id}&resourceType=${this.type}`
+          `/MIGUM3.0/v1.0/content/resourceinfo.do?resourceId=${this.id}&resourceType=${this.type}`
         )
         .then((data) => {
           this.singerPageData = data.data.resource[0];
@@ -152,7 +150,7 @@ export default {
 
     getSimilarSinger() {
       this.$axios
-        .get(`/MIGUM2.0/bmw/singer/index/v1.0?singerId=${this.id}`)
+        .get(`/MIGUM3.0/bmw/singer/index/v1.0?singerId=${this.id}`)
         .then(({ data }) => {
           this.similarSinger = data.data.contents[3].contents;
         });
@@ -160,7 +158,7 @@ export default {
 
     getAllNum() {
       this.$axios
-        .get(`/MIGUM2.0/bmw/singer/info/v1.0?singerId=${this.id}`)
+        .get(`/MIGUM3.0/bmw/singer/info/v1.0?singerId=${this.id}`)
         .then(({ data }) => {
           this.tabName = data.data.contents[1].contents;
         });
@@ -168,7 +166,7 @@ export default {
     getSongList() {
       this.$axios
         .get(
-          `/MIGUM2.0/bmw/singer/song/v1.0?pageNo=${this.singerSongListPage}&singerId=${this.id}`
+          `/MIGUM3.0/bmw/singer/song/v1.0?pageNo=${this.singerSongListPage}&singerId=${this.id}`
         )
         .then(({ data }) => {
           let dataList = [];
@@ -187,7 +185,7 @@ export default {
 
     getViedoList() {
       this.$axios
-        .get(`/MIGUM2.0/bmw/singer/mv/v1.0?singerId=${this.id}`)
+        .get(`/MIGUM3.0/bmw/singer/mv/v1.0?singerId=${this.id}`)
         .then(({ data }) => {
           this.singerViedoList = data.data.contents;
         });
@@ -196,7 +194,7 @@ export default {
     getAlbumList() {
       this.$axios
         .get(
-          `/MIGUM2.0/bmw/singer/album/v1.0?pageNo=${this.SingerAlbumListPage}&singerId=${this.id}`
+          `/MIGUM3.0/bmw/singer/album/v1.0?pageNo=${this.SingerAlbumListPage}&singerId=${this.id}`
         )
         .then(({ data }) => {
           this.SingerAlbumList = data.data.contents;
@@ -220,14 +218,22 @@ export default {
     },
 
     scrollHandle(e) {
-      if (e.target.scrollTop >= 200) {
-        e.target.scrollTop = 200;
+      e.target.scrollLeft = 0;
+
+
+      if (e.target.scrollTop >= 240) {
+
+        e.target.scrollTop = 240;
+
         this.show = true;
+
         this.$refs.bgImgMask.style.backdropFilter = `blur(5px)`;
+
       } else {
         this.show = false;
+        
         this.$refs.bgImgMask.style.backdropFilter = `blur(${
-          e.target.scrollTop / 40
+          e.target.scrollTop / 48
         }px)`;
       }
     },
@@ -287,7 +293,7 @@ header {
     justify-content: space-between;
     align-items: center;
     position: fixed;
-    top: 5vh;
+    top: 3vh;
     left: 0;
 
     .singerBack {
@@ -295,22 +301,18 @@ header {
       justify-content: space-between;
       align-items: center;
       color: #fff;
-
       span {
         padding: 0 20px;
       }
     }
 
     .singerMore {
-      width: 18vw;
+      // width: 18vw;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
-    img {
-      height: 20px;
-      width: 20px;
-    }
+  
   }
   .nav {
     color: #fff;
