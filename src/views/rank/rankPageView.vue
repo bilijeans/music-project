@@ -50,7 +50,12 @@
     <div class="characteristics">
       <div
         class="characteristics-item"
-        @click="toCharacteristicsList(i.displayLogId.param.rankId)"
+        @click="
+          toCharacteristicsList(
+            i.displayLogId.param.rankId,
+            i.displayLogId.param.rankName
+          )
+        "
         v-for="i in characteristicsList"
         :key="i.displayLogId.param.rankId"
       >
@@ -135,8 +140,7 @@ export default {
       // console.log(this.screamsList);
     },
     dealwithCharacteristicsData(data) {
-      //   let groupTitle = data[0].title;
-      //   this.characteristicsTitle = groupTitle;
+      // this.characteristicsTitle = groupTitle;
       data = data.filter((e) => {
         return e.template == "grid1";
       });
@@ -146,9 +150,20 @@ export default {
     toScreamsList(id) {
       this.$router.push({ path: "/rankScreams", query: { id: id } });
     },
-    toCharacteristicsList(id) {
-      this.$router.push({ path: "/rankCharacteristics", query: { id: id}});
-      // this.$router.push({ path: "/rankCharacteristics", query: { id: id}});
+    toCharacteristicsList(id, name) {
+      if (
+        name == "来电新声榜" ||
+        name == "来电唱作榜" ||
+        name == "MV榜" ||
+        name == "新专辑榜"
+      ) {
+        this.$router.push({
+          path: "/characteristics-group",
+          query: { name: name },
+        });
+      } else {
+        this.$router.push({ path: "/rankCharacteristics", query: { id: id } });
+      }
     },
     back() {
       this.$router.go(-1);
@@ -158,6 +173,9 @@ export default {
 </script>
 
 <style lang="scss">
+.rank {
+  padding: 0 0 60px 0;
+}
 .rank-head {
   position: relative;
   i {
