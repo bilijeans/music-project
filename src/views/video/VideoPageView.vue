@@ -109,14 +109,19 @@
         </footer>
 
         <div class="landing-page" v-show="isLand">
-          <div class="land-footer">
-            <div
-              class="land-play"
-              :class="{ landPause: isPlay }"
-              @click="videoLandPlayOrNot"
-            ></div>
+          <div class="tips" v-show="showTip">已成功切换至{{ Definition }}</div>
+          <div class="land-page-mask" @click="videoLandPlayOrNot"></div>
 
-            <div class="land-slide-box" @touchstart="landDownHandel">
+          <div class="land-footer" v-show="isShowLandControl">
+            <div class="land-current-time">
+              {{ time.currentTime.min }}:{{ time.currentTime.second }}
+            </div>
+            <div
+              class="land-slide-mask"
+              @touchmove="landMoveHandel"
+              @touchstart.stop="landDownHandel"
+            ></div>
+            <div class="land-slide-box">
               <div class="land-slider">
                 <div class="land-slider-active" ref="landSlideActive">
                   <i></i>
@@ -125,26 +130,18 @@
             </div>
 
             <div class="land-time">
-              <span class="current-time">
-                {{ time.currentTime.min }}:{{ time.currentTime.second }}
-              </span>
-              <span>
-                / {{ time.duration.min }}:{{ time.duration.second }}
-              </span>
+              {{ time.duration.min }}:{{ time.duration.second }}
             </div>
 
             <div class="definition">
-              <p
-                class="default-definition"
-                @click="isChooseDefinition = !isChooseDefinition"
-              >
+              <p class="default-definition" @click="showChooseDefinition">
                 {{ Definition }}
               </p>
               <div class="select-definition" v-show="isChooseDefinition">
                 <p
                   v-for="(item, index) in videoMessage.rateFormats"
                   :key="index"
-                  @click="pickDefinition(item.formatDesc,item.formatType)"
+                  @click="pickDefinition(item.formatDesc, item.formatType)"
                 >
                   {{ item.formatDesc }}
                 </p>
@@ -152,7 +149,7 @@
             </div>
           </div>
 
-          <div class="land-header">
+          <div class="land-header" v-show="isShowLandControl">
             <div class="land-back-left-arrow" @click="cancelFullScreen">
               <wd-icon name="arrow-left" color="#fff"></wd-icon>
             </div>
@@ -179,7 +176,7 @@ export default {
       isShorter: false,
       player: null,
       timer: null,
-      vertical:true,
+      vertical: true,
       time: {
         currentTime: {
           min: "00",
@@ -196,7 +193,11 @@ export default {
       isLand: false,
       isChooseDefinition: false,
       Definition: "标清",
-      DefinitionE:'PQ'
+      DefinitionE: "PQ",
+      isShowLandControl: true,
+      showControlTime: null,
+      showTip: false,
+      keepCurrentTime: 0,
     };
   },
   created() {
@@ -229,7 +230,6 @@ export default {
         )
         .then(({ data }) => {
           this.videoMessage = data.data;
-          console.log(this.videoMessage);
         });
     },
     getVideoPage() {
@@ -261,8 +261,12 @@ export default {
             },
           ]);
 
-          this.scrollTitleHandel();
-          this.playProgress();
+          this.player.currentTime(this.keepCurrentTime);
+
+          if (!this.isLand) {
+            this.scrollTitleHandel();
+            this.playProgress();
+          }
         });
       });
     },
@@ -376,6 +380,9 @@ export default {
     },
 
     onChange(index) {
+      this.keepCurrentTime = 0;
+      this.DefinitionE = 'PQ';
+      this.Definition = '标清';
       this.index = index;
       this.isPlay = false;
       clearInterval(this.timer);
@@ -383,9 +390,11 @@ export default {
     },
 
     setLand() {
-      this.vertical = false
+      this.vertical = false;
       this.isLand = !this.isLand;
+      this.showControlTimeF();
       clearInterval(this.timer);
+
       this.timer = setInterval(() => {
         this.$refs.landSlideActive[this.index].style.height = `${
           (this.player.currentTime() / this.player.duration()) * 100
@@ -422,7 +431,7 @@ export default {
     },
 
     cancelFullScreen() {
-      this.vertical = true
+      this.vertical = true;
       clearInterval(this.getLandTime);
       clearInterval(this.timer);
       this.isLand = !this.isLand;
@@ -430,29 +439,73 @@ export default {
     },
 
     videoLandPlayOrNot() {
-      this.isPlay = !this.isPlay;
-      if (this.player.paused()) {
-        this.player.play();
-      } else {
-        this.player.pause();
+      if (this.isShowLandControl) {
+        this.isPlay = !this.isPlay;
+        if (this.player.paused()) {
+          this.player.play();
+        } else {
+          this.player.pause();
+        }
       }
+      this.isShowLandControl = true;
+      this.showControlTimeF();
     },
 
-    pickDefinition(formatDesc,formatType){
-       this.Definition = formatDesc;
-       this.isChooseDefinition = !this.isChooseDefinition;
-       this.DefinitionE = formatType;
+    showControlTimeF() {
+      if (this.showControlTime) {
+        clearTimeout(this.showControlTime);
+      }
+      this.showControlTime = setTimeout(() => {
+        this.isShowLandControl = false;
+        clearTimeout(this.showControlTime);
+        this.showControlTime = null;
+      }, 5000);
+    },
+
+    pickDefinition(formatDesc, formatType) {
+      this.keepCurrentTime = this.player.currentTime();
+      this.showControlTimeF();
+      this.Definition = formatDesc;
+      this.isChooseDefinition = !this.isChooseDefinition;
+      this.DefinitionE = formatType;
+      this.isPlay = false;
+      this.getVideoPage();
     },
 
     landDownHandel(e) {
+      this.showControlTimeF();
       if (this.player.paused()) {
         this.isPlay = false;
         this.player.play();
       }
-      let sliderY = e.targetTouches[0].pageY;
+      let sliderY =
+        e.targetTouches[0].pageY - e.targetTouches[0].target.offsetTop;
+      let sliderHeight = e.targetTouches[0].target.offsetHeight;
+      let setTime = parseInt((sliderY * this.player.duration()) / sliderHeight);
+      this.player.currentTime(setTime);
+    },
+
+    landMoveHandel(e) {
+      this.showControlTimeF();
+      if (this.player.paused()) {
+        this.isPlay = false;
+        this.player.play();
+      }
+      let sliderY =
+        e.targetTouches[0].pageY - e.targetTouches[0].target.offsetTop;
       let sliderHeight = e.targetTouches[0].target.clientHeight;
       let setTime = parseInt((sliderY * this.player.duration()) / sliderHeight);
       this.player.currentTime(setTime);
+    },
+
+    showChooseDefinition() {
+      this.isChooseDefinition = !this.isChooseDefinition;
+      if (this.isChooseDefinition) {
+        clearTimeout(this.showControlTime);
+        this.isShowLandControl = true;
+      } else {
+        this.showControlTimeF();
+      }
     },
   },
 
@@ -483,7 +536,7 @@ export default {
   height: 100vh;
   width: 100vw;
   background-color: #000;
-  z-index: 21;
+  z-index: 210;
 }
 .back-left-arrow {
   position: absolute;
@@ -781,10 +834,31 @@ footer {
   top: 0%;
   display: flex;
   justify-content: space-between;
+
+  .tips {
+    position: absolute;
+    top: 45vh;
+    left: 40vw;
+    font-size: 12px;
+    color: #fff;
+    transform: rotateZ(90deg);
+  }
+
+  .land-page-mask {
+    height: 100vh;
+    width: 100vw;
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    bottom: 0%;
+    right: 0%;
+  }
+
   .land-header {
     height: 100vh;
     width: 10vw;
     background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1;
     .land-back-left-arrow {
       transform: rotateZ(90deg);
       position: absolute;
@@ -803,6 +877,7 @@ footer {
     height: 100vh;
     width: 10vw;
     background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1;
     position: relative;
 
     .land-play {
@@ -824,15 +899,17 @@ footer {
 
     .definition {
       position: absolute;
-      left: 0vw;
+      left: -2vw;
       bottom: 4vh;
       transform: rotateZ(90deg);
       .default-definition {
         color: #fff;
-        padding: 1px 2px;
-        white-space: nowrap;
-        border-radius: 5px;
+        width: 15vw;
+        font-size: 13px;
+        padding: 2px 0;
+        text-align: center;
         border: 2px solid #fff;
+        border-radius: 5px;
       }
 
       .select-definition {
@@ -843,9 +920,11 @@ footer {
         justify-content: center;
         align-items: center;
         position: absolute;
-        bottom: 3vh;
-        left: -5vw;
+        bottom: 4vh;
+        left: -3vw;
+
         p {
+          font-size: 13px;
           color: #fff;
           padding: 1px 2px;
           margin: 5px 0;
@@ -859,11 +938,23 @@ footer {
     .land-time {
       color: #fff;
       font-size: 12px;
-      width: 10vh;
+      height: 10vw;
+      line-height: 8vw;
       transform: rotateZ(90deg);
       position: absolute;
-      bottom: 12vh;
-      left: -6vw;
+      bottom: 10vh;
+      left: 0vw;
+    }
+
+    .land-current-time {
+      color: #fff;
+      font-size: 12px;
+      height: 10vw;
+      line-height: 8vw;
+      transform: rotateZ(90deg);
+      position: absolute;
+      top: 2vh;
+      left: 0vw;
     }
   }
 }
@@ -871,7 +962,7 @@ footer {
   height: calc(80vh - 32px - 2vh);
   width: 10vw;
   position: absolute;
-  top: calc(2vh + 32px);
+  top: calc(5vh + 32px);
   right: 0%;
   display: flex;
   justify-content: center;
@@ -901,5 +992,14 @@ footer {
       }
     }
   }
+}
+.land-slide-mask {
+  height: calc(80vh - 32px - 2vh);
+  width: 10vw;
+  position: absolute;
+  top: calc(5vh + 32px);
+  right: 0%;
+  // background-color: #fff;
+  z-index: 25;
 }
 </style>

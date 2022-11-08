@@ -165,7 +165,7 @@ export default {
 
       this.getSongsList(id);
 
-      this.$refs.reUnderLine.style.left = `calc(2vw + ${(index + 1) * 20}vw - 29vw/2)`;
+      this.$refs.reUnderLine.style.left = `calc(2vw + ${(index + 1) * 16}vw - 25vw/2)`;
     },
 
     goToOnlySongsList(id) {
@@ -230,13 +230,13 @@ export default {
           ...this.recommendNav,
         ];
 
-        this.$refs.reUnderLine.style.left = `calc(2vw + 20vw - 29vw/2)`;
+        this.$refs.reUnderLine.style.left = `calc(2vw + 16vw - 25vw/2)`;
       } else {
         let isExistIndex = this.recommendNav.indexOf(isExist);
 
         this.recommendNavActive = isExistIndex;
 
-        this.$refs.reUnderLine.style.left = `calc(2vw + ${(isExistIndex + 1) * 20}vw - 29vw/2)`;
+        this.$refs.reUnderLine.style.left = `calc(2vw + ${(isExistIndex + 1) * 16}vw - 25vw/2)`;
       }
 
       this.moveRecommendNav(this.recommendNavActive)
@@ -264,7 +264,7 @@ export default {
         }
 
         if (Math.abs(recommend.scrollLeft - goLeft) < step || recommend.scrollLeft == 0 ||
-          Math.ceil(recommend.scrollLeft) + recommend.offsetWidth == recommend.scrollWidth) {
+          Math.ceil(recommend.scrollLeft) + recommend.offsetWidth >= recommend.scrollWidth) {
             
           window.clearInterval(timer);
 
@@ -405,7 +405,7 @@ main {
   }
 
   p {
-    width: 20vw;
+    width: 16vw;
     height: 4vh;
     text-align: center;
     line-height: 4vh;
@@ -415,7 +415,7 @@ main {
     font-size: 12px;
 
     &.active {
-      font-size: 15px;
+      font-size: 13px;
       font-weight: 600;
     }
   }
@@ -428,7 +428,7 @@ main {
     background-color: red;
     position: absolute;
     top: calc(11vh / 2);
-    left: calc(15vw / 2);
+    left: calc(11vw / 2);
     z-index: 2;
     transition: all 0.5s;
   }
