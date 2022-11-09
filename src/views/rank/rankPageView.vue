@@ -63,6 +63,12 @@
         <div class="characteristicsList-updatetime">
           <span>{{ i.barList[0].title }}</span>
           <svg
+            v-if="
+              (i.displayLogId.param.rankName !== '来电新声榜') &
+              (i.displayLogId.param.rankName !== '来电唱作榜') &
+              (i.displayLogId.param.rankName !== 'MV榜') &
+              (i.displayLogId.param.rankName !== '新专辑榜')
+            "
             class="icon"
             width="16px"
             height="16.00px"
@@ -103,7 +109,7 @@ export default {
   methods: {
     getRankData() {
       this.$axios.get(this.url).then(({ data }) => {
-        console.log(data.data);
+        // console.log(data.data);
         this.dealwithScreamsData(data.data.contentItemList[1].itemList);
         this.dealwithCharacteristicsData(data.data.contentItemList[3].itemList);
       });

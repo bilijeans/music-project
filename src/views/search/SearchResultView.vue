@@ -55,9 +55,16 @@
             />
           </svg>
         </div>
-        <div class="song-item" v-for="i in searchData" :key="i.id">
+        <div class="song-item" v-for="(i, index) in searchData" :key="i.id">
           <div class="song-msg">
-            <div class="song-name">{{ i.name }}</div>
+            <div class="song-name">
+              <span
+                v-for="(n, nindex) in songActiveData[index]"
+                :key="nindex"
+                :class="{ 'song-active': n.highLight }"
+                >{{ n.word }}</span
+              >
+            </div>
             <div class="song-pro">
               <div
                 class="toneflag"
@@ -71,8 +78,16 @@
                 "
               ></div>
               <span
-                >{{ i.singers ? dealWithSingerName(i.singers) : "" }}·
-                {{ i.albums ? i.albums[0].name : "" }}</span
+                v-for="(n, nindex) in singerActiveData[index]"
+                :key="nindex"
+                :class="{ 'song-active': n.highLight }"
+                >{{ n.word }}</span
+              >·
+              <span
+                v-for="(n, nindex) in albumActiveData[index]"
+                :key="nindex + '0'"
+                :class="{ 'song-active': n.highLight }"
+                >{{ n.word }}</span
               >
             </div>
           </div>
@@ -417,6 +432,9 @@ export default {
       name: "",
       singerData: null,
       singerInfo: {},
+      songActiveData: [],
+      singerActiveData: [],
+      albumActiveData: [],
     };
   },
   created() {
@@ -439,7 +457,10 @@ export default {
       this.$axios.get(this.resultUrl).then(({ data }) => {
         // console.log(data);
         this.searchData = data[this.dataHeader + "ResultData"]?.result;
-        // console.log(this.searchData);
+        console.log(this.searchData);
+        if (this.searchData) {
+          this.dealWithActiveData(this.searchData);
+        }
         if (this.dataHeader == "singer" && this.searchData) {
           // this.getSingerInfo(this.searchData[0].id);
           this.searchData.forEach((e) => {
@@ -475,6 +496,61 @@ export default {
       });
       str = str.slice(0, -1);
       return str;
+    },
+    // 处理搜索结果高亮
+    dealWithActiveData(data) {
+      let arr1 = [];
+      let arr2 = [];
+      let arr3 = [];
+      data.forEach((e) => {
+        e.name = e.name.replaceAll(" ", "");
+        let str = this.dealWithSingerName(e.singers);
+        if (e.albums) {
+          e.albums = e.albums[0].name.replaceAll(" ", "");
+          arr3.push(this.dealWithWord(this.text, e.albums));
+        }
+        arr1.push(this.dealWithWord(this.text, e.name));
+        arr2.push(this.dealWithWord(this.text, str));
+      });
+      this.songActiveData = arr1;
+      this.singerActiveData = arr2;
+      this.albumActiveData = arr3;
+    },
+    dealWithWord(key, str) {
+      let arr = [];
+      let num = str.indexOf(key);
+      if (num != -1) {
+        let preStr = str.slice(0, num);
+        if (preStr) {
+          arr.push({
+            word: preStr,
+            highLight: false,
+          });
+        }
+        str = str.slice(num + key.length);
+        arr.push({
+          word: key,
+          highLight: true,
+        });
+        if (str.indexOf(key) != -1) {
+          arr = [...arr, ...this.dealWithWord(key, str)];
+        } else {
+          if (str) {
+            arr.push({
+              word: str,
+              highLight: false,
+            });
+          }
+        }
+      } else {
+        return [
+          {
+            word: str,
+            highLight: false,
+          },
+        ];
+      }
+      return arr;
     },
     // 点击更多功能
     moreFunc(name) {
@@ -682,6 +758,9 @@ export default {
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
+          .song-active {
+            color: #e82f60;
+          }
         }
         .song-pro {
           display: flex;
@@ -700,11 +779,14 @@ export default {
             margin: 0 5px 0 0;
           }
           span {
-            width: 80%;
-            display: block;
+            // width: 80%;
+            // display: block;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+          }
+          .song-active {
+            color: #e82f60;
           }
         }
       }
@@ -775,6 +857,9 @@ export default {
       z-index: 1;
     }
   }
+  .song-item:nth-last-child(1) {
+    border: 0;
+  }
   .albums {
     width: 90%;
     margin: 10px auto 0;
@@ -801,7 +886,7 @@ export default {
       }
       .album-msg {
         width: 65%;
-        margin: -0 0 0 10px;
+        margin: 0 0 0 10px;
         .album-name {
           font-size: 15px;
           white-space: nowrap;

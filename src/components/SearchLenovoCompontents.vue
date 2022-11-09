@@ -64,6 +64,7 @@ export default {
         }
       });
     },
+    // 处理搜索高亮
     dealWithLenovoData(data) {
       let arr = [];
       data.forEach((e) => {
