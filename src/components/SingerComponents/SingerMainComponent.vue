@@ -42,7 +42,7 @@ export default {
         path: "/browser"
       });
       this.$router.push({
-        name: "singerPage",
+        name: "SingerPage",
         params: {
           id,
           type,

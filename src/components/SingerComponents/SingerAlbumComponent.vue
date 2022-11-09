@@ -40,6 +40,7 @@ export default {
   background-color: #fff;
   display: flex;
   justify-content: flex-start;
+  align-items: flex-start;
   flex-wrap: wrap;
   padding-top: 2vh;
   height: 67vh;

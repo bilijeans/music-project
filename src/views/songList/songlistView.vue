@@ -323,7 +323,7 @@ main {
     background-color: #fff;
     width: 7vw;
     position: absolute;
-    top: calc(4.5vh / 2);
+    top: calc(4.4vh / 2);
     right: 0%;
     z-index: 11;
   }
@@ -345,23 +345,23 @@ main {
     display: none;
   }
   .songs-list {
-    height: 20vh;
+    height: 40vw;
     width: 30vw;
     margin-left: calc(9vw / 4);
     margin-top: 2vh;
     position: relative;
     img {
-      height: 15vh;
+      height: 30vw;
       width: 30vw;
       border-radius: 15px;
     }
     .songs-list-num {
       position: absolute;
-      top: 13vh;
+      bottom: 10vw;
       left: 0vw;
       color: #fff;
       height: 2vh;
-      width: 30vw;
+      width: 100%;
       display: flex;
       align-items: center;
       background-color: rgba(0, 0, 0, 0.4);
@@ -392,7 +392,7 @@ main {
 }
 
 .recommend {
-  margin: 2vh 3vw;
+  margin: 2vh 3vw 1vh 3vw;
   display: flex;
   overflow: auto;
   background-color: #fff;

@@ -9,21 +9,26 @@
     >
       <van-swipe-item v-for="(i, index) in allVideo" :key="index">
         <div class="video-mask" @click="isPlayOrNot" v-show="!isLand"></div>
+
         <header>
           <div class="back-left-arrow" @click="goBack" v-show="!isLand">
             <wd-icon name="arrow-left" color="#fff"></wd-icon>
           </div>
+
           <div class="more" v-show="!isLand">
             <img src="@/assets/MoreFunctionWhite.svg" alt="" />
           </div>
         </header>
+
         <main :class="{ landActive: isLand }">
-          <video
-            ref="video"
-            class="video-js video"
-            :poster="i.img"
-            data-setup='{"aspectRatio":"3:2"}'
-          ></video>
+
+          <div class="video-box" ref="videoBox">
+            <video
+              ref="video"
+              class="video-js video"
+              :poster="i.img"
+            ></video>
+          </div>
 
           <div class="land-scape" @click="setLand" v-show="!isLand">
             <img src="@/assets/landScape.svg" alt="" />
@@ -36,22 +41,28 @@
                 @click="isLike = !isLike"
               ></div>
             </div>
-            <img src="@/assets/videoComment.svg" alt="" />
-            <img src="@/assets/videoShare.svg" alt="" />
+
+            <img src="@/assets/videoComment.svg" />
+
+            <img src="@/assets/videoShare.svg" />
           </div>
 
           <div class="play-video" v-show="isPlay">
             <img src="@/assets/videoPlay.svg" />
           </div>
         </main>
+
         <footer v-show="!isLand">
           <div class="message-box">
             <p class="mv" v-show="!isSliding">MV</p>
+
             <p class="mes" v-show="!isSliding">
               {{ i.txt }}
             </p>
+
             <div class="singerName" v-show="!isSliding">
               <p>{{ i.txt2 }}</p>
+
               <wd-icon
                 class="arrow-right"
                 name="arrow-right"
@@ -71,8 +82,10 @@
               <span class="current-time"
                 >{{ time.currentTime.min }}:{{ time.currentTime.second }}
               </span>
+
               <span> / {{ time.duration.min }}:{{ time.duration.second }}</span>
             </div>
+
             <div class="slide">
               <div class="silde-active" ref="slideActive">
                 <i></i>
@@ -83,17 +96,19 @@
           <div class="footer-bottom">
             <div class="scroll-name" v-show="!isSliding">
               <img src="/img/like.e498651b.svg" alt="" />
+
               <div class="scroll-text">
                 <p ref="scrollText">
                   <span
                     class="s-text"
                     ref="sText"
                     :class="{ animationActive: isShorter }"
-                    >{{ i.txt }}</span
-                  >
+                    >{{ i.txt }}
+                  </span>
                 </p>
               </div>
             </div>
+
             <div
               class="revolve-image"
               :class="{ active: isPlay }"
@@ -109,18 +124,21 @@
         </footer>
 
         <div class="landing-page" v-show="isLand">
-          <div class="tips" v-show="showTip">已成功切换至{{ Definition }}</div>
-          <div class="land-page-mask" @click="videoLandPlayOrNot"></div>
+          <!-- <div class="tips" v-show="showTip">已成功切换至{{ Definition }}</div> -->
+
+          <div class="land-page-mask" @click.prevent="videoLandPlayOrNot"></div>
 
           <div class="land-footer" v-show="isShowLandControl">
             <div class="land-current-time">
               {{ time.currentTime.min }}:{{ time.currentTime.second }}
             </div>
+
             <div
               class="land-slide-mask"
               @touchmove="landMoveHandel"
               @touchstart.stop="landDownHandel"
             ></div>
+
             <div class="land-slide-box">
               <div class="land-slider">
                 <div class="land-slider-active" ref="landSlideActive">
@@ -137,6 +155,7 @@
               <p class="default-definition" @click="showChooseDefinition">
                 {{ Definition }}
               </p>
+
               <div class="select-definition" v-show="isChooseDefinition">
                 <p
                   v-for="(item, index) in videoMessage.rateFormats"
@@ -153,6 +172,7 @@
             <div class="land-back-left-arrow" @click="cancelFullScreen">
               <wd-icon name="arrow-left" color="#fff"></wd-icon>
             </div>
+
             <div class="land-more">
               <img src="@/assets/MoreFunctionWhite.svg" alt="" />
             </div>
@@ -205,6 +225,16 @@ export default {
     this.getVideoMessage();
     this.getVideoPage();
   },
+  mounted() {
+    window.addEventListener("resize", this.renderResize, false);
+    this.$nextTick(() => {
+       let width = document.documentElement.clientWidth
+        let height = document.documentElement.clientHeight
+        if(width > height) {
+            console.log('横屏')
+        }
+    })
+  },
   methods: {
     videoListHandel() {
       let tapIndex = this.$route.query.index;
@@ -244,25 +274,8 @@ export default {
         this.videoPage = data.data;
         this.videoUrl = this.videoPage.playUrl.slice(31);
         this.$nextTick(() => {
-          let video = this.$refs.video[this.index];
-          let url = "/apiV/" + this.videoUrl;
-          this.player = this.$video(video, {
-            controls: false,
-            autoplay: true,
-            muted: true,
-            loop: true,
-            // width: "atuo",
-            // height: "300",
-          });
-          this.player.src([
-            {
-              src: url,
-              type: "application/x-mpegURL",
-            },
-          ]);
-
+          this.videoInit();
           this.player.currentTime(this.keepCurrentTime);
-
           if (!this.isLand) {
             this.scrollTitleHandel();
             this.playProgress();
@@ -381,8 +394,8 @@ export default {
 
     onChange(index) {
       this.keepCurrentTime = 0;
-      this.DefinitionE = 'PQ';
-      this.Definition = '标清';
+      this.DefinitionE = "PQ";
+      this.Definition = "标清";
       this.index = index;
       this.isPlay = false;
       clearInterval(this.timer);
@@ -469,6 +482,8 @@ export default {
       this.isChooseDefinition = !this.isChooseDefinition;
       this.DefinitionE = formatType;
       this.isPlay = false;
+      console.log(this.$refs.video[this.index])
+      this.$refs.video[this.index].removeAttribute('data-setup');
       this.getVideoPage();
     },
 
@@ -506,6 +521,24 @@ export default {
       } else {
         this.showControlTimeF();
       }
+    },
+
+    videoInit() {
+      let video = this.$refs.video[this.index];
+      video.setAttribute('data-setup','{"aspectRatio":"3:2"}');
+      let url = "/apiV/" + this.videoUrl;
+      this.player = this.$video(video, {
+        controls: false,
+        autoplay: true,
+        muted: true,
+        loop: true,
+      });
+      this.player.src([
+        {
+          src: url,
+          type: "application/x-mpegURL",
+        },
+      ]);
     },
   },
 
@@ -557,6 +590,10 @@ main {
   display: flex;
   justify-content: center;
   align-items: center;
+
+  .video-box {
+    width: 100%;
+  }
 
   &.landActive {
     left: -34vw;
@@ -773,7 +810,7 @@ footer {
     background-position: center center;
 
     &.likeActive {
-      animation: like 0.5s linear;
+      animation: like 0.2s linear;
       background-image: url(@/assets/videoRedHeart.svg);
       background-repeat: no-repeat;
       background-size: cover;

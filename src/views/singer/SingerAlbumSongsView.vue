@@ -118,7 +118,6 @@ export default {
             };
 
             // console.log(this.songsData);
-
           });
       } else {
         this.$axios
@@ -130,7 +129,6 @@ export default {
               totalCount: data.data.totalCount,
             };
             // console.log(this.songsData);
-
           });
       }
     },
@@ -279,17 +277,19 @@ export default {
   padding: 0 3vw;
 
   .page-album-name {
-    width: 50vw;
-    font-size: 25px;
+    width: 65vw;
+    font-size: 16px;
     font-weight: 500;
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
   }
 
   .collect {
     width: 22vw;
-    height: 100%;
+    height: 22vw;
     border-radius: 999px;
     box-shadow: 0 0 6px 0 #ccc;
     display: flex;
