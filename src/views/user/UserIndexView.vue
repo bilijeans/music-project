@@ -1,7 +1,7 @@
 <template>
   <div class="user-index" ref="userPage">
     <header :style="{ backgroundColor: `rgba(255, 255, 255,${showHeader})` }">
-      <i class="back wd-icon-thin-arrow-left"></i>
+      <i class="back wd-icon-thin-arrow-left" @click="backToHome"></i>
       <i class="search wd-icon-search"></i>
       <transition name="user">
         <div class="user-profile" v-show="showHeader == 1">
@@ -33,7 +33,7 @@
           </div>
           <span class="user-play-title">最近播放</span>
         </div>
-        <div class="user-play-item">
+        <div class="user-play-item" @click="turnToCollectPage">
           <div class="user-play-icon">
             <img src="@/assets/user-fav.png" />
           </div>
@@ -52,16 +52,20 @@
           <span class="user-play-title">设置</span>
         </div>
       </div>
-      <div class="user-fav-list card">
+      <div class="user-fav-list card" @click="turnToFavSong">
         <div class="fav-cover">
           <img
-            src="http://d.musicapp.migu.cn/prod/playlist-service/playListimg/662f99c9-bb95-4cf7-b3e2-c1f4a9d28736.jpg"
+            :src="
+              user.fav.song[0]
+                ? '	http://d.musicapp.migu.cn' + user.fav.song[0].cover
+                : require('@/assets/defaultSonglistCover.jpg')
+            "
           />
           <div class="mask"></div>
         </div>
         <div class="fav-msg">
           <div class="fav-title">我喜欢的音乐</div>
-          <div class="fav-list-num">70首</div>
+          <div class="fav-list-num">{{ user.fav.song.length }}首</div>
         </div>
       </div>
       <div class="user-song-list">
@@ -114,7 +118,11 @@
             >
               <div class="l-i-cover">
                 <img
-                  src="http://d.musicapp.migu.cn/prod/playlist-service/playListimg/662f99c9-bb95-4cf7-b3e2-c1f4a9d28736.jpg"
+                  :src="
+                    item.list[0]
+                      ? item.list[0].cover
+                      : require('@/assets/defaultSonglistCover.jpg')
+                  "
                 />
                 <div class="folder"></div>
               </div>
@@ -133,7 +141,7 @@
             <p class="empty-desc">快去创建你的专属歌单吧</p>
           </div>
           <wd-popup
-            :value="songlistStatus"
+            v-model="songlistStatus"
             class="s-l-cro"
             position="bottom"
             :teleport="{ disabled: true }"
@@ -184,22 +192,59 @@
               :key="item.playlistId"
             >
               <div class="l-i-cover">
-                <img
-                  src="http://d.musicapp.migu.cn/prod/playlist-service/playListimg/662f99c9-bb95-4cf7-b3e2-c1f4a9d28736.jpg"
-                />
+                <img :src="item.cover" />
                 <div class="folder"></div>
               </div>
               <div class="l-i-msg">
                 <div class="l-i-title">{{ item.title }}</div>
-                <div class="l-i-list-num">{{ item.list.length }}首</div>
+                <div class="l-i-list-num">
+                  {{ item.count }}首, <span>by {{ item.ownerName }}</span>
+                </div>
               </div>
-              <div class="more"></div>
+              <div class="more" @click="showColSonglistMore(item.playlistId)">
+                <i class="wd-icon-more btn-more"></i>
+              </div>
             </div>
           </div>
           <div class="empty-list" v-else>
             <p class="empty-desc">空空如也</p>
             <p class="empty-desc">快去寻找喜欢的歌单吧</p>
           </div>
+          <wd-popup
+            v-model="colSonglistStatus"
+            class="s-l-cro"
+            position="bottom"
+            :teleport="{ disabled: true }"
+            :style="{ height: '120px' }"
+          >
+            <div class="title">歌单：{{ croTitle }}</div>
+            <div class="rename" @click="rename">
+              <i class="wd-icon-lenovo"></i> 重命名
+            </div>
+            <div class="delete" @click="delSonglist">
+              <i class="wd-icon-delete"></i> 删除
+            </div>
+            <div class="add-song-list" v-if="renameStatus">
+              <div class="pop-up-card">
+                <div class="pop-up-title">
+                  <p>歌单名称</p>
+                </div>
+                <div class="pop-up-i-box">
+                  <input
+                    type="text"
+                    v-model="newTitle"
+                    :placeholder="croTitle"
+                  />
+                </div>
+                <div class="btn-choose">
+                  <span style="color: #aef" @click="renameCompeleted"
+                    >完成</span
+                  >
+                  <span @click="renameStatus = false">取消</span>
+                </div>
+              </div>
+            </div>
+          </wd-popup>
         </div>
       </div>
     </main>
@@ -251,6 +296,7 @@ export default {
       navShow: 0,
       navIndex: 0,
       songlistStatus: false,
+      colSonglistStatus: false,
       croTitle: "",
       newTitle: "",
       renameStatus: false,
@@ -306,6 +352,9 @@ export default {
     ...mapState(["user"]),
   },
   methods: {
+    // closePopUp() {
+    //   this.songlistStatus = false;
+    // },
     rename() {
       this.renameStatus = true;
       // this.songlistStatus = false
@@ -357,6 +406,18 @@ export default {
         }
       });
     },
+    showColSonglistMore(id) {
+      this.colSonglistStatus = true;
+      this.user.collectSongList.forEach((e) => {
+        if (e.playlistId == id) {
+          this.croTitle = e.title;
+          this.itemData = e;
+        }
+      });
+    },
+    backToHome() {
+      this.$router.go(-1);
+    },
     goToOnlySongsList(id) {
       // console.log(id);
       this.$router.push({
@@ -366,11 +427,22 @@ export default {
         },
       });
     },
-    turnToLatelyPlay(){
+    turnToLatelyPlay() {
       this.$router.push({
-        path:'/user-lately-play'
-      })
+        path: "/user-lately-play",
+      });
     },
+    turnToCollectPage() {
+      this.$router.push({
+        path: "/user/user-collect",
+      });
+    },
+    turnToFavSong() {
+      this.$router.push({
+        path: "/user/user-fav-song",
+      });
+    },
+
     ...mapMutations(["addMySongList", "renameMySongList", "delMySongList"]),
   },
   beforeDestroy() {},

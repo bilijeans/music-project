@@ -53,8 +53,16 @@
       </div>
     </main>
     <footer>
-      <div class="nav" v-if="!lrcToggle">
-        <div class="nav-item like"></div>
+      <div class="nav">
+        <div
+          class="nav-item like"
+          @click="toggleLike"
+          :style="{
+            backgroundImage: likeStatus
+              ? `url(${require('@/assets/ActiveHeart.svg')})`
+              : `url(${require('@/assets/ActiveHeartWhite.svg')})`,
+          }"
+        ></div>
         <div class="nav-item comment"></div>
         <div class="nav-item tone-flag"></div>
         <div class="nav-item more"></div>
@@ -161,10 +169,12 @@ export default {
       playListShow: false,
       time: null,
       titleShow: false,
+      likeStatus: false,
     };
   },
   created() {
     this.getTitleStyle = debounce(this.getTitleStyle, 2000);
+    this.hasLike();
   },
   computed: {
     highLightLrcIndex() {
@@ -179,7 +189,10 @@ export default {
       }
       return 0;
     },
-    ...mapState(["playbar", "playList"]),
+    ...mapState(["playbar", "playList", "user"]),
+    ...mapState({
+      songId: (state) => state.playbar.playId,
+    }),
   },
   watch: {
     currentTime() {
@@ -198,6 +211,10 @@ export default {
     },
     lrcToggle() {
       this.moveLrc();
+    },
+    songId() {
+      console.log(this.playbar);
+      this.hasLike();
     },
   },
   methods: {
@@ -264,6 +281,9 @@ export default {
       return str;
     },
     dealWithTime(num) {
+      if (num != num) {
+        return "00:00";
+      }
       num = parseInt(num);
       let min = parseInt(num / 60) % 60;
       let hour = parseInt(min / 60);
@@ -275,6 +295,32 @@ export default {
     },
     togglePlayChange() {
       this.$emit("togglePlay");
+    },
+    hasLike() {
+      this.likeStatus = false;
+      this.user.fav.song.forEach((e) => {
+        if (e.songId == this.songId) {
+          this.likeStatus = true;
+          return;
+        }
+      });
+    },
+    toggleLike() {
+      if (this.likeStatus) {
+        this.delFavSong(this.songId);
+        this.likeStatus = false;
+      } else {
+        this.addFavSong({
+          songId: this.songId,
+          cover: this.playbar.songData.img1,
+          songName: this.playbar.songData.songName,
+          singerList: this.playbar.songData.singerList,
+          albumId: this.playbar.songData.albumId,
+          album: this.playbar.songData.album,
+          toneFlag:this.playList.listData[this.playList.highLight].toneFlag
+        });
+        this.likeStatus = true;
+      }
     },
     moveProgress(e) {
       console.log(e.offsetX);
@@ -304,7 +350,7 @@ export default {
     changeLoop() {
       this.$emit("changeLoop");
     },
-    ...mapMutations(["changeHighNum"]),
+    ...mapMutations(["changeHighNum", "addFavSong", "delFavSong"]),
     ...mapActions(["playOnList"]),
   },
 };

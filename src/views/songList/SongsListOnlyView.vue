@@ -34,27 +34,34 @@
             }}</span>
             <img src="@/assets/svg/heart.svg" />
             <span>{{
-              AblumMes.opNumItem ? AblumMes.opNumItem.keepNumDesc : ""
+              Number(AblumMes.opNumItem ? AblumMes.opNumItem.keepNumDesc : "") +
+              (hasCollectStatus ? 1 : 0)
             }}</span>
           </div>
         </div>
 
         <div class="album-songs-page-album">
           <p class="page-album-name">{{ AblumMes.title }}</p>
-          <div class="collect">
-            <img src="@/assets/svg/redHeart.svg" />
-            <p>收藏</p>
+          <div class="collect" @click="toggleCollect">
+            <img
+              :src="
+                hasCollectStatus
+                  ? require('@/assets/ActiveHeartRed.svg')
+                  : require('@/assets/HeartRed.svg')
+              "
+            />
+            <p>{{ hasCollectStatus ? "已" : "" }}收藏</p>
           </div>
         </div>
 
         <div class="album-songs-page-share">
           <div class="share-img">
             <img src="@/assets/svg/albumShare.svg" />
-            <span>分享{{AblumMes?.opNumItem?.shareNum}}</span>
+            <span>分享{{ AblumMes?.opNumItem?.shareNum }}</span>
           </div>
-          <div class="comments-img">
+          <div class="comments-img" @click="goToComment(AblumMes.musicListId)">
             <img src="@/assets/svg/albumComments.svg" />
-            <span>{{AblumMes?.opNumItem?.commentNum}}</span>
+            <span>{{ AblumMes?.opNumItem?.commentNum }}</span>
           </div>
           <div class="download-img">
             <img src="@/assets/svg/albumDownLoad.svg" />
@@ -62,13 +69,17 @@
           </div>
         </div>
 
-        <songs-component :songsData="songsData"></songs-component>
+        <songs-component
+          :songsData="songsData"
+          :updateData="updateData"
+        ></songs-component>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapState, mapMutations } from "vuex";
 import SongsComponent from "@/components/SongsComponent.vue";
 export default {
   components: { SongsComponent },
@@ -77,12 +88,18 @@ export default {
       albumId: "",
       songsData: {},
       AblumMes: {},
+      updateData: {},
+      hasCollectStatus: false,
     };
   },
   created() {
     this.albumId = this.$route.params.id;
     this.getOnlySongsList(this.albumId);
     this.getAblumMes(this.albumId);
+    this.hasCollect();
+  },
+  computed: {
+    ...mapState(["user"]),
   },
   methods: {
     getOnlySongsList(id) {
@@ -103,14 +120,53 @@ export default {
         .get(`/MIGUM3.0/resource/playlist/v2.0?playlistId=${id}`)
         .then(({ data }) => {
           this.AblumMes = data.data;
+          this.updateData.playlistId = id;
+          this.updateData.cover = data.data.imgItem.img;
+          this.updateData.count = data.data.musicNum;
+          this.updateData.ownerName = data.data.ownerName;
+          this.updateData.ownerId = data.data.ownerId;
+          this.updateData.opNumItem = data.data.opNumItem;
+          this.updateData.title = data.data.title;
+          this.updateData.tags = data.data.tags;
           // console.log(this.songsData)
-
         });
     },
-
+    hasCollect() {
+      this.hasCollectStatus = false;
+      this.user.collectSongList.forEach((el) => {
+        if (el.playlistId == this.albumId) {
+          this.hasCollectStatus = true;
+          return;
+        }
+      });
+    },
+    toggleCollect() {
+      if (this.hasCollectStatus) {
+        this.delCollectSongList(this.albumId);
+      } else {
+        this.addCollectSongList({
+          playlistId: this.albumId,
+          cover: this.AblumMes.imgItem.img,
+          count: this.AblumMes.musicNum,
+          ownerName: this.AblumMes.ownerName,
+          ownerId: this.AblumMes.ownerId,
+          opNumItem: this.AblumMes.opNumItem,
+          title: this.AblumMes.title,
+          tags: this.tags,
+        });
+      }
+      this.hasCollectStatus = !this.hasCollectStatus;
+    },
+    goToComment(id) {
+      this.$router.push({
+        path: "/morefunc-comment",
+        query: { id: id, type: 2021 },
+      });
+    },
     back() {
       this.$router.go(-1);
     },
+    ...mapMutations(["addCollectSongList", "delCollectSongList"]),
   },
 };
 </script>

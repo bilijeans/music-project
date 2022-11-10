@@ -166,6 +166,7 @@ export default {
       allComments: "",
       moreComment: false,
       moreCommentId: null,
+      type: 2,
     };
   },
   components: {
@@ -173,11 +174,12 @@ export default {
   },
   created() {
     this.id = this.$route.query.id;
+    this.type = this.$route.query.type;
     // console.log(this.$route.query.id);
   },
   computed: {
     commentUrl() {
-      return `/MIGUM3.0/user/comment/stack/v1.0?commentId=0&hotCommentStart=0&pageSize=20&queryType=1&resourceId=${this.id}&resourceType=2`;
+      return `/MIGUM3.0/user/comment/stack/v1.0?commentId=0&hotCommentStart=0&pageSize=20&queryType=1&resourceId=${this.id}&resourceType=${this.type}`;
     },
   },
   watch: {
@@ -187,8 +189,9 @@ export default {
   },
   methods: {
     getCommentData() {
+      console.log(this.commentUrl);
       this.$axios.get(this.commentUrl).then(({ data }) => {
-        // console.log(data.data);
+        console.log(data.data);
         this.data = data.data;
         this.songMsg = this.data.targetInfo;
         this.hotComments = this.data.hotComments;
@@ -413,7 +416,7 @@ export default {
   height: 0px;
 }
 .comment-leave {
-  height:  calc(100vh - 46px);
+  height: calc(100vh - 46px);
 }
 .comment-leave-to {
   height: 0;

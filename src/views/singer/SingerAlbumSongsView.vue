@@ -58,9 +58,15 @@
 
         <div class="album-songs-page-album">
           <p class="page-album-name">{{ AblumMes.title }}</p>
-          <div class="collect">
-            <img src="@/assets/svg/redHeart.svg" />
-            <p>收藏</p>
+          <div class="collect" @click="toggleCollect">
+            <img
+              :src="
+                hasCollectStatus
+                  ? require('@/assets/ActiveHeartRed.svg')
+                  : require('@/assets/HeartRed.svg')
+              "
+            />
+            <p>{{ hasCollectStatus ? "已" : "" }}收藏</p>
           </div>
         </div>
 
@@ -69,7 +75,7 @@
             <img src="@/assets/svg/albumShare.svg" />
             <span>分享</span>
           </div>
-          <div class="comments-img">
+          <div class="comments-img" @click="goToComment">
             <img src="@/assets/svg/albumComments.svg" />
             <span>{{
               AblumMes.opNumItem ? AblumMes.opNumItem.commentNum : ""
@@ -81,13 +87,17 @@
           </div>
         </div>
 
-        <songs-component :songsData="songsData"></songs-component>
+        <songs-component
+          :songsData="songsData"
+          :updateData="updateData"
+        ></songs-component>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapState, mapMutations } from "vuex";
 import SongsComponent from "@/components/SongsComponent.vue";
 export default {
   components: { SongsComponent },
@@ -97,6 +107,8 @@ export default {
       albumType: "",
       songsData: {},
       AblumMes: {},
+      updateData: {},
+      hasCollectStatus: false,
     };
   },
   created() {
@@ -104,6 +116,10 @@ export default {
     this.albumType = this.$route.params.type;
     this.getAblumSongsList();
     this.getAblumMes();
+    this.hasCollect();
+  },
+  computed: {
+    ...mapState(["user"]),
   },
   methods: {
     getAblumSongsList() {
@@ -116,9 +132,7 @@ export default {
               dataList,
               totalCount: data.data.totalCount,
             };
-
             // console.log(this.songsData);
-
           });
       } else {
         this.$axios
@@ -129,12 +143,23 @@ export default {
               dataList,
               totalCount: data.data.totalCount,
             };
-            // console.log(this.songsData);
-
           });
       }
     },
-
+    getUpdateData(data) {
+      console.log(data);
+      this.updateData.albumId = data.albumId ? data.albumId : data.contentId;
+      this.updateData.cover = data.imgItem
+        ? data.imgItem[0].img
+        : data.imgItems[0].img;
+      this.updateData.count = data.totalCount;
+      this.updateData.singer = data.singer;
+      this.updateData.singerId = data.singerId;
+      this.updateData.opNumItem = data.opNumItem;
+      this.updateData.title = data.title;
+      this.updateData.tags = data.tags || data.tagItems || [];
+      this.updateData.publishDate = data.publishDate;
+    },
     getAblumMes() {
       if (this.albumType == "1") {
         this.$axios
@@ -142,6 +167,7 @@ export default {
           .then(({ data }) => {
             this.AblumMes = data.data;
             // console.log(this.AblumMes)
+            this.getUpdateData(data.data);
           });
       } else {
         this.$axios
@@ -149,13 +175,52 @@ export default {
           .then(({ data }) => {
             this.AblumMes = data.data;
             // console.log(this.AblumMes)
+            this.getUpdateData(data.data);
           });
       }
     },
-
+    hasCollect() {
+      this.hasCollectStatus = false;
+      this.user.collectSongList.forEach((el) => {
+        if (el.playlistId == this.albumId) {
+          this.hasCollectStatus = true;
+          return;
+        }
+      });
+    },
+    toggleCollect() {
+      console.log();
+      if (this.hasCollectStatus) {
+        this.delCollectAlbum(this.albumId);
+      } else {
+        this.addCollectAlbum({
+          albumId: this.AblumMes.albumId
+            ? this.AblumMes.albumId
+            : this.AblumMes.contentId,
+          cover: this.AblumMes.imgItem
+            ? this.AblumMes.imgItem[0].img
+            : this.AblumMes.imgItems[0].img,
+          count: this.AblumMes.totalCount,
+          singer: this.AblumMes.singer,
+          singerId: this.AblumMes.singerId,
+          opNumItem: this.AblumMes.opNumItem,
+          title: this.AblumMes.title,
+          tags: this.AblumMes.tags || this.AblumMes.tagItems || [],
+          publishDate: this.AblumMes.publishDate,
+        });
+      }
+      this.hasCollectStatus = !this.hasCollectStatus;
+    },
+    goToComment() {
+      this.$router.push({
+        path: "/morefunc-comment",
+        query: { id: this.albumId, type: 5 },
+      });
+    },
     back() {
       this.$router.go(-1);
     },
+    ...mapMutations(["addCollectAlbum", "delCollectAlbum"]),
   },
 };
 </script>
