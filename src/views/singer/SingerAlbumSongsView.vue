@@ -59,25 +59,8 @@
         <div class="album-songs-page-album">
           <p class="page-album-name">{{ AblumMes.title }}</p>
           <div class="collect">
-            <img src="@/assets/svg/redHeart.svg" />
+            <div :class="{collectActive : isCollect}" @click="collectHandel"></div>
             <p>收藏</p>
-          </div>
-        </div>
-
-        <div class="album-songs-page-share">
-          <div class="share-img">
-            <img src="@/assets/svg/albumShare.svg" />
-            <span>分享</span>
-          </div>
-          <div class="comments-img">
-            <img src="@/assets/svg/albumComments.svg" />
-            <span>{{
-              AblumMes.opNumItem ? AblumMes.opNumItem.commentNum : ""
-            }}</span>
-          </div>
-          <div class="download-img">
-            <img src="@/assets/svg/albumDownLoad.svg" />
-            <span>下载</span>
           </div>
         </div>
 
@@ -97,6 +80,7 @@ export default {
       albumType: "",
       songsData: {},
       AblumMes: {},
+      isCollect:false,
     };
   },
   created() {
@@ -149,6 +133,10 @@ export default {
             // console.log(this.AblumMes)
           });
       }
+    },
+
+    collectHandel(){
+      this.isCollect = !this.isCollect
     },
 
     back() {
@@ -298,6 +286,23 @@ export default {
     justify-content: center;
     align-items: center;
 
+    div{
+      height: 32px;
+      width: 32px;
+      margin-bottom: 3px;
+      background-image: url(@/assets/svg/redHeart.svg);
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center center;
+
+      &.collectActive{
+        background-image: url(@/assets/svg/redHeartFull.svg);
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center center;
+      }
+    }
+
     p {
       font-size: 14px;
       color: #999;
@@ -305,23 +310,7 @@ export default {
   }
 }
 
-.album-songs-page-share {
-  height: 5vh;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 20px;
-  margin-top: 20px;
-
-  div {
-    display: flex;
-    align-items: center;
-    font-size: 14px;
-    color: #666;
-  }
-}
-
 .songslist {
-  margin: 0;
+  margin: 1vh 0 0 0;
 }
 </style>

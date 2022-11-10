@@ -42,25 +42,11 @@
         <div class="album-songs-page-album">
           <p class="page-album-name">{{ AblumMes.title }}</p>
           <div class="collect">
-            <img src="@/assets/svg/redHeart.svg" />
+            <div :class="{collectActive : isCollect}" @click="collectHandel"></div>
             <p>收藏</p>
           </div>
         </div>
 
-        <div class="album-songs-page-share">
-          <div class="share-img">
-            <img src="@/assets/svg/albumShare.svg" />
-            <span>分享{{AblumMes?.opNumItem?.shareNum}}</span>
-          </div>
-          <div class="comments-img">
-            <img src="@/assets/svg/albumComments.svg" />
-            <span>{{AblumMes?.opNumItem?.commentNum}}</span>
-          </div>
-          <div class="download-img">
-            <img src="@/assets/svg/albumDownLoad.svg" />
-            <span>下载</span>
-          </div>
-        </div>
 
         <songs-component :songsData="songsData"></songs-component>
       </div>
@@ -77,6 +63,7 @@ export default {
       albumId: "",
       songsData: {},
       AblumMes: {},
+      isCollect:false,
     };
   },
   created() {
@@ -106,6 +93,10 @@ export default {
           // console.log(this.songsData)
 
         });
+    },
+
+     collectHandel(){
+      this.isCollect = !this.isCollect
     },
 
     back() {
@@ -234,17 +225,19 @@ export default {
   padding: 0 3vw;
 
   .page-album-name {
-    width: 50vw;
-    font-size: 25px;
+    width: 65vw;
+    font-size: 16px;
     font-weight: 500;
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
   }
 
   .collect {
     width: 22vw;
-    height: 100%;
+    height: 22vw;
     border-radius: 999px;
     box-shadow: 0 0 6px 0 #ccc;
     display: flex;
@@ -253,30 +246,30 @@ export default {
     justify-content: center;
     align-items: center;
 
+    div{
+      height: 32px;
+      width: 32px;
+      margin-bottom: 3px;
+      background-image: url(@/assets/svg/redHeart.svg);
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center center;
+
+      &.collectActive{
+        background-image: url(@/assets/svg/redHeartFull.svg);
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center center;
+      }
+    }
+
     p {
       font-size: 14px;
       color: #999;
     }
   }
 }
-
-.album-songs-page-share {
-  height: 5vh;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 20px;
-  margin-top: 20px;
-
-  div {
-    display: flex;
-    align-items: center;
-    font-size: 14px;
-    color: #666;
-  }
-}
-
 .songslist {
-  margin: 0;
+  margin: 1vh 0 0 0;
 }
 </style>

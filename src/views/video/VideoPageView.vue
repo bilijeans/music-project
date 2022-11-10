@@ -21,13 +21,8 @@
         </header>
 
         <main :class="{ landActive: isLand }">
-
           <div class="video-box" ref="videoBox">
-            <video
-              ref="video"
-              class="video-js video"
-              :poster="i.img"
-            ></video>
+            <video ref="video" class="video-js video" :poster="i.img"></video>
           </div>
 
           <div class="land-scape" @click="setLand" v-show="!isLand">
@@ -226,14 +221,16 @@ export default {
     this.getVideoPage();
   },
   mounted() {
-    window.addEventListener("resize", this.renderResize, false);
-    this.$nextTick(() => {
-       let width = document.documentElement.clientWidth
-        let height = document.documentElement.clientHeight
-        if(width > height) {
-            console.log('横屏')
-        }
-    })
+    // window.addEventListener("resize", this.renderResize, false);
+    // this.$nextTick(() => {
+    //   let width = document.documentElement.clientWidth;
+    //   let height = document.documentElement.clientHeight;
+    //   if (width > height) {
+    //     console.log("横屏");
+    //   } else {
+    //     console.log("竖屏");
+    //   }
+    // });
   },
   methods: {
     videoListHandel() {
@@ -482,8 +479,8 @@ export default {
       this.isChooseDefinition = !this.isChooseDefinition;
       this.DefinitionE = formatType;
       this.isPlay = false;
-      console.log(this.$refs.video[this.index])
-      this.$refs.video[this.index].removeAttribute('data-setup');
+      console.log(this.$refs.video[this.index]);
+      this.$refs.video[this.index].removeAttribute("data-setup");
       this.getVideoPage();
     },
 
@@ -525,7 +522,7 @@ export default {
 
     videoInit() {
       let video = this.$refs.video[this.index];
-      video.setAttribute('data-setup','{"aspectRatio":"3:2"}');
+      video.setAttribute("data-setup", '{"aspectRatio":"3:2"}');
       let url = "/apiV/" + this.videoUrl;
       this.player = this.$video(video, {
         controls: false,
