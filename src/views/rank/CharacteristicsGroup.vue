@@ -11,7 +11,7 @@
       <div class="update-time">
         每10分钟刷新，每周一上午10点清算数据更新排名
       </div>
-      <div class="list-one">
+      <div class="list-one" :key="contentData[0]?.resId">
         <div class="one-img">
           <img :src="contentData[0]?.img" />
         </div>
@@ -22,78 +22,39 @@
           <div class="msg-name">{{ contentData[0]?.txt }}</div>
           <div class="msg-rank">
             <span>1</span>
-            <svg
-              t="1667817552947"
-              class="icon"
-              viewBox="0 0 1024 1024"
-              version="1.1"
-              xmlns="http://www.w3.org/2000/svg"
-              p-id="2561"
-              xmlns:xlink="http://www.w3.org/1999/xlink"
-              width="16"
-              height="16"
-            >
-              <path
-                d="M128 469.333333a42.666667 42.666667 0 1 1-42.666667 42.666667 42.713333 42.713333 0 0 1 42.666667-42.666667m0-42.666666a85.333333 85.333333 0 1 0 85.333333 85.333333 85.333333 85.333333 0 0 0-85.333333-85.333333z m384 42.666666a42.666667 42.666667 0 1 1-42.666667 42.666667 42.713333 42.713333 0 0 1 42.666667-42.666667m0-42.666666a85.333333 85.333333 0 1 0 85.333333 85.333333 85.333333 85.333333 0 0 0-85.333333-85.333333z m384 42.666666a42.666667 42.666667 0 1 1-42.666667 42.666667 42.713333 42.713333 0 0 1 42.666667-42.666667m0-42.666666a85.333333 85.333333 0 1 0 85.333333 85.333333 85.333333 85.333333 0 0 0-85.333333-85.333333z"
-                fill="#fff"
-                p-id="2562"
-              ></path>
-            </svg>
+            <i
+              @click="gotoCommentData(contentData[0]?.resId)"
+              class="wd-icon-arrow-right"
+            ></i>
           </div>
         </div>
       </div>
       <div class="list-two-three">
         <div class="list-line"></div>
-        <div class="list-two">
+        <div class="list-two" :key="contentData[1]?.resId">
           <div class="song-img">
             <img :src="contentData[1]?.img" />
             <span>2</span>
           </div>
           <div class="song-msg">
             <span>{{ contentData[1]?.txt }}</span>
-            <svg
-              t="1667817552947"
-              class="icon"
-              viewBox="0 0 1024 1024"
-              version="1.1"
-              xmlns="http://www.w3.org/2000/svg"
-              p-id="2561"
-              xmlns:xlink="http://www.w3.org/1999/xlink"
-              width="16"
-              height="16"
-            >
-              <path
-                d="M128 469.333333a42.666667 42.666667 0 1 1-42.666667 42.666667 42.713333 42.713333 0 0 1 42.666667-42.666667m0-42.666666a85.333333 85.333333 0 1 0 85.333333 85.333333 85.333333 85.333333 0 0 0-85.333333-85.333333z m384 42.666666a42.666667 42.666667 0 1 1-42.666667 42.666667 42.713333 42.713333 0 0 1 42.666667-42.666667m0-42.666666a85.333333 85.333333 0 1 0 85.333333 85.333333 85.333333 85.333333 0 0 0-85.333333-85.333333z m384 42.666666a42.666667 42.666667 0 1 1-42.666667 42.666667 42.713333 42.713333 0 0 1 42.666667-42.666667m0-42.666666a85.333333 85.333333 0 1 0 85.333333 85.333333 85.333333 85.333333 0 0 0-85.333333-85.333333z"
-                fill="#fff"
-                p-id="2562"
-              ></path>
-            </svg>
+            <i
+              @click="gotoCommentData(contentData[1]?.resId)"
+              class="wd-icon-arrow-right"
+            ></i>
           </div>
         </div>
-        <div class="list-three">
+        <div class="list-three" :key="contentData[2]?.resId">
           <div class="song-img">
             <img :src="contentData[2]?.img" />
             <span>3</span>
           </div>
           <div class="song-msg">
             <span>{{ contentData[2]?.txt }}</span>
-            <svg
-              t="1667817552947"
-              class="icon"
-              viewBox="0 0 1024 1024"
-              version="1.1"
-              xmlns="http://www.w3.org/2000/svg"
-              p-id="2561"
-              xmlns:xlink="http://www.w3.org/1999/xlink"
-              width="16"
-              height="16"
-            >
-              <path
-                d="M128 469.333333a42.666667 42.666667 0 1 1-42.666667 42.666667 42.713333 42.713333 0 0 1 42.666667-42.666667m0-42.666666a85.333333 85.333333 0 1 0 85.333333 85.333333 85.333333 85.333333 0 0 0-85.333333-85.333333z m384 42.666666a42.666667 42.666667 0 1 1-42.666667 42.666667 42.713333 42.713333 0 0 1 42.666667-42.666667m0-42.666666a85.333333 85.333333 0 1 0 85.333333 85.333333 85.333333 85.333333 0 0 0-85.333333-85.333333z m384 42.666666a42.666667 42.666667 0 1 1-42.666667 42.666667 42.713333 42.713333 0 0 1 42.666667-42.666667m0-42.666666a85.333333 85.333333 0 1 0 85.333333 85.333333 85.333333 85.333333 0 0 0-85.333333-85.333333z"
-                fill="#fff"
-                p-id="2562"
-              ></path>
-            </svg>
+            <i
+              @click="gotoCommentData(contentData[2]?.resId)"
+              class="wd-icon-arrow-right"
+            ></i>
           </div>
         </div>
       </div>
@@ -107,7 +68,7 @@
             <div class="item-msg-song">{{ i.txt }}</div>
             <div class="item-msg-singer">{{ i.txt2 }}</div>
           </div>
-          <span>></span>
+          <i @click="gotoCommentData(i.resId)" class="wd-icon-arrow-right"></i>
         </div>
       </div>
     </div>
@@ -235,7 +196,7 @@ export default {
       this.$axios.get(this.characteristicsGroupUrl).then(({ data }) => {
         this.contentData = data.data.contents;
         this.contents = this.contentData.slice(3);
-        // console.log(this.contents);
+        // console.log(this.contentData);
       });
     },
     getMvData() {
@@ -251,6 +212,14 @@ export default {
         this.newAblumData = data.data;
         // newAblumData.header.style.backgroundImageUrl;
         this.newAblumList = this.newAblumData.contentItemList[0].itemList;
+      });
+    },
+    gotoCommentData(id) {
+      this.$router.push({
+        path: "/morefunc-comment",
+        query: {
+          id: id,
+        },
       });
     },
     back() {
@@ -288,6 +257,9 @@ export default {
   background-size: cover;
   background-position: center center;
   overflow: auto;
+  .wd-icon-arrow-right {
+    color: #9f9dab;
+  }
   .title-new-voices {
     width: 300px;
     height: 75px;

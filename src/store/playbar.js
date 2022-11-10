@@ -80,7 +80,7 @@ export default {
             });
         },
         playFirst(state, obj) {
-            console.log(obj);
+            // console.log(obj);
             state.state.axios({
                 methods: "GET",
                 url: `/MIGUM2.0/strategy/listen-url/v2.4?resourceType=2&songId=${obj.data.songId}&toneFlag=${obj.data.toneFlag}`,

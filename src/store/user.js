@@ -27,10 +27,10 @@ export default {
                 state[key] = obj[key]
             }
             // console.log(localStorage.getItem("moyuM-user"));
-            console.log(state);
+            // console.log(state);
         },
         freshLatelyData(state, obj) {
-            console.log(state, obj);
+            // console.log(state, obj);
             let newArr = state.latelyListen.songs.filter(e => {
                 return e.songId != obj.songId
             });

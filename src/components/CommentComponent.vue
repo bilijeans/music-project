@@ -1,6 +1,6 @@
 <template>
   <div class="comment-reply" @touchend.stop>
-    <div @click="cancelMaskLayer" style="height:30px">
+    <div @click="cancelMaskLayer" style="height: 30px">
       <div class="pull-down-btn"></div>
     </div>
     <div class="layer-master-comment">
@@ -11,7 +11,26 @@
         <div class="layer-master-msg">
           <div class="name" v-if="mainCommentItem.user">
             <span>{{ mainCommentItem.user.nickName }}</span>
-            <!-- <img v-if="" src="" /> -->
+            <img
+              v-if="mainCommentItem.user.userMemberInfos"
+              :src="mainCommentItem.user.userMemberInfos[0].icon"
+            />
+            <img
+              v-if="mainCommentItem.user.userCommentIcons[0]"
+              :src="mainCommentItem.user.userCommentIcons[0].iconPic"
+            />
+            <img
+              v-if="
+                mainCommentItem.user.userIdentityInfoItems && mainCommentItem.user.userIdentityInfoItems[0]
+              "
+              :src="mainCommentItem.user.userIdentityInfoItems[0].icon"
+            />
+            <img
+              v-if="
+                mainCommentItem.user.userIdentityInfoItems && mainCommentItem.user.userIdentityInfoItems[1]
+              "
+              :src="mainCommentItem.user.userIdentityInfoItems[1].icon"
+            />
           </div>
           <div class="time">{{ mainCommentItem.commentTime }}</div>
         </div>
@@ -48,11 +67,17 @@
                 :src="i.user.userCommentIcons[0].iconPic"
               />
               <img
-                v-if="i.user.userIdentityInfoItems[0]"
+                v-if="
+                  i.user.userIdentityInfoItems &&
+                  i.user.userIdentityInfoItems[0]
+                "
                 :src="i.user.userIdentityInfoItems[0].icon"
               />
               <img
-                v-if="i.user.userIdentityInfoItems[1]"
+                v-if="
+                  i.user.userIdentityInfoItems &&
+                  i.user.userIdentityInfoItems[1]
+                "
                 :src="i.user.userIdentityInfoItems[1].icon"
               />
             </div>

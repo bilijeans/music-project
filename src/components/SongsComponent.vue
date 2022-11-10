@@ -120,10 +120,10 @@ export default {
   },
   created() {
     this.songsListData = this.songsData;
-    console.log(this.songsData,1);
+    // console.log(this.songsData);
   },
   mounted(){
-    console.log(this.songsData);
+    // console.log(this.songsData);
   },
   methods: {
     moreFunc(name, id) {

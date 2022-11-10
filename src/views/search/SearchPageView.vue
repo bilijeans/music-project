@@ -158,22 +158,33 @@ export default {
         // console.log(this.searchHotwords);
       });
     },
+    // 搜索为空时自动搜索 发现 的第一个
     goSearchResult(str) {
       this.lenovoAndResultText = str;
       if (this.lenovoAndResultText == "") {
         this.lenovoAndResultText = this.searchDiscover[0].word;
       }
-      this.searchHistoryData.unshift(this.lenovoAndResultText);
-
+      this.searchHistoryData = this.addHistorySearch(this.searchHistoryData);
       // console.log(this.searchHistoryData);
       this.$router.push({
         path: "/search-result",
         query: { word: this.lenovoAndResultText },
       });
     },
+    // 添加历史记录 去重
+    addHistorySearch(data) {
+      // console.log(data);
+      data = data.filter((e) => {
+        return this.lenovoAndResultText !== e;
+      });
+      data.unshift(this.lenovoAndResultText);
+      return data;
+    },
+    // 确认清空弹窗
     popChooseDel() {
       this.show = true;
     },
+    // 清空搜索历史
     clearSearchResult() {
       this.searchHistoryData = [];
       localStorage.setItem(
@@ -246,9 +257,11 @@ export default {
     }
   }
   .search-history-content {
-    // display: flex;
-    // align-items: center;
-    // flex-wrap: wrap;
+    max-height: 126px;
+    overflow: auto;
+    &::-webkit-scrollbar{
+      display: none;
+    }
     span {
       float: left;
       display: block;
@@ -257,8 +270,6 @@ export default {
       padding: 10px 20px;
       border-radius: 20px;
       background-color: #f4f4f4;
-      // transform: scale(0.9);
-      // transform-origin: 10%;
     }
     &::after {
       content: "";
