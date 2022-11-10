@@ -43,7 +43,7 @@ export default {
   align-items: flex-start;
   flex-wrap: wrap;
   padding-top: 2vh;
-  height: 67vh;
+  height: 76vh;
   overflow: auto;
 }
 .album-page-content {

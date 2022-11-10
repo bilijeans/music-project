@@ -222,18 +222,20 @@ export default {
     this.getVideoPage();
   },
   mounted() {
-    // window.addEventListener("resize", this.renderResize, false);
-    // this.$nextTick(() => {
-    //   let width = document.documentElement.clientWidth;
-    //   let height = document.documentElement.clientHeight;
-    //   if (width > height) {
-    //     console.log("横屏");
-    //   } else {
-    //     console.log("竖屏");
-    //   }
-    // });
+    window.addEventListener("resize", this.renderResize, false);
   },
   methods: {
+     renderResize() {
+        // 判断横竖屏
+        let width = document.documentElement.clientWidth
+        let height = document.documentElement.clientHeight
+        if(width > height) {
+            console.log('横屏')
+        }else{
+          console.log('竖屏')
+        }
+  
+    },
     videoListHandel() {
       let tapIndex = this.$route.query.index;
       let allVideoArr = this.$route.query.videoList;
