@@ -28,33 +28,53 @@
             <img class="r-arrow" src="@/assets/svg/rightArrow.svg" alt="" />
           </div>
           <div class="main-singer-right">
-            <img src="@/assets/svg/ear.svg" />
-            <span>{{
-              AblumMes.opNumItem ? AblumMes.opNumItem.playNumDesc : ""
-            }}</span>
-            <img src="@/assets/svg/heart.svg" />
-            <span>{{
-              AblumMes.opNumItem ? AblumMes.opNumItem.keepNumDesc : ""
-            }}</span>
+            <div>
+              <img
+                src="@/assets/svg/albumComments.svg"
+                @click="goToComment(AblumMes.musicListId)"
+              />
+              <span>{{ AblumMes?.opNumItem?.commentNum }}</span>
+            </div>
+            <div>
+              <img src="@/assets/svg/ear.svg" />
+              <span>{{
+                AblumMes.opNumItem ? AblumMes.opNumItem.playNumDesc : ""
+              }}</span>
+            </div>
+            <div>
+              <img src="@/assets/svg/heart.svg" />
+              <span>{{
+              AblumMes.opNumItem ? (AblumMes.opNumItem.keepNumDesc.indexOf('万') == -1? Number(AblumMes.opNumItem.keepNumDesc) +(hasCollectStatus ? 1 : 0) : AblumMes.opNumItem.keepNumDesc) : (0 + (hasCollectStatus ? 1 : 0))
+              }}</span>
+            </div>
           </div>
         </div>
 
         <div class="album-songs-page-album">
           <p class="page-album-name">{{ AblumMes.title }}</p>
-          <div class="collect">
-            <div :class="{collectActive : isCollect}" @click="collectHandel"></div>
-            <p>收藏</p>
+          <div class="collect" @click="toggleCollect">
+            <img
+              :src="
+                hasCollectStatus
+                  ? require('@/assets/ActiveHeartRed.svg')
+                  : require('@/assets/HeartRed.svg')
+              "
+            />
+            <p>{{ hasCollectStatus ? "已" : "" }}收藏</p>
           </div>
         </div>
 
-
-        <songs-component :songsData="songsData"></songs-component>
+        <songs-component
+          :songsData="songsData"
+          :updateData="updateData"
+        ></songs-component>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapState, mapMutations } from "vuex";
 import SongsComponent from "@/components/SongsComponent.vue";
 export default {
   components: { SongsComponent },
@@ -63,13 +83,18 @@ export default {
       albumId: "",
       songsData: {},
       AblumMes: {},
-      isCollect:false,
+      updateData: {},
+      hasCollectStatus: false,
     };
   },
   created() {
     this.albumId = this.$route.params.id;
     this.getOnlySongsList(this.albumId);
     this.getAblumMes(this.albumId);
+    this.hasCollect();
+  },
+  computed: {
+    ...mapState(["user"]),
   },
   methods: {
     getOnlySongsList(id) {
@@ -90,18 +115,54 @@ export default {
         .get(`/MIGUM3.0/resource/playlist/v2.0?playlistId=${id}`)
         .then(({ data }) => {
           this.AblumMes = data.data;
+          this.updateData.playlistId = id;
+          this.updateData.cover = data.data.imgItem.img;
+          this.updateData.count = data.data.musicNum;
+          this.updateData.ownerName = data.data.ownerName;
+          this.updateData.ownerId = data.data.ownerId;
+          this.updateData.opNumItem = data.data.opNumItem;
+          this.updateData.title = data.data.title;
+          this.updateData.tags = data.data.tags;
           // console.log(this.songsData)
-
         });
     },
 
-     collectHandel(){
-      this.isCollect = !this.isCollect
+    hasCollect() {
+      this.hasCollectStatus = false;
+      this.user.collectSongList.forEach((el) => {
+        if (el.playlistId == this.albumId) {
+          this.hasCollectStatus = true;
+          return;
+        }
+      });
     },
-
+    toggleCollect() {
+      if (this.hasCollectStatus) {
+        this.delCollectSongList(this.albumId);
+      } else {
+        this.addCollectSongList({
+          playlistId: this.albumId,
+          cover: this.AblumMes.imgItem.img,
+          count: this.AblumMes.musicNum,
+          ownerName: this.AblumMes.ownerName,
+          ownerId: this.AblumMes.ownerId,
+          opNumItem: this.AblumMes.opNumItem,
+          title: this.AblumMes.title,
+          tags: this.tags,
+        });
+      }
+      this.hasCollectStatus = !this.hasCollectStatus;
+    },
+    goToComment(id) {
+      this.$router.push({
+        path: "/morefunc-comment",
+        query: { id: id, type: 2021 },
+      });
+    },
     back() {
       this.$router.go(-1);
     },
+    ...mapMutations(["addCollectSongList", "delCollectSongList"]),
   },
 };
 </script>
@@ -206,10 +267,15 @@ export default {
 }
 
 .main-singer-right {
-  width: 38vw;
+  width: 46vw;
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
+
+  div {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+  }
 
   span {
     font-size: 14px;
@@ -246,21 +312,10 @@ export default {
     justify-content: center;
     align-items: center;
 
-    div{
-      height: 32px;
-      width: 32px;
-      margin-bottom: 3px;
-      background-image: url(@/assets/svg/redHeart.svg);
-      background-repeat: no-repeat;
-      background-size: cover;
-      background-position: center center;
-
-      &.collectActive{
-        background-image: url(@/assets/svg/redHeartFull.svg);
-      background-repeat: no-repeat;
-      background-size: cover;
-      background-position: center center;
-      }
+    img {
+      height: 20px;
+      width: 20px;
+      margin-bottom: 4px;
     }
 
     p {
@@ -269,7 +324,8 @@ export default {
     }
   }
 }
+
 .songslist {
-  margin: 1vh 0 0 0;
+  margin: 2vh 0 0 0;
 }
 </style>

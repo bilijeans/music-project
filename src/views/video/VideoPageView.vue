@@ -37,7 +37,7 @@
               ></div>
             </div>
 
-            <img src="@/assets/videoComment.svg" />
+            <img src="@/assets/videoComment.svg" @click="goToComment" />
 
             <img src="@/assets/videoShare.svg" />
           </div>
@@ -182,6 +182,7 @@
 export default {
   data() {
     return {
+      id:'',
       index: 0,
       allVideo: [],
       videoPage: {},
@@ -260,10 +261,10 @@ export default {
         });
     },
     getVideoPage() {
-      let id = this.allVideo[this.index].resId;
+      this.id = this.allVideo[this.index].resId;
       this.$axios({
         methods: "GET",
-        url: `MIGUM3.0/strategy/mvplayinfo/by-priority/v1.0?canFallback=true&contentId=${id}&formatType=${this.DefinitionE}`,
+        url: `MIGUM3.0/strategy/mvplayinfo/by-priority/v1.0?canFallback=true&contentId=${this.id}&formatType=${this.DefinitionE}`,
         headers: {
           channel: "0146921",
         },
@@ -537,6 +538,16 @@ export default {
         },
       ]);
     },
+
+    goToComment(){
+      this.$router.push({
+        path:'/morefunc-comment',
+        query:{
+          id: this.id,
+          type: 'D'
+        }
+      })
+    }
   },
 
   destroyed() {

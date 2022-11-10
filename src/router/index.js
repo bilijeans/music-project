@@ -155,6 +155,22 @@ const routes = [
     }
   },
   {
+    path: '/user/user-collect',
+    name: 'user-collect',
+    component: () => import("../views/user/UserCollect.vue"),
+    meta: {
+      index: 5
+    }
+  },
+  {
+    path: '/user/user-fav-song',
+    name: 'user-fav-song',
+    component: () => import("../views/user/UserFavSong.vue"),
+    meta: {
+      index: 5
+    }
+  },
+  {
 
     path: '/video',
     name: 'video',
