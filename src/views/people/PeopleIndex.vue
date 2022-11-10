@@ -1,5 +1,5 @@
 <template>
-  <div class="user-index" ref="userPage">
+  <div class="people-index" ref="userPage">
     <header :style="{ backgroundColor: `rgba(255, 255, 255,${showHeader})` }">
       <i class="back wd-icon-thin-arrow-left" @click="backToHome"></i>
       <i class="search wd-icon-search"></i>
@@ -8,7 +8,7 @@
           <div class="user-pic">
             <img src="@/assets/user4.svg" />
           </div>
-          <div class="user-name">猪蛋蛋</div>
+          <div class="user-name">{{ user.userInfo?.nickName }}</div>
         </div>
       </transition>
     </header>
@@ -16,17 +16,25 @@
       <div class="user-info-container card" :style="{ opacity: userInfoShow }">
         <div class="user-info-card">
           <div class="user-pic">
-            <img src="@/assets/user4.svg" />
+            <img :src="user.userInfo?.smallIcon" />
           </div>
-          <div class="user-name">猪蛋蛋</div>
+          <div class="user-name">{{ user.userInfo?.nickName }}</div>
           <div class="user-status">
-            <span class="follow">10 关注</span> |
-            <span class="fans">10 粉丝</span> |
-            <span class="level">Lv 8</span>
+            <span class="follow"
+              >{{ user.homePageNumItems[2]?.number }} 关注</span
+            >
+            |
+            <span class="fans"
+              >{{ user.homePageNumItems[1]?.number }} 粉丝</span
+            >
+            |
+            <span class="level"
+              >Lv {{ user.userInfo?.userLevelInfo.level }}</span
+            >
           </div>
         </div>
       </div>
-      <div class="user-play-info card">
+      <!-- <div class="user-play-info card">
         <div class="user-play-item" @click="turnToLatelyPlay">
           <div class="user-play-icon">
             <img src="@/assets/user-play.png" />
@@ -51,30 +59,31 @@
           </div>
           <span class="user-play-title">设置</span>
         </div>
-      </div>
-      <div class="user-fav-list card" @click="turnToFavSong">
-        <div class="fav-cover">
-          <img
-            :src="
-              user.fav.song[0]
-                ? '	http://d.musicapp.migu.cn' + user.fav.song[0].cover
-                : require('@/assets/defaultSonglistCover.jpg')
-            "
-          />
-          <div class="mask"></div>
+      </div> -->
+      <div class="user-list card">
+        <div
+          class="user-fav-list"
+          v-for="(i, index) in user.userPrivateItems"
+          :key="index"
+        >
+          <div class="fav-cover">
+            <img :src="i.picUrl" />
+            <div class="mask"></div>
+          </div>
+          <div class="fav-msg">
+            <div class="fav-title">{{ i.title }}</div>
+            <div class="fav-list-num">{{ i.subTitle }}</div>
+          </div>
         </div>
-        <div class="fav-msg">
-          <div class="fav-title">我喜欢的音乐</div>
-          <div class="fav-list-num">{{ user.fav.song.length }}首</div>
-        </div>
       </div>
+
       <div class="user-song-list">
         <div
           class="user-song-list-nav"
           :style="{ backgroundColor: `rgba(255, 255, 255,${navShow})` }"
         >
           <div class="nav-item" :class="{ active: navIndex == 0 }">
-            我的歌单
+            ta的歌单
           </div>
           <div class="nav-item" :class="{ active: navIndex == 1 }">
             收藏歌单
@@ -83,64 +92,38 @@
         <div class="song-list-page card">
           <div class="page-title">
             <div class="title-name">
-              我的歌单({{ user.mySongList.length }}个)
-            </div>
-            <div class="page-controls">
-              <i class="wd-icon-add btn-add" @click="addStatus = true"></i>
-              <i class="wd-icon-more btn-more"></i>
-            </div>
-            <div class="add-song-list" v-if="addStatus">
-              <div class="pop-up-card">
-                <div class="pop-up-title">
-                  <p>新建歌单</p>
-                </div>
-                <div class="pop-up-i-box">
-                  <input
-                    type="text"
-                    v-model="addSongListName"
-                    placeholder="请输入歌单名字"
-                  />
-                </div>
-                <div class="btn-choose">
-                  <span style="color: #aef" @click="createMySongList"
-                    >完成</span
-                  >
-                  <span @click="addStatus = false">取消</span>
-                </div>
-              </div>
+              ta的歌单({{ user.myCreatedMusicLists?.createdMusicLists.length }}个)
             </div>
           </div>
-          <div class="u-s-list" v-if="user.mySongList[0]">
+          <div
+            class="u-s-list"
+            v-if="user.myCreatedMusicLists?.createdMusicLists"
+          >
             <div
               class="u-l-item"
-              v-for="item in user.mySongList"
-              :key="item.playlistId"
+              v-for="item in user.myCreatedMusicLists?.createdMusicLists"
+              :key="item.musicListId"
+              @click="goToOnlySongsList(item.musicListId)"
             >
               <div class="l-i-cover">
-                <img
-                  :src="
-                    item.list[0]
-                      ? item.list[0].cover
-                      : require('@/assets/defaultSonglistCover.jpg')
-                  "
-                />
+                <img :src="item.imgItem.img" />
                 <div class="folder"></div>
               </div>
               <div class="l-i-msg">
                 <div class="l-i-title">{{ item.title }}</div>
-                <div class="l-i-list-num">{{ item.list.length }}首</div>
+                <div class="l-i-list-num">{{ item.musicNum }}首</div>
               </div>
-              <div class="more" @click="showSonglistCro(item.playlistId)">
+              <!-- <div class="more" @click="showSonglistCro(item.musicListId)">
                 <i class="wd-icon-more btn-more"></i>
-              </div>
+              </div> -->
             </div>
           </div>
 
           <div class="empty-list" v-else>
             <p class="empty-desc">空空如也</p>
-            <p class="empty-desc">快去创建你的专属歌单吧</p>
+            <p class="empty-desc">ta没有专属歌单</p>
           </div>
-          <wd-popup
+          <!-- <wd-popup
             v-model="songlistStatus"
             class="s-l-cro"
             position="bottom"
@@ -174,44 +157,46 @@
                 </div>
               </div>
             </div>
-          </wd-popup>
+          </wd-popup> -->
         </div>
         <div ref="collectItem" class="song-list-page card">
           <div class="page-title">
             <div class="title-name">
-              收藏歌单({{ user.collectSongList.length }}个)
-            </div>
-            <div class="page-controls">
-              <i class="wd-icon-more btn-more"></i>
+              ta的收藏({{
+                user.myCollectedMusicLists?.collectMusicLists.length
+              }}个)
             </div>
           </div>
-          <div class="u-s-list" v-if="user.collectSongList[0]">
+          <div
+            class="u-s-list"
+            v-if="user.myCollectedMusicLists?.collectMusicLists"
+          >
             <div
               class="u-l-item"
-              v-for="item in user.collectSongList"
-              :key="item.playlistId"
-              @click="goToOnlySongsList(item.playlistId)"
+              v-for="item in user.myCollectedMusicLists.collectMusicLists"
+              :key="item.musicListId"
+              @click="goToOnlySongsList(item.musicListId)"
             >
               <div class="l-i-cover">
-                <img :src="item.cover" />
+                <img :src="item.imgItem.img" />
                 <div class="folder"></div>
               </div>
               <div class="l-i-msg">
                 <div class="l-i-title">{{ item.title }}</div>
                 <div class="l-i-list-num">
-                  {{ item.count }}首, <span>by {{ item.ownerName }}</span>
+                  {{ item.musicNum }}首, <span>by {{ item.ownerName }}</span>
                 </div>
               </div>
-              <div class="more" @click="showColSonglistMore(item.playlistId)">
+              <!-- <div class="more" @click="showColSonglistMore(item.playlistId)">
                 <i class="wd-icon-more btn-more"></i>
-              </div>
+              </div> -->
             </div>
           </div>
           <div class="empty-list" v-else>
             <p class="empty-desc">空空如也</p>
-            <p class="empty-desc">快去寻找喜欢的歌单吧</p>
+            <p class="empty-desc">ta没有收藏的歌单</p>
           </div>
-          <wd-popup
+          <!-- <wd-popup
             v-model="colSonglistStatus"
             class="s-l-cro"
             position="bottom"
@@ -245,7 +230,7 @@
                 </div>
               </div>
             </div>
-          </wd-popup>
+          </wd-popup> -->
         </div>
       </div>
     </main>
@@ -284,7 +269,7 @@
   </div>
 </template>
 <script>
-import { mapState, mapMutations } from "vuex";
+import { mapMutations } from "vuex";
 export default {
   data() {
     return {
@@ -302,10 +287,16 @@ export default {
       newTitle: "",
       renameStatus: false,
       itemData: {},
+      user: {
+        follow: 0,
+        homePageNumItems: [],
+      },
     };
   },
   created() {
     this.getCommendData();
+    this.userId = this.$route.query.userId;
+    this.getUerInfo();
   },
   mounted() {
     // console.log(this.$refs.userPage.scrollTop);
@@ -350,12 +341,20 @@ export default {
     });
   },
   computed: {
-    ...mapState(["user"]),
+    userInfoUrl() {
+      return `/people/user/home-page/v2.0?userId=${this.userId}`;
+    },
   },
   methods: {
     // closePopUp() {
     //   this.songlistStatus = false;
     // },
+    getUerInfo() {
+      this.$axios.get(this.userInfoUrl).then(({ data }) => {
+        console.log(data.data);
+        this.user = data.data;
+      });
+    },
     rename() {
       this.renameStatus = true;
       // this.songlistStatus = false
@@ -455,7 +454,7 @@ export default {
 };
 </script>
 <style lang="scss">
-.user-index {
+.people-index {
   width: 100vw;
   height: 100vh;
   padding-top: 50px;
@@ -588,7 +587,7 @@ export default {
     .user-fav-list {
       display: flex;
       align-items: center;
-      padding: 20px;
+      padding: 10px 20px;
       .fav-cover {
         position: relative;
         width: 60px;

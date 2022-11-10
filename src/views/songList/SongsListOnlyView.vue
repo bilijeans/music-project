@@ -20,7 +20,10 @@
 
       <div class="album-songs-page-content-main">
         <div class="album-songs-page-content-main-singer">
-          <div class="main-singer-left">
+          <div
+            class="main-singer-left"
+            @click="turnToPeoplePage(AblumMes.ownerId)"
+          >
             <div class="main-singer-left-img">
               <img :src="AblumMes.ownerPic ? AblumMes.ownerPic : ''" />
             </div>
@@ -157,6 +160,12 @@ export default {
       this.$router.push({
         path: "/morefunc-comment",
         query: { id: id, type: 2021 },
+      });
+    },
+    turnToPeoplePage(id) {
+      this.$router.push({
+        path: "/other-user",
+        query: { userId: id },
       });
     },
     back() {

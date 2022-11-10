@@ -3,6 +3,7 @@
     <header>
       <i class="back wd-icon-thin-arrow-left" @click="goBack"></i>
       <i class="search wd-icon-search"></i>
+      <div class="page-title">最近在听</div>
     </header>
     <main>
       <wd-tabs
@@ -281,6 +282,10 @@ export default {
       right: 20px;
       line-height: 50px;
     }
+    .page-title {
+      text-align: center;
+      line-height: 50px;
+    }
   }
   main {
     padding: 50px 0;
@@ -288,7 +293,8 @@ export default {
       width: 100%;
     }
     .wd-tab {
-      min-height: calc(100vh - 144px);
+      height: calc(100vh - 144px);
+      overflow: auto;
     }
     .lately-item {
       padding: 10px;

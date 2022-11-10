@@ -60,6 +60,7 @@ export default {
       ? JSON.parse(localStorage.getItem("moyuM-user"))
       : initUserData;
     this.initUserState(userData);
+    // console.log(this.user);
     localStorage.setItem("moyuM-user", JSON.stringify(this.user));
     this.initPlaylist();
     this.getVue(this);

@@ -152,6 +152,7 @@ export default {
       this.updateData.title = data.title;
       this.updateData.tags = data.tags || data.tagItems || [];
       this.updateData.publishDate = data.publishDate;
+      this.updateData.type = this.albumType;
     },
     getAblumMes() {
       if (this.albumType == "1") {
@@ -175,8 +176,8 @@ export default {
 
     hasCollect() {
       this.hasCollectStatus = false;
-      this.user.collectSongList.forEach((el) => {
-        if (el.playlistId == this.albumId) {
+      this.user.userCollect.album.forEach((el) => {
+        if (el.albumId == this.albumId) {
           this.hasCollectStatus = true;
           return;
         }
@@ -201,6 +202,7 @@ export default {
           title: this.AblumMes.title,
           tags: this.AblumMes.tags || this.AblumMes.tagItems || [],
           publishDate: this.AblumMes.publishDate,
+          type: this.albumType,
         });
       }
       this.hasCollectStatus = !this.hasCollectStatus;
