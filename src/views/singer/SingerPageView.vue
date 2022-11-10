@@ -64,9 +64,8 @@
 
     <div class="mask" v-show="maskShow">
       <div class="mask-head">
-        <div
-          class="mask-head-img">
-          <img :src="singerPageData.imgs? singerPageData.imgs[2].img : ''" />
+        <div class="mask-head-img">
+          <img :src="singerPageData.imgs ? singerPageData.imgs[2].img : ''" />
 
           <p>{{ singerPageData.singer }}</p>
         </div>
@@ -89,6 +88,7 @@ import SingerAlbumComponent from "@/components/SingerComponents/SingerAlbumCompo
 import SingerMainComponent from "@/components/SingerComponents/SingerMainComponent.vue";
 import SingerVideoComponent from "@/components/SingerComponents/SingerVideoComponent.vue";
 import SingerNavComponent from "@/components/SingerComponents/SingerNavComponent.vue";
+import { mapMutations } from "vuex";
 
 export default {
   components: {
@@ -129,11 +129,19 @@ export default {
   },
   methods: {
     like(e) {
+      console.log(this.singerPageData);
       this.isLike = !this.isLike;
       if (this.isLike) {
+        this.addFavSinger({
+          singerId: this.singerPageData.singerId,
+          singerName: this.singerPageData.singer,
+          cover: this.singerPageData.imgs[2].img,
+          type: this.singerPageData.resourceType,
+        });
         e.target.textContent = "已关注";
         e.target.style.backgroundColor = "rgb(151, 149, 149,.5)";
       } else {
+        this.delFavSinger(this.singerPageData.singerId);
         e.target.textContent = "关注";
         e.target.style.backgroundColor = "#e93f59";
       }
@@ -220,23 +228,21 @@ export default {
     scrollHandle(e) {
       e.target.scrollLeft = 0;
 
-
       if (e.target.scrollTop >= 240) {
-
         e.target.scrollTop = 240;
 
         this.show = true;
 
         this.$refs.bgImgMask.style.backdropFilter = `blur(5px)`;
-
       } else {
         this.show = false;
-        
+
         this.$refs.bgImgMask.style.backdropFilter = `blur(${
           e.target.scrollTop / 48
         }px)`;
       }
     },
+    ...mapMutations(["addFavSinger", "delFavSinger"]),
   },
 };
 </script>
@@ -312,7 +318,6 @@ header {
       justify-content: space-between;
       align-items: center;
     }
-  
   }
   .nav {
     color: #fff;

@@ -147,16 +147,19 @@ export default {
 
     getSongsList(id) {
       id = id || 1000001635;
-      this.$axios
-        .get(
-          `/MIGUM3.0/v1.0/template/musiclistplaza-listbytag?pageNumber=3&tagId=${id}`
-        )
-        .then(({ data }) => {
-          this.songList = data.data.contentItemList.itemList;
-          // console.log(this.songList);
-        });
+      this.$axios({
+        methods: "GET",
+        url: `/MIGUM3.0/v1.0/template/musiclistplaza-listbytag?pageNumber=1&tagId=${id}`,
+        headers: {
+          recommendstatus: 1,
+          aversionid:
+            "DF948B8E93A7A2886998899ED082987894978C909AA1A68AAEDDD3D18C799B73979585BA9AA8D6B967918DE9D0C59877999A8C8E94A4A28965938B",
+        },
+      }).then(({ data }) => {
+        this.songList = data.data.contentItemList.itemList;
+        // console.log(this.songList);
+      });
     },
-
 
     getSongsListAndActive(id, index) {
       this.moveRecommendNav(index);
@@ -165,7 +168,9 @@ export default {
 
       this.getSongsList(id);
 
-      this.$refs.reUnderLine.style.left = `calc(2vw + ${(index + 1) * 20}vw - 29vw/2)`;
+      this.$refs.reUnderLine.style.left = `calc(2vw + ${
+        (index + 1) * 20
+      }vw - 29vw/2)`;
     },
 
     goToOnlySongsList(id) {
@@ -177,7 +182,6 @@ export default {
         },
       });
     },
-
 
     showTitle(e) {
       // console.log(e.target.scrollTop/ this.$refs.content[0].offsetHeight);
@@ -236,42 +240,44 @@ export default {
 
         this.recommendNavActive = isExistIndex;
 
-        this.$refs.reUnderLine.style.left = `calc(2vw + ${(isExistIndex + 1) * 20}vw - 29vw/2)`;
+        this.$refs.reUnderLine.style.left = `calc(2vw + ${
+          (isExistIndex + 1) * 20
+        }vw - 29vw/2)`;
       }
 
-      this.moveRecommendNav(this.recommendNavActive)
+      this.moveRecommendNav(this.recommendNavActive);
     },
 
-    moveRecommendNav(index){
+    moveRecommendNav(index) {
       const recommend = this.$refs.recommend;
 
       const currentRecommend = this.$refs.recommendContent[index];
 
-      const goLeft = currentRecommend.offsetLeft + currentRecommend.offsetWidth / 2 - recommend.offsetWidth / 2;
+      const goLeft =
+        currentRecommend.offsetLeft +
+        currentRecommend.offsetWidth / 2 -
+        recommend.offsetWidth / 2;
 
       const step = 5;
 
       let timer = setInterval(() => {
-
         if (recommend.scrollLeft > goLeft) {
-
           recommend.scrollLeft -= step;
-
         } else {
-
           recommend.scrollLeft += step;
-
         }
 
-        if (Math.abs(recommend.scrollLeft - goLeft) < step || recommend.scrollLeft == 0 ||
-          Math.ceil(recommend.scrollLeft) + recommend.offsetWidth == recommend.scrollWidth) {
-            
+        if (
+          Math.abs(recommend.scrollLeft - goLeft) < step ||
+          recommend.scrollLeft == 0 ||
+          Math.ceil(recommend.scrollLeft) + recommend.offsetWidth ==
+            recommend.scrollWidth
+        ) {
           window.clearInterval(timer);
 
           timer = null;
         }
       }, 10);
-
     },
   },
 };
