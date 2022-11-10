@@ -113,7 +113,7 @@ export default {
   },
   created() {
     this.resourceId = this.moreCommentId;
-    // console.log(this.moreCommentId);
+    console.log(this.moreCommentId);
   },
   computed: {
     allCommentUrl() {

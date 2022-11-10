@@ -168,9 +168,8 @@ export default {
 
       this.getSongsList(id);
 
-      this.$refs.reUnderLine.style.left = `calc(2vw + ${
-        (index + 1) * 20
-      }vw - 29vw/2)`;
+      this.$refs.reUnderLine.style.left = `calc(2vw + ${(index + 1) * 16}vw - 25vw/2)`;
+
     },
 
     goToOnlySongsList(id) {
@@ -234,15 +233,14 @@ export default {
           ...this.recommendNav,
         ];
 
-        this.$refs.reUnderLine.style.left = `calc(2vw + 20vw - 29vw/2)`;
+        this.$refs.reUnderLine.style.left = `calc(2vw + 16vw - 25vw/2)`;
       } else {
         let isExistIndex = this.recommendNav.indexOf(isExist);
 
         this.recommendNavActive = isExistIndex;
 
-        this.$refs.reUnderLine.style.left = `calc(2vw + ${
-          (isExistIndex + 1) * 20
-        }vw - 29vw/2)`;
+        this.$refs.reUnderLine.style.left = `calc(2vw + ${(isExistIndex + 1) * 16}vw - 25vw/2)`;
+
       }
 
       this.moveRecommendNav(this.recommendNavActive);
@@ -267,12 +265,9 @@ export default {
           recommend.scrollLeft += step;
         }
 
-        if (
-          Math.abs(recommend.scrollLeft - goLeft) < step ||
-          recommend.scrollLeft == 0 ||
-          Math.ceil(recommend.scrollLeft) + recommend.offsetWidth ==
-            recommend.scrollWidth
-        ) {
+        if (Math.abs(recommend.scrollLeft - goLeft) < step || recommend.scrollLeft == 0 ||
+          Math.ceil(recommend.scrollLeft) + recommend.offsetWidth >= recommend.scrollWidth) {
+
           window.clearInterval(timer);
 
           timer = null;
@@ -329,7 +324,7 @@ main {
     background-color: #fff;
     width: 7vw;
     position: absolute;
-    top: calc(4.5vh / 2);
+    top: calc(4.4vh / 2);
     right: 0%;
     z-index: 11;
   }
@@ -351,23 +346,23 @@ main {
     display: none;
   }
   .songs-list {
-    height: 20vh;
+    height: 40vw;
     width: 30vw;
     margin-left: calc(9vw / 4);
     margin-top: 2vh;
     position: relative;
     img {
-      height: 15vh;
+      height: 30vw;
       width: 30vw;
       border-radius: 15px;
     }
     .songs-list-num {
       position: absolute;
-      top: 13vh;
+      bottom: 10vw;
       left: 0vw;
       color: #fff;
       height: 2vh;
-      width: 30vw;
+      width: 100%;
       display: flex;
       align-items: center;
       background-color: rgba(0, 0, 0, 0.4);
@@ -398,7 +393,7 @@ main {
 }
 
 .recommend {
-  margin: 2vh 3vw;
+  margin: 2vh 3vw 1vh 3vw;
   display: flex;
   overflow: auto;
   background-color: #fff;
@@ -411,7 +406,7 @@ main {
   }
 
   p {
-    width: 20vw;
+    width: 16vw;
     height: 4vh;
     text-align: center;
     line-height: 4vh;
@@ -421,7 +416,7 @@ main {
     font-size: 12px;
 
     &.active {
-      font-size: 15px;
+      font-size: 13px;
       font-weight: 600;
     }
   }
@@ -434,7 +429,7 @@ main {
     background-color: red;
     position: absolute;
     top: calc(11vh / 2);
-    left: calc(15vw / 2);
+    left: calc(11vw / 2);
     z-index: 2;
     transition: all 0.5s;
   }

@@ -45,14 +45,24 @@
             <img class="r-arrow" src="@/assets/svg/rightArrow.svg" alt="" />
           </div>
           <div class="main-singer-right">
-            <img src="@/assets/svg/ear.svg" />
-            <span>{{
-              AblumMes.opNumItem ? AblumMes.opNumItem.playNumDesc : ""
-            }}</span>
-            <img src="@/assets/svg/heart.svg" />
-            <span>{{
-              AblumMes.opNumItem ? AblumMes.opNumItem.keepNumDesc : ""
-            }}</span>
+            <div>
+              <img src="@/assets/svg/albumComments.svg" @click="goToComment" />
+              <span>{{
+                AblumMes.opNumItem ? AblumMes.opNumItem.commentNum : "0"
+              }}</span>
+            </div>
+            <div>
+              <img src="@/assets/svg/ear.svg" />
+              <span>{{
+                AblumMes.opNumItem ? AblumMes.opNumItem.playNumDesc : "0"
+              }}</span>
+            </div>
+            <div>
+              <img src="@/assets/svg/heart.svg" />
+              <span>
+                {{AblumMes.opNumItem ? (AblumMes.opNumItem.keepNumDesc.indexOf('万') == -1? Number(AblumMes.opNumItem.keepNumDesc) +(hasCollectStatus ? 1 : 0) : AblumMes.opNumItem.keepNumDesc) : (0 + (hasCollectStatus ? 1 : 0))}}
+              </span>
+            </div>
           </div>
         </div>
 
@@ -67,23 +77,6 @@
               "
             />
             <p>{{ hasCollectStatus ? "已" : "" }}收藏</p>
-          </div>
-        </div>
-
-        <div class="album-songs-page-share">
-          <div class="share-img">
-            <img src="@/assets/svg/albumShare.svg" />
-            <span>分享</span>
-          </div>
-          <div class="comments-img" @click="goToComment">
-            <img src="@/assets/svg/albumComments.svg" />
-            <span>{{
-              AblumMes.opNumItem ? AblumMes.opNumItem.commentNum : ""
-            }}</span>
-          </div>
-          <div class="download-img">
-            <img src="@/assets/svg/albumDownLoad.svg" />
-            <span>下载</span>
           </div>
         </div>
 
@@ -180,6 +173,7 @@ export default {
           });
       }
     },
+
     hasCollect() {
       this.hasCollectStatus = false;
       this.user.userCollect.album.forEach((el) => {
@@ -327,10 +321,15 @@ export default {
 }
 
 .main-singer-right {
-  width: 38vw;
+  width: 46vw;
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
+
+  div {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+  }
 
   span {
     font-size: 14px;
@@ -346,17 +345,19 @@ export default {
   padding: 0 3vw;
 
   .page-album-name {
-    width: 50vw;
-    font-size: 25px;
+    width: 65vw;
+    font-size: 16px;
     font-weight: 500;
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
   }
 
   .collect {
     width: 22vw;
-    height: 100%;
+    height: 22vw;
     border-radius: 999px;
     box-shadow: 0 0 6px 0 #ccc;
     display: flex;
@@ -365,6 +366,12 @@ export default {
     justify-content: center;
     align-items: center;
 
+    img {
+      height: 20px;
+      width: 20px;
+      margin-bottom: 4px;
+    }
+
     p {
       font-size: 14px;
       color: #999;
@@ -372,23 +379,7 @@ export default {
   }
 }
 
-.album-songs-page-share {
-  height: 5vh;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 20px;
-  margin-top: 20px;
-
-  div {
-    display: flex;
-    align-items: center;
-    font-size: 14px;
-    color: #666;
-  }
-}
-
 .songslist {
-  margin: 0;
+  margin: 2vh 0 0 0;
 }
 </style>
