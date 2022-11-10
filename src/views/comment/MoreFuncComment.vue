@@ -16,7 +16,11 @@
     </div>
     <div class="comment-hotComments">
       <div class="comment-title" v-if="hotComments[0]">精彩评论</div>
-      <div class="comment-item" v-for="i in hotComments" :key="i.commentId">
+      <div
+        class="comment-item"
+        v-for="i in hotComments"
+        :key="'hot' + i.commentId"
+      >
         <div class="comment-usermsg">
           <div class="item-img" @click="turnToPeoplePage(i.user.userId)">
             <img :src="i.user.smallIcon" />
@@ -80,7 +84,11 @@
       <div class="comment-title" v-if="allComments[0]">
         全部评论 ({{ data.commentNums }})
       </div>
-      <div class="comment-item" v-for="i in allComments" :key="i.commentId">
+      <div
+        class="comment-item"
+        v-for="i in allComments"
+        :key="'all' + i.commentId"
+      >
         <div class="comment-usermsg">
           <div class="item-img" @click="turnToPeoplePage(i.user.userId)">
             <img :src="i.user.smallIcon" />
@@ -200,6 +208,8 @@ export default {
         this.songMsg = this.data.targetInfo;
         this.hotComments = this.data.hotComments;
         this.allComments = this.data.comments;
+        // console.log(this.hotComments);
+        // console.log(this.allComments);
       });
     },
     // 处理点赞人数

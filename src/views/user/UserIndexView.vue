@@ -8,7 +8,7 @@
           <div class="user-pic">
             <img src="@/assets/user4.svg" />
           </div>
-          <div class="user-name">小明</div>
+          <div class="user-name">猪蛋蛋</div>
         </div>
       </transition>
     </header>
@@ -18,7 +18,7 @@
           <div class="user-pic">
             <img src="@/assets/user4.svg" />
           </div>
-          <div class="user-name">小明</div>
+          <div class="user-name">猪蛋蛋</div>
           <div class="user-status">
             <span class="follow">10 关注</span> |
             <span class="fans">10 粉丝</span> |

@@ -120,10 +120,7 @@ export default {
   },
   created() {
     this.songsListData = this.songsData;
-    console.log(this.songsData, 1);
-  },
-  mounted() {
-    console.log(this.songsData);
+    // console.log(this.songsData);
   },
   methods: {
     moreFunc(name, id) {
@@ -168,15 +165,19 @@ export default {
     playAll() {
       console.log(window.location.href);
       if (window.location.href.indexOf("songListOnly") != -1) {
-        this.freshLatelyPlaylistData(this.updateData)
+        this.freshLatelyPlaylistData(this.updateData);
       } else if (window.location.href.indexOf("albumSongs") != -1) {
-        this.freshLatelyAlbumData(this.updateData)
+        this.freshLatelyAlbumData(this.updateData);
       }
       this.playList(this.songsData.dataList);
     },
     ...mapActions(["getPlayURL"]),
     ...mapActions(["playList"]),
-    ...mapMutations(["changeHighNum", "freshLatelyPlaylistData","freshLatelyAlbumData"]),
+    ...mapMutations([
+      "changeHighNum",
+      "freshLatelyPlaylistData",
+      "freshLatelyAlbumData",
+    ]),
   },
 };
 </script>

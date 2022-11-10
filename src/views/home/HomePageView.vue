@@ -1,7 +1,10 @@
 <template>
   <div class="homepage">
     <div class="search-nav">
-      <div class="title">摸鱼音乐</div>
+      <div>
+        <div class="search-img"></div>
+        <div class="title">摸鱼音乐</div>
+      </div>
       <div class="search" @click="goToSearch">
         <i class="wd-icon-search"></i>
         <span>搜索框</span>
@@ -14,13 +17,13 @@
         xmlns="http://www.w3.org/2000/svg"
         p-id="19704"
         xmlns:xlink="http://www.w3.org/1999/xlink"
-        width="16"
-        height="16"
+        width="20"
+        height="20"
         @click="turnToUser"
       >
         <path
           d="M917.333333 981.333333a21.333333 21.333333 0 0 1-21.333333-21.333333v-64c0-94.106667-76.56-170.666667-170.666667-170.666667H298.666667c-94.106667 0-170.666667 76.56-170.666667 170.666667v64a21.333333 21.333333 0 0 1-42.666667 0v-64a213.333333 213.333333 0 0 1 213.333334-213.333333h426.666666a213.333333 213.333333 0 0 1 213.333334 213.333333v64a21.333333 21.333333 0 0 1-21.333334 21.333333zM768 298.666667c0-141.386667-114.613333-256-256-256S256 157.28 256 298.666667s114.613333 256 256 256 256-114.613333 256-256zM512 512c-117.82 0-213.333333-95.513333-213.333333-213.333333s95.513333-213.333333 213.333333-213.333334 213.333333 95.513333 213.333333 213.333334-95.513333 213.333333-213.333333 213.333333z"
-          fill="#fff"
+          fill="#cd3021"
           p-id="19705"
         ></path>
       </svg>
@@ -324,7 +327,7 @@ export default {
       }
       //   action = action.replace("-", "");
       action = "/" + action;
-      console.log(action);
+      // console.log(action);
       this.$router.push({ path: action });
     },
     getNumItem(data) {
@@ -403,41 +406,51 @@ export default {
     goToSongList() {
       this.$router.push({ path: "/song-lists" });
     },
-    turnToUser(){
-      this.$router.push({path:'/user'})
-    }
+    turnToUser() {
+      this.$router.push({ path: "/user" });
+    },
   },
-  beforeDestroy(){
-  }
 };
 </script>
 <style lang="scss">
 .homepage {
   padding: 0 0 55px 0;
   .search-nav {
+    z-index: 50;
+    position: sticky;
+    top: 0;
+    left: 0;
     padding: 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    color: #fff;
-    background-color: #cd3021;
-    .title {
-      font-size: 18px;
+    color: #cd3021;
+    background-color: #fff;
+    box-shadow: 0px 4px 4px #eee;
+    div {
+      display: flex;
+      align-items: center;
+      .search-img {
+        background: url("@/assets/logo.png") no-repeat -58.8px -58.8px;
+        background-size: 150px 150px;
+        width: 32.1px;
+        height: 29.1px;
+      }
+      .title {
+        color: #000;
+        margin: 2px 0 0 5px;
+      }
     }
     .search {
       padding: 8px 60px;
       font-size: 13px;
       display: flex;
       border-radius: 20px;
-      color: rgba(238, 238, 238, 0.7);
-      background-color: #d13b2c;
+      border: #cd3021 1px solid;
+      color: #cd3021;
       i {
         margin: 0 5px 0 0;
       }
-    }
-    svg {
-      width: 20px;
-      height: 20px;
     }
   }
   .sub-container {
