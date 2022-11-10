@@ -40,25 +40,25 @@ export default {
   background-color: #fff;
   display: flex;
   justify-content: flex-start;
+  align-items: flex-start;
   flex-wrap: wrap;
   padding-top: 2vh;
-  height: 67vh;
+  height: 76vh;
   overflow: auto;
 }
 .album-page-content {
-  height: 25vh;
   width: calc(90vw / 3);
   margin-left: calc(10vw / 4);
-
+  margin-bottom: 1vh;
   .album-page-content-img {
-    height: 12vh;
+    width: calc(90vw / 3);
     background-image: url(@/assets/Album.png);
     background-size: contain;
     background-repeat: no-repeat;
     background-position: calc(7vw / 2) 0;
 
     img {
-      height: 100%;
+      width: calc(80vw / 3);
       border-radius: 10px;
     }
   }

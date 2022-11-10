@@ -242,9 +242,11 @@ export default {
 
     scrollHandle(e) {
       e.target.scrollLeft = 0;
+      let windowY = window.innerHeight * 0.35
 
-      if (e.target.scrollTop >= 240) {
-        e.target.scrollTop = 240;
+      if (e.target.scrollTop >= windowY) {
+
+        e.target.scrollTop = windowY + 2;
 
         this.show = true;
 
