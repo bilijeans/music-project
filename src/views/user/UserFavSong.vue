@@ -3,8 +3,28 @@
     <header>
       <i class="back wd-icon-thin-arrow-left" @click="goBack"></i>
       <i class="search wd-icon-search"></i>
+      <div class="page-title">我喜欢的音乐</div>
     </header>
     <main>
+      <div class="play-head">
+        <div class="play-all" @click="playAll">
+          <svg
+            class="icon"
+            width="16px"
+            height="16.00px"
+            viewBox="0 0 1024 1024"
+            version="1.1"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fill="#2c2c2c"
+              d="M128 138.666667c0-47.232 33.322667-66.666667 74.176-43.562667l663.146667 374.954667c40.96 23.168 40.853333 60.8 0 83.882666L202.176 928.896C161.216 952.064 128 932.565333 128 885.333333v-746.666666z"
+            />
+          </svg>
+          <span>播放全部 {{ user.fav.song.length }} </span>
+        </div>
+      </div>
+
       <div class="fav-items-song">
         <div class="fav-item" v-for="i in user.fav.song" :key="i.songId">
           <div class="song-msg" @click="getPlayURL(i.songId)">
@@ -97,7 +117,10 @@ export default {
       this.songId = id;
       // console.log(id);
     },
-    ...mapActions(["getPlayURL"]),
+    playAll() {
+      this.playList(this.user.fav.song);
+    },
+    ...mapActions(["getPlayURL", "playList"]),
   },
 };
 </script>
@@ -121,9 +144,34 @@ export default {
       right: 20px;
       line-height: 50px;
     }
+    .page-title{
+        text-align: center;
+        line-height: 50px;
+    }
   }
   main {
     padding: 50px 0;
+    .play-head {
+      position: sticky;
+      top: 50px;
+      background-color: #fff;
+    }
+    .play-all {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 130px;
+      padding: 8px 15px;
+      font-size: 12px;
+      border-radius: 20px;
+      color: #666;
+      background-color: #fafafa;
+      margin-left: 20px;
+      svg {
+        width: 15px;
+        height: 15px;
+      }
+    }
     .fav-item {
       padding: 10px;
       display: flex;

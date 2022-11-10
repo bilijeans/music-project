@@ -18,12 +18,14 @@
       <div class="comment-title" v-if="hotComments[0]">精彩评论</div>
       <div class="comment-item" v-for="i in hotComments" :key="i.commentId">
         <div class="comment-usermsg">
-          <div class="item-img">
+          <div class="item-img" @click="turnToPeoplePage(i.user.userId)">
             <img :src="i.user.smallIcon" />
           </div>
           <div class="item-msg">
             <div class="item-user">
-              <span>{{ i.user.nickName }}</span>
+              <span @click="turnToPeoplePage(i.user.userId)">{{
+                i.user.nickName
+              }}</span>
               <img
                 v-if="i.user.userMemberInfos"
                 :src="i.user.userMemberInfos[0].icon"
@@ -80,12 +82,14 @@
       </div>
       <div class="comment-item" v-for="i in allComments" :key="i.commentId">
         <div class="comment-usermsg">
-          <div class="item-img">
+          <div class="item-img" @click="turnToPeoplePage(i.user.userId)">
             <img :src="i.user.smallIcon" />
           </div>
           <div class="item-msg">
             <div class="item-user">
-              <span>{{ i.user.nickName }}</span>
+              <span @click="turnToPeoplePage(i.user.userId)">{{
+                i.user.nickName
+              }}</span>
               <img
                 v-if="i.user.userMemberInfos"
                 :src="i.user.userMemberInfos[0].icon"
@@ -224,6 +228,12 @@ export default {
     },
     back() {
       this.$router.go(-1);
+    },
+    turnToPeoplePage(id) {
+      this.$router.push({
+        path: "/other-user",
+        query: { userId: id },
+      });
     },
   },
 };

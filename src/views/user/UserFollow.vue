@@ -1,9 +1,9 @@
 <template>
-  <div class="lately-play">
+  <div class="user-follow">
     <header>
       <i class="back wd-icon-thin-arrow-left" @click="goBack"></i>
       <i class="search wd-icon-search"></i>
-      <div class="page-title">我的收藏</div>
+      <div class="page-title">我的关注</div>
     </header>
     <main>
       <wd-tabs
@@ -19,41 +19,28 @@
           :key="item.key"
           :title="`${item.title}`"
         >
-          <div class="col-items-mv" v-if="item.key == 'mv'"></div>
-          <div class="col-items-album" v-if="item.key == 'album'">
+          <div class="fol-items-singer" v-if="item.key == 'singer'">
             <div
-              class="album-item"
+              class="fol-item"
               v-for="i in item.data"
-              :key="i.albumId"
-              @click="turnToAlbum(i.albumId, i.type)"
+              :key="i.singerId"
+              @click="turnToSingerPage(i.singerId,i.type)"
             >
-              <div class="album-img">
+              <div class="cover">
                 <img :src="i.cover" />
-                <img class="Album-img" src="@/assets/Album.png" />
               </div>
-              <div class="album-msg">
-                <div class="album-name">{{ i.title }}</div>
-                <div class="album-pro">
-                  <div class="album-singer">{{ i.singer }}</div>
-                  <div class="album-time">{{ i.publishDate }}</div>
-                </div>
-              </div>
-              <i class="wd-icon-arrow-right"></i>
+              <div class="singer-name">{{ i.singerName }}</div>
             </div>
+          </div>
+          <div class="fol-items-people" v-if="item.key == 'user'">
+            <div class="fol-item" v-for="i in item.data" :key="i.userId"></div>
           </div>
         </wd-tab>
       </wd-tabs>
     </main>
-    <!-- <songs-more-func
-      :name="songName"
-      :id="songId"
-      :moretab="moretab"
-      @cancelmorefunc="cancelmorefunc"
-    ></songs-more-func> -->
   </div>
 </template>
 <script>
-// import SongsMoreFunc from "@/components/SongsMoreFunc.vue";
 import { mapState } from "vuex";
 export default {
   //   components: { SongsMoreFunc },
@@ -64,13 +51,13 @@ export default {
       tab: 0,
       tabList: [
         {
-          title: "专辑",
-          key: "album",
+          title: "歌手",
+          key: "singer",
           data: [],
         },
         {
-          title: "视频",
-          key: "mv",
+          title: "用户",
+          key: "user",
           data: [],
         },
       ],
@@ -80,10 +67,9 @@ export default {
     };
   },
   created() {
-    // localStorage.getItem();
     this.collectData = this.user.userCollect;
     this.tabList.forEach((e) => {
-      e.data = this.user.userCollect[e.key];
+      e.data = this.user.fav[e.key];
     });
   },
   computed: {
@@ -105,9 +91,9 @@ export default {
     goBack() {
       this.$router.go(-1);
     },
-    turnToAlbum(id, type) {
+    turnToSingerPage(id,type) {
       this.$router.push({
-        name: "albumSongs",
+        name: "SingerPage",
         params: {
           id,
           type,
@@ -118,7 +104,7 @@ export default {
 };
 </script>
 <style lang="scss">
-.lately-play {
+.user-follow {
   header {
     position: fixed;
     top: 0;
@@ -152,6 +138,22 @@ export default {
       overflow: auto;
       &::-webkit-scrollbar {
         display: none;
+      }
+    }
+    .fol-item {
+      display: flex;
+      align-items: center;
+      padding: 10px 20px;
+      .cover {
+        width: 50px;
+        img {
+          display: block;
+          width: 100%;
+          border-radius: 999px;
+        }
+      }
+      .singer-name {
+        margin-left: 10px;
       }
     }
   }
