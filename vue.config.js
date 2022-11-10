@@ -65,11 +65,18 @@ module.exports = defineConfig({
           '': ''
         }
       },
-      '/apiV':{
-        target:'http://freevod.nf.migu.cn:8080',
-        changeOrigin:true,
-        pathRewrite:{
-          '/apiV':''
+      '/apiV': {
+        target: 'http://freevod.nf.migu.cn:8080',
+        changeOrigin: true,
+        pathRewrite: {
+          '/apiV': ''
+        }
+      },
+      '/people': {
+        target: 'https://app.u.nf.migu.cn',
+        changeOrigin: true,
+        pathRewrite: {
+          '/people': ''
         }
       }
     }

@@ -18,7 +18,7 @@ import UserLatelyPlay from "../views/user/UserLatelyPlay.vue"
 import VideoPageView from '../views/video/VideoPageView.vue'
 import MoreFuncComment from '../views/comment/MoreFuncComment.vue'
 import CharacteristicsGroup from '../views/rank/CharacteristicsGroup.vue'
-
+import PeopleIndex from '../views/people/PeopleIndex.vue'
 
 Vue.use(VueRouter)
 
@@ -171,6 +171,14 @@ const routes = [
     }
   },
   {
+    path: '/user/user-follow',
+    name: 'user-follow',
+    component: () => import("../views/user/UserFollow.vue"),
+    meta: {
+      index: 5
+    }
+  },
+  {
 
     path: '/video',
     name: 'video',
@@ -182,6 +190,12 @@ const routes = [
     path: '/morefunc-comment',
     name: 'morefunc-comment',
     component: MoreFuncComment,
+  },
+  {
+
+    path: '/other-user',
+    name: 'other-user',
+    component: PeopleIndex,
   },
 
 ]

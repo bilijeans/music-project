@@ -21,7 +21,15 @@
           <div class="fans">{{ singerPageData.followNums }}粉丝</div>
           <div class="wall">
             <img src="@/assets/svg/like.svg" alt="" />
-            <div class="concern" @click="like">关注</div>
+            <div
+              class="concern"
+              @click="like"
+              :style="{
+                backgroundColor: isLike ? 'rgb(151, 149, 149,.5)' : '#e93f59',
+              }"
+            >
+              {{ isLike ? "已" : "" }}关注
+            </div>
           </div>
         </div>
       </header>
@@ -88,7 +96,7 @@ import SingerAlbumComponent from "@/components/SingerComponents/SingerAlbumCompo
 import SingerMainComponent from "@/components/SingerComponents/SingerMainComponent.vue";
 import SingerVideoComponent from "@/components/SingerComponents/SingerVideoComponent.vue";
 import SingerNavComponent from "@/components/SingerComponents/SingerNavComponent.vue";
-import { mapMutations } from "vuex";
+import { mapMutations, mapState } from "vuex";
 
 export default {
   components: {
@@ -126,9 +134,20 @@ export default {
     this.getSongList();
     this.getViedoList();
     this.getAlbumList();
+    this.hasLike();
+  },
+  computed: {
+    ...mapState(["user"]),
   },
   methods: {
-    like(e) {
+    hasLike() {
+      this.user.fav.singer.forEach((e) => {
+        if (e.singerId == this.id) {
+          this.isLike = true;
+        }
+      });
+    },
+    like() {
       console.log(this.singerPageData);
       this.isLike = !this.isLike;
       if (this.isLike) {
@@ -138,12 +157,8 @@ export default {
           cover: this.singerPageData.imgs[2].img,
           type: this.singerPageData.resourceType,
         });
-        e.target.textContent = "已关注";
-        e.target.style.backgroundColor = "rgb(151, 149, 149,.5)";
       } else {
         this.delFavSinger(this.singerPageData.singerId);
-        e.target.textContent = "关注";
-        e.target.style.backgroundColor = "#e93f59";
       }
     },
     getSingerPersonalPage() {
