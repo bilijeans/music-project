@@ -1,13 +1,10 @@
 <template>
   <div class="homepage">
     <div class="search-nav">
-      <div>
-        <div class="search-img"></div>
-        <div class="title">摸鱼音乐</div>
-      </div>
+      <div class="search-img"></div>
       <div class="search" @click="goToSearch">
         <i class="wd-icon-search"></i>
-        <span>搜索框</span>
+        <span>邓紫棋</span>
       </div>
       <svg
         t="1665822765464"
@@ -23,10 +20,13 @@
       >
         <path
           d="M917.333333 981.333333a21.333333 21.333333 0 0 1-21.333333-21.333333v-64c0-94.106667-76.56-170.666667-170.666667-170.666667H298.666667c-94.106667 0-170.666667 76.56-170.666667 170.666667v64a21.333333 21.333333 0 0 1-42.666667 0v-64a213.333333 213.333333 0 0 1 213.333334-213.333333h426.666666a213.333333 213.333333 0 0 1 213.333334 213.333333v64a21.333333 21.333333 0 0 1-21.333334 21.333333zM768 298.666667c0-141.386667-114.613333-256-256-256S256 157.28 256 298.666667s114.613333 256 256 256 256-114.613333 256-256zM512 512c-117.82 0-213.333333-95.513333-213.333333-213.333333s95.513333-213.333333 213.333333-213.333334 213.333333 95.513333 213.333333 213.333334-95.513333 213.333333-213.333333 213.333333z"
-          fill="#cd3021"
+          fill="#fff"
           p-id="19705"
         ></path>
       </svg>
+    </div>
+    <div class="homepage-topbg">
+      <img :src="homePageData[0].contents[0].img" />
     </div>
     <van-swipe
       class="banner-container"
@@ -41,7 +41,6 @@
         :width="351"
       >
         <img :src="i.img" />
-        <!-- <div style="text-align:center">{{index}}</div> -->
       </van-swipe-item>
     </van-swipe>
     <div class="sub-container">
@@ -132,13 +131,13 @@
       <div class="title">{{ newSongTitle[0].txt }}</div>
       <div class="more">{{ newSongTitle[0].txt2 }}</div>
     </div>
-    <div class="home-songs-item">
-      <div class="home-song-item">
-        <div
-          class="home-songs-list"
-          v-for="(i, index) in newSongArr"
-          :key="index"
-        >
+    <wd-swipe :autoplay="false" :loop="false">
+      <wd-swipe-item
+        v-for="(i, index) in newSongArr"
+        :key="index"
+        style="height: 210px"
+      >
+        <div class="home-songs-list">
           <div
             class="home-song-list"
             v-for="n in newSongArr[index]"
@@ -153,8 +152,8 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </wd-swipe-item>
+    </wd-swipe>
     <div class="roost-title">
       <div class="title">{{ roostTitle[0].txt }}</div>
       <div class="more">{{ roostTitle[0].txt2 }}</div>
@@ -179,13 +178,13 @@
     <div class="maylike-title">
       <div class="title">{{ maylikeTitle.contents[0].txt }}</div>
     </div>
-    <div class="home-songs-item">
-      <div class="home-song-item">
-        <div
-          class="home-songs-list"
-          v-for="(i, index) in maylikeArr"
-          :key="index"
-        >
+    <wd-swipe :autoplay="false" :loop="false">
+      <wd-swipe-item
+        v-for="(i, index) in maylikeArr"
+        :key="index"
+        style="height: 210px"
+      >
+        <div class="home-songs-list">
           <div
             class="home-song-list"
             v-for="n in maylikeArr[index]"
@@ -200,8 +199,8 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </wd-swipe-item>
+    </wd-swipe>
     <div class="prefecture-title">
       <div class="title">{{ prefectureTitle.txt }}</div>
     </div>
@@ -216,31 +215,29 @@
       <div class="title">{{ screamingArr[screamIndex].contents[0].txt }}</div>
       <div class="more">{{ screamingArr[screamIndex].contents[0].txt2 }}</div>
     </div>
-    <div class="screaming">
-      <div class="home-songs-item" ref="screamBanner">
-        <div class="home-song-item">
+    <wd-swipe :autoplay="false" :loop="false">
+      <wd-swipe-item
+        v-for="(i, index) in screamingArr"
+        :key="index"
+        style="height: 210px"
+      >
+        <div class="home-songs-list">
           <div
-            class="home-songs-list"
-            v-for="(i, index) in screamingArr"
-            :key="index"
+            class="home-song-list"
+            v-for="n in screamingArr[index].value"
+            :key="n.resId"
           >
-            <div
-              class="home-song-list"
-              v-for="n in screamingArr[index].value"
-              :key="n.resId"
-            >
-              <div class="home-songs-img">
-                <img :src="n.img" />
-              </div>
-              <div class="home-songs-msg">
-                <span class="song">{{ n.txt }}</span>
-                <span class="singer-song">{{ n.txt2 }} - {{ n.txt3 }}</span>
-              </div>
+            <div class="home-songs-img">
+              <img :src="n.img" />
+            </div>
+            <div class="home-songs-msg">
+              <span class="song">{{ n.txt }}</span>
+              <span class="singer-song">{{ n.txt2 }} - {{ n.txt3 }}</span>
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </wd-swipe-item>
+    </wd-swipe>
   </div>
 </template>
 <script>
@@ -270,13 +267,6 @@ export default {
       screamIndex: 0,
     };
   },
-  mounted() {
-    // console.log(this.$refs.screamBanner);
-    // this.$refs.screamBanner.addEventListener(
-    //   "scroll",
-    //   this.getScreamScrollDistance
-    // );
-  },
   created() {
     this.homePageData = HomePageData.data.contents;
     this.bannerData = HomePageData.data.contents[1].contents;
@@ -284,7 +274,7 @@ export default {
     this.recommendSongListTitle = HomePageData.data.contents[4].contents[0];
     this.recommendSongList = HomePageData.data.contents[5].contents;
     this.classifyData = HomePageData.data.contents[6].contents;
-    // console.log(this.classifyData, "aaa");
+    // console.log(this.classifyData);
     this.newSongTitle = HomePageData.data.contents[7].contents;
     this.newSongData = HomePageData.data.contents[8].contents;
     this.roostTitle = HomePageData.data.contents[9].contents;
@@ -298,22 +288,6 @@ export default {
     this.getNewSongsData(this.newSongData);
     this.getmaylikeData(this.maylikeData);
     this.getScreamingData(this.screamingData);
-    // console.log(this.homePageData);
-    // console.log(Date.parse(new Date()));
-    // this.$axios({
-    //   methods: "GET",
-    //   url: "/MIGUM3.0/bmw/index-show/recommend-playlist/v2.0",
-    //   headers: {
-    //     recommendstatus: 1,
-    //     aversionid:
-    //       "DF948B8E93A7A2886998899ED082987894978C909AA1A68AAEDDD3D18C799B73979585BA9AA8D6B967918DE9D0C598779998898C99A5A789689A8D",
-    //     timestamp: Date.parse(new Date()),
-    //   },
-    // }).then(({ data }) => {
-    //   console.log(data.data);
-    //   this.recommendSongList = data.data;
-    //   this.getNumItem(data.data)
-    // });
   },
   methods: {
     goToSearch() {
@@ -325,7 +299,6 @@ export default {
       } else {
         action = action.slice(10);
       }
-      //   action = action.replace("-", "");
       action = "/" + action;
       // console.log(action);
       this.$router.push({ path: action });
@@ -396,13 +369,13 @@ export default {
       this.screamingArr = firArr;
       // console.log(this.screamingArr);
     },
-    getScreamScrollDistance() {
-      let windowWidth = document.documentElement.clientWidth;
-      this.screamIndex = parseInt(
-        (this.$refs.screamBanner.scrollLeft + windowWidth * 0.4) /
-          (windowWidth * 0.9)
-      );
-    },
+    // getScreamScrollDistance() {
+    //   let windowWidth = document.documentElement.clientWidth;
+    //   this.screamIndex = parseInt(
+    //     (this.$refs.screamBanner.scrollLeft + windowWidth * 0.4) /
+    //       (windowWidth * 0.9)
+    //   );
+    // },
     goToSongList() {
       this.$router.push({ path: "/song-lists" });
     },
@@ -414,6 +387,7 @@ export default {
 </script>
 <style lang="scss">
 .homepage {
+  position: relative;
   padding: 0 0 55px 0;
   .search-nav {
     z-index: 50;
@@ -424,42 +398,48 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    color: #cd3021;
-    background-color: #fff;
-    box-shadow: 0px 4px 4px #eee;
-    div {
-      display: flex;
-      align-items: center;
-      .search-img {
-        background: url("@/assets/logo.png") no-repeat -58.8px -58.8px;
-        background-size: 150px 150px;
-        width: 32.1px;
-        height: 29.1px;
-      }
-      .title {
-        color: #000;
-        margin: 2px 0 0 5px;
-      }
+    color: #fff;
+    background-color: #cd3021;
+    // box-shadow: 0px 4px 4px #eee;
+    .search-img {
+      background: url("@/assets/logo.png") no-repeat 0px -1px;
+      background-size: 30px 30px;
+      width: 30px;
+      height: 29px;
+      border-radius: 999px;
+      background-color: #fff;
     }
     .search {
       padding: 8px 60px;
       font-size: 13px;
       display: flex;
       border-radius: 20px;
-      border: #cd3021 1px solid;
-      color: #cd3021;
+      // border: #fff 1px solid;
+      color: #ccc;
+      background-color: #d1675e;
       i {
         margin: 0 5px 0 0;
       }
     }
   }
+  .homepage-topbg {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    z-index: -1;
+    img {
+      display: block;
+      width: 100vw;
+    }
+  }
   .sub-container {
     display: flex;
+    background-color: #fff;
   }
   .banner-container {
     width: 90vw;
     border-radius: 10px;
-    margin: 10px auto 30px;
+    margin: 80px auto 30px;
     img {
       display: block;
       width: 100%;
@@ -591,19 +571,6 @@ export default {
       justify-content: space-around;
       background-color: fff;
     }
-  }
-  .home-songs-item {
-    width: 100vw;
-    height: 220px;
-    overflow: auto;
-    &::-webkit-scrollbar {
-      width: 0;
-      height: 0;
-    }
-  }
-  .home-song-item {
-    display: flex;
-    width: calc(280vw + 20px);
   }
   .home-songs-list {
     width: 90vw;
