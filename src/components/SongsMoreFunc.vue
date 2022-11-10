@@ -141,6 +141,7 @@ export default {
         path: "/morefunc-comment",
         query: {
           id: this.id,
+          type:2
         },
       });
     },
@@ -154,7 +155,7 @@ export default {
   flex-direction: column;
   position: fixed;
   bottom: 0;
-  width: 100%;
+  width: 100vw;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
   background-color: #fff;

@@ -130,10 +130,10 @@ export default {
         data: data.listData[data.highLight],
         index: data.highLight,
       });
-     }
+    }
   },
-  mounted(){
-    this.getElement(this.$refs.play)
+  mounted() {
+    this.getElement(this.$refs.play);
   },
   computed: {
     currentRate: {
@@ -144,7 +144,7 @@ export default {
       },
       set() {},
     },
-    ...mapState(["playbar", "playList","user"]),
+    ...mapState(["playbar", "playList", "user"]),
     ...mapState({
       listData: (state) => state.playList.listData,
       songId: (state) => state.playbar.playId,
@@ -164,16 +164,21 @@ export default {
     },
   },
   methods: {
-    statrPlay(){
-      this.$refs.play.play()
+    statrPlay() {
+      this.$refs.play.play();
     },
     getPlayData() {
-      this.duration = this.$refs.play.duration;
+      this.duration = this.playbar.duration;
       this.playStatus = true;
       this.getTitleStyle();
       this.$refs.play.addEventListener("timeupdate", this.getPlayTime);
-      // localStorage.setItem("playlist", JSON.stringify(this.playList));
-      this.freshLatelyData(this.playList.listData[this.playList.highLight])
+      let toneFlag = this.playList.listData[this.playList.highLight].toneFlag;
+      this.freshLatelySongData({
+        name: this.playbar.songData.songName,
+        singerList: this.playbar.songData.singerList,
+        songId: this.playbar.songData.songId,
+        toneFlag: toneFlag,
+      });
     },
     getPlayTime() {
       this.currentTime = this.$refs.play.currentTime
@@ -286,8 +291,14 @@ export default {
       this.playStatus = false;
       this.$refs.play.pause();
     },
-    ...mapMutations(["toggleStatus", "addToList", "changeHighNum","getElement","freshLatelyData"]),
-    ...mapActions(["getPlayURL", "playOnList","playFirst"]),
+    ...mapMutations([
+      "toggleStatus",
+      "addToList",
+      "changeHighNum",
+      "getElement",
+      "freshLatelySongData",
+    ]),
+    ...mapActions(["getPlayURL", "playOnList", "playFirst"]),
   },
   beforeDestroy() {
     this.$refs.play.removeEventListener("timeupdate", this.getPlayTime);

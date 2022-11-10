@@ -1,7 +1,7 @@
 <template>
   <div class="songslist">
     <div class="songs-play">
-      <div class="play-all">
+      <div class="play-all" @click="playAll">
         <svg
           class="icon"
           width="16px"
@@ -15,7 +15,7 @@
             d="M128 138.666667c0-47.232 33.322667-66.666667 74.176-43.562667l663.146667 374.954667c40.96 23.168 40.853333 60.8 0 83.882666L202.176 928.896C161.216 952.064 128 932.565333 128 885.333333v-746.666666z"
           />
         </svg>
-        <span @click="playList(songsData.dataList)"
+        <span
           >播放全部 {{ songsData.dataList ? songsData.dataList.length : 0 }}
         </span>
       </div>
@@ -107,7 +107,7 @@
 import SongsMoreFunc from "@/components/SongsMoreFunc";
 import { mapActions, mapMutations } from "vuex";
 export default {
-  props: { songsData: Object },
+  props: { songsData: Object, updateData: Object },
   data() {
     return {
       moretab: false,
@@ -120,9 +120,6 @@ export default {
   },
   created() {
     this.songsListData = this.songsData;
-    // console.log(this.songsData);
-  },
-  mounted(){
     // console.log(this.songsData);
   },
   methods: {
@@ -165,9 +162,22 @@ export default {
         return "20px";
       }
     },
+    playAll() {
+      console.log(window.location.href);
+      if (window.location.href.indexOf("songListOnly") != -1) {
+        this.freshLatelyPlaylistData(this.updateData);
+      } else if (window.location.href.indexOf("albumSongs") != -1) {
+        this.freshLatelyAlbumData(this.updateData);
+      }
+      this.playList(this.songsData.dataList);
+    },
     ...mapActions(["getPlayURL"]),
     ...mapActions(["playList"]),
-    ...mapMutations(["changeHighNum"]),
+    ...mapMutations([
+      "changeHighNum",
+      "freshLatelyPlaylistData",
+      "freshLatelyAlbumData",
+    ]),
   },
 };
 </script>

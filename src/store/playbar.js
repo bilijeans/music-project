@@ -10,7 +10,8 @@ export default {
         toneFlagIndex: 5,
         playStatus: false,
         playbarElement: null,
-        vue: null
+        vue: null,
+        duration: 0
 
     },
     actions: {
@@ -34,6 +35,7 @@ export default {
                     state.commit("initTongFlagIndex")
                     state.commit("newURL", data.data.url)
                     state.commit("newLrcURL", data.data.lrcUrl)
+                    state.commit("getDuration", data.data.song.duration)
                     state.dispatch("getLrcData")
                     state.commit("commitSongData", data.data.song)
                     state.commit("initHighNum")
@@ -72,6 +74,7 @@ export default {
                     state.commit("initTongFlagIndex")
                     state.commit("newURL", data.data.url)
                     state.commit("newLrcURL", data.data.lrcUrl)
+                    state.commit("getDuration", data.data.song.duration)
                     state.dispatch("getLrcData")
                     state.commit("commitSongData", data.data.song)
                     state.commit("changeHighNum", obj.index)
@@ -80,7 +83,6 @@ export default {
             });
         },
         playFirst(state, obj) {
-            // console.log(obj);
             state.state.axios({
                 methods: "GET",
                 url: `/MIGUM2.0/strategy/listen-url/v2.4?resourceType=2&songId=${obj.data.songId}&toneFlag=${obj.data.toneFlag}`,
@@ -109,6 +111,7 @@ export default {
                     state.commit("initTongFlagIndex")
                     state.commit("newURL", data.data.url)
                     state.commit("newLrcURL", data.data.lrcUrl)
+                    state.commit("getDuration", data.data.song.duration)
                     state.dispatch("getLrcData")
                     state.commit("commitSongData", data.data.song)
                     state.commit("changeHighNum", obj.index)
@@ -194,6 +197,9 @@ export default {
                 state.playbarElement.pause()
             })
         },
+        getDuration(state, num) {
+            state.duration = num
+        },
         getVue(state, vue) {
             state.vue = vue
         },
@@ -213,6 +219,12 @@ export default {
             state.axios = f
         },
         commitSongData(state, data) {
+            console.log()
+            if (data.img1.indexOf('http') != -1) {
+                data.img1 = '/prod/playlist-service/playListimg/a982971d-27e4-4a70-8c3c-3abdfda852c9.jpg'
+                data.img2 = '/prod/playlist-service/playListimg/a982971d-27e4-4a70-8c3c-3abdfda852c9.jpg'
+                data.img3 = '/prod/playlist-service/playListimg/a982971d-27e4-4a70-8c3c-3abdfda852c9.jpg'
+            }
             state.songData = data
         },
         lowerTongFlagIndex(state) {

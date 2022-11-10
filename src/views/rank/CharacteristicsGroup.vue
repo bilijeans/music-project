@@ -219,6 +219,7 @@ export default {
         path: "/morefunc-comment",
         query: {
           id: id,
+          type: 2,
         },
       });
     },
