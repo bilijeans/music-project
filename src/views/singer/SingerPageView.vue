@@ -12,11 +12,10 @@
             <span v-show="show">{{ singerPageData.singer }}</span>
           </div>
           <div class="singerMore">
-            <!-- <img src="@/assets/svg/share.svg" alt="" /> -->
             <img src="@/assets/MoreFunctionWhite.svg" alt="" />
           </div>
         </div>
-        <div class="nav" v-show="!show">
+        <div class="nav" ref="navOpacity" v-show="!show">
           <div class="singerName">{{ singerPageData.singer }}</div>
           <div class="fans">{{ singerPageData.followNums }}粉丝</div>
           <div class="wall">
@@ -38,7 +37,7 @@
           <singer-nav-component :tabName="tabName" @changeTab="getTab">
           </singer-nav-component>
 
-          <transition-group ref="nav" name="nav">
+          <transition-group ref="nav" name="navBar">
             <singer-main-component
               v-if="tab == 1"
               :singerPageData="singerPageData"
@@ -220,6 +219,7 @@ export default {
           `/MIGUM3.0/bmw/singer/album/v1.0?pageNo=${this.SingerAlbumListPage}&singerId=${this.id}`
         )
         .then(({ data }) => {
+          console.log(data);
           this.SingerAlbumList = data.data.contents;
         });
     },
@@ -242,10 +242,9 @@ export default {
 
     scrollHandle(e) {
       e.target.scrollLeft = 0;
-      let windowY = window.innerHeight * 0.35
+      let windowY = window.innerHeight * 0.35;
 
       if (e.target.scrollTop >= windowY) {
-
         e.target.scrollTop = windowY + 2;
 
         this.show = true;
@@ -257,6 +256,10 @@ export default {
         this.$refs.bgImgMask.style.backdropFilter = `blur(${
           e.target.scrollTop / 48
         }px)`;
+
+        let opacity = 100 - parseInt(e.target.scrollTop / 3);
+
+        this.$refs.navOpacity.style.opacity = `${opacity}%`;
       }
     },
     ...mapMutations(["addFavSinger", "delFavSinger"]),
@@ -342,6 +345,7 @@ header {
     position: absolute;
     bottom: 3vh;
     left: 0%;
+    opacity: 100%;
     .singerName {
       font-size: 30px;
       font-weight: 500;
@@ -443,13 +447,13 @@ header {
   padding: 0;
 }
 
-.nav-enter {
+.navBar-enter {
   transform: translateX(100vw);
 }
-.nav-enter-active {
+.navBar-enter-active {
   transition: all 0.5s;
 }
-.nav-enter-to {
+.navBar-enter-to {
   transform: translateX(0);
 }
 </style>
