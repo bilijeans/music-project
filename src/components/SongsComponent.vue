@@ -186,7 +186,8 @@ export default {
 .songslist {
   position: relative;
   width: 100%;
-  margin: 220px 0 51px 0;
+  margin: 220px 0 0;
+  padding: 0 0 55px;
   border-top-left-radius: 20px;
   .songs-play {
     position: sticky;

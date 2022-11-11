@@ -10,6 +10,16 @@ import 'swiper/css/swiper.css'
 import videojs from 'video.js'
 Vue.prototype.$video = videojs
 import 'video.js/dist/video-js.css'
+// import VueLazyLoad from 'vue-lazyload';
+
+// Vue.use(Lazyload);
+
+// 注册时可以配置额外的选项
+// Vue.use(VueLazyLoad, {
+//   // lazyComponent: true,
+//   loading:require("./assets/Album.png")
+// });
+
 Vue.use(VueAwesomeSwiper)
 Vue.use(wotUI)
 Vue.use(vantUI)

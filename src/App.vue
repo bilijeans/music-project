@@ -1,7 +1,12 @@
 <template>
   <div id="app">
     <transition :name="transitionName">
-      <router-view></router-view>
+      <keep-alive v-if="$route.meta.keepAlive">
+        <router-view></router-view
+      ></keep-alive>
+      <keep-alive v-if="!$route.meta.keepAlive">
+        <router-view></router-view
+      ></keep-alive>
     </transition>
     <footer>
       <play-component></play-component>
