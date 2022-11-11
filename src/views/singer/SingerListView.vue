@@ -32,14 +32,11 @@
     </nav>
 
     <main>
-      <div class="singerListContent">
+      <div class="singerListContent" @scroll="scrollHandel">
         <div class="word-nav">
           <ul>
-            <li
-              v-for="item in singerList"
-              :key="'nav' + item.keyword"
-            >
-              <a :href="'#' + item.keyword">{{ item.keyword }}</a>
+            <li v-for="item in singerList" :key="'nav' + item.keyword">
+              <a :href="'#' + item.keyword" :class="{active : activeId == item.keyword}">{{ item.keyword }}</a>
             </li>
           </ul>
         </div>
@@ -48,6 +45,7 @@
           v-for="item in singerList"
           :id="item.keyword"
           :key="item.keyword"
+          ref="wordToSelect"
         >
           <div class="word">{{ item.keyword }}</div>
 
@@ -97,6 +95,7 @@ export default {
       language: "huayu",
       sex: "nan",
       singerList: [],
+      activeId: "热",
     };
   },
   created() {
@@ -110,14 +109,12 @@ export default {
       this.getData();
     }
   },
-  beforeRouteLeave(to,from,next){
-     if(to.name == 'home'){
+  beforeRouteLeave(to, from, next) {
+    if (to.name == "home") {
+      sessionStorage.removeItem("singerList");
+    }
 
-      sessionStorage.removeItem('singerList');
-
-     }
-
-     next();
+    next();
   },
   methods: {
     getData() {
@@ -168,7 +165,7 @@ export default {
         this.language = "rihan";
       }
 
-      this.sex = 'nan';
+      this.sex = "nan";
 
       this.getData();
 
@@ -191,7 +188,7 @@ export default {
         language: this.language,
         sex: this.sex,
       };
-      
+
       sessionStorage.setItem("singerList", JSON.stringify(singerListLanguage));
     },
 
@@ -209,9 +206,23 @@ export default {
         },
       });
     },
-    goToSearch(){
-      this.$router.push({path:'/search'})
-    }
+    goToSearch() {
+      this.$router.push({ path: "/search" });
+    },
+
+    scrollHandel(e) {
+      let scrollTop = Math.ceil(e.target.scrollTop) + 1;
+      let wordList = this.$refs.wordToSelect;
+      for (let i = 0; i < wordList.length; i++) {
+        if (i + 1 >= wordList.length) {
+          this.activeId = wordList[i].id;
+          break;
+        } else if (scrollTop < wordList[i + 1].offsetTop - wordList[0].offsetTop) {
+          this.activeId = wordList[i].id;
+          break;
+        }
+      }
+    },
   },
 };
 </script>
@@ -329,22 +340,22 @@ nav {
 
 .word-nav {
   position: fixed;
-  top: 25vh;
+  top: 13vh;
   right: 0%;
 
-  ul {
-    height: 68vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-
-    
-      a {
-        color: #999;
-        padding: 5px;
-      }
-    
+  a {
+    display: inline-block;
+    height: 3vh;
+    width: 3vh;
+    text-align: center;
+    line-height: 2vh;
+    color: #999;
+    padding: 5px;
+    font-size: 12px;
+    border-radius: 5px;
+    &.active {
+      background-color: rgba(255, 0, 123, 0.1);
+    }
   }
 }
 </style>

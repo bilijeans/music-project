@@ -276,14 +276,14 @@ export default {
 }
 
 .main-singer-right {
-  width: 46vw;
+  width: 60vw;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
 
   div {
     display: flex;
-    align-items: flex-end;
-    justify-content: center;
+    align-items: center;
+    margin-left: 3vw;
   }
 
   span {
@@ -301,7 +301,8 @@ export default {
 
   .page-album-name {
     width: 65vw;
-    font-size: 16px;
+    line-height: 4vh;
+    font-size: 18px;
     font-weight: 500;
     overflow: hidden;
     text-overflow: ellipsis;

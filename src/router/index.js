@@ -135,7 +135,8 @@ const routes = [
     name: 'search-result',
     component: SearchResultView,
     meta: {
-      index: 2
+      index: 2,
+      keepAlive:true
     }
   },
   {

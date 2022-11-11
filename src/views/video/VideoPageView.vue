@@ -10,6 +10,10 @@
       <van-swipe-item v-for="(i, index) in allVideo" :key="index">
         <div class="video-mask" @click="isPlayOrNot" v-show="!isLand"></div>
 
+        <div class="copy-success" v-show="copy">
+            <p>已成功复制到粘贴板</p>
+          </div>
+
         <header>
           <div class="back-left-arrow" @click="goBack" v-show="!isLand">
             <wd-icon name="arrow-left" color="#fff"></wd-icon>
@@ -20,7 +24,7 @@
           </div>
         </header>
 
-        <main :class="{ landActive: isLand }">
+        <main :class="{ landActive: isLand && !windowLand }">
           <div class="video-box" ref="videoBox">
             <video ref="video" class="video-js video" :poster="i.img"></video>
           </div>
@@ -39,7 +43,7 @@
 
             <img src="@/assets/videoComment.svg" @click="goToComment" />
 
-            <img src="@/assets/videoShare.svg" />
+            <img src="@/assets/videoShare.svg" @click="copyClicked" />
           </div>
 
           <div class="play-video" v-show="isPlay">
@@ -56,7 +60,7 @@
             </p>
 
             <div class="singerName" v-show="!isSliding">
-              <p>{{ i.txt2 }}</p>
+              <p @click="goToSingerPage">{{ i.txt2 }}</p>
 
               <wd-icon
                 class="arrow-right"
@@ -182,7 +186,7 @@
 export default {
   data() {
     return {
-      id:'',
+      id: "",
       index: 0,
       allVideo: [],
       videoPage: {},
@@ -214,6 +218,8 @@ export default {
       showControlTime: null,
       showTip: false,
       keepCurrentTime: 0,
+      windowLand: false,
+      copy:false,
     };
   },
   created() {
@@ -225,16 +231,15 @@ export default {
     window.addEventListener("resize", this.renderResize, false);
   },
   methods: {
-     renderResize() {
-        // 判断横竖屏
-        let width = document.documentElement.clientWidth
-        let height = document.documentElement.clientHeight
-        if(width > height) {
-            console.log('横屏')
-        }else{
-          console.log('竖屏')
-        }
-  
+    renderResize() {
+      // 判断横竖屏
+      let width = document.documentElement.clientWidth;
+      let height = document.documentElement.clientHeight;
+      if (width > height) {
+        this.windowLand = true;
+      } else {
+        this.windowLand = false;
+      }
     },
     videoListHandel() {
       let tapIndex = this.$route.query.index;
@@ -329,31 +334,7 @@ export default {
       let windowX = window.innerWidth;
       let setTime = parseInt((pageX * this.player.duration()) / windowX);
       this.player.currentTime(setTime);
-      let current = parseInt(this.player.currentTime());
-      let duration = parseInt(this.player.duration());
-      let currentMin = 0;
-      let currentSecond = current;
-      let min = 0;
-      let second = duration;
-      if (current > 60) {
-        currentMin = parseInt(current / 60);
-        currentSecond = current % 60;
-      }
-      if (duration > 60) {
-        min = parseInt(duration / 60);
-        second = duration % 60;
-      }
-
-      this.time = {
-        currentTime: {
-          min: currentMin > 9 ? currentMin : "0" + currentMin,
-          second: currentSecond > 9 ? currentSecond : "0" + currentSecond,
-        },
-        duration: {
-          min: min > 9 ? min : "0" + min,
-          second: second > 9 ? second : "0" + second,
-        },
-      };
+      this.getCurrentTimeAndTotalTime();
     },
 
     moveHandel(e) {
@@ -361,31 +342,7 @@ export default {
       let windowX = window.innerWidth;
       let setTime = parseInt((pageX * this.player.duration()) / windowX);
       this.player.currentTime(setTime);
-      let current = parseInt(this.player.currentTime());
-      let duration = parseInt(this.player.duration());
-      let currentMin = 0;
-      let currentSecond = current;
-      let min = 0;
-      let second = duration;
-      if (current > 60) {
-        currentMin = parseInt(current / 60);
-        currentSecond = current % 60;
-      }
-      if (duration > 60) {
-        min = parseInt(duration / 60);
-        second = duration % 60;
-      }
-
-      this.time = {
-        currentTime: {
-          min: currentMin > 9 ? currentMin : "0" + currentMin,
-          second: currentSecond > 9 ? currentSecond : "0" + currentSecond,
-        },
-        duration: {
-          min: min > 9 ? min : "0" + min,
-          second: second > 9 ? second : "0" + second,
-        },
-      };
+      this.getCurrentTimeAndTotalTime();
     },
 
     upHandel() {
@@ -409,38 +366,50 @@ export default {
       clearInterval(this.timer);
 
       this.timer = setInterval(() => {
-        this.$refs.landSlideActive[this.index].style.height = `${
-          (this.player.currentTime() / this.player.duration()) * 100
-        }%`;
+        if (this.windowLand) {
+          this.$refs.landSlideActive[this.index].style.height = "100%";
+          this.$refs.landSlideActive[this.index].style.width = `${
+            (this.player.currentTime() / this.player.duration()) * 100
+          }%`;
+        } else {
+          this.$refs.landSlideActive[this.index].style.width = "100%";
+          this.$refs.landSlideActive[this.index].style.height = `${
+            (this.player.currentTime() / this.player.duration()) * 100
+          }%`;
+        }
       }, 10);
 
       this.getLandTime = setInterval(() => {
-        let current = parseInt(this.player.currentTime());
-        let duration = parseInt(this.player.duration());
-        let currentMin = 0;
-        let currentSecond = current;
-        let min = 0;
-        let second = duration;
-        if (current > 60) {
-          currentMin = parseInt(current / 60);
-          currentSecond = current % 60;
-        }
-        if (duration > 60) {
-          min = parseInt(duration / 60);
-          second = duration % 60;
-        }
+        this.getCurrentTimeAndTotalTime();
+      }, 1000);
+    },
 
-        this.time = {
-          currentTime: {
-            min: currentMin > 9 ? currentMin : "0" + currentMin,
-            second: currentSecond > 9 ? currentSecond : "0" + currentSecond,
-          },
-          duration: {
-            min: min > 9 ? min : "0" + min,
-            second: second > 9 ? second : "0" + second,
-          },
-        };
-      });
+    getCurrentTimeAndTotalTime() {
+      let current = parseInt(this.player.currentTime());
+      let duration = parseInt(this.player.duration());
+      let currentMin = 0;
+      let currentSecond = current;
+      let min = 0;
+      let second = duration;
+      if (current > 60) {
+        currentMin = parseInt(current / 60);
+        currentSecond = current % 60;
+      }
+      if (duration > 60) {
+        min = parseInt(duration / 60);
+        second = duration % 60;
+      }
+
+      this.time = {
+        currentTime: {
+          min: currentMin > 9 ? currentMin : "0" + currentMin,
+          second: currentSecond > 9 ? currentSecond : "0" + currentSecond,
+        },
+        duration: {
+          min: min > 9 ? min : "0" + min,
+          second: second > 9 ? second : "0" + second,
+        },
+      };
     },
 
     cancelFullScreen() {
@@ -482,7 +451,6 @@ export default {
       this.isChooseDefinition = !this.isChooseDefinition;
       this.DefinitionE = formatType;
       this.isPlay = false;
-      console.log(this.$refs.video[this.index]);
       this.$refs.video[this.index].removeAttribute("data-setup");
       this.getVideoPage();
     },
@@ -493,11 +461,7 @@ export default {
         this.isPlay = false;
         this.player.play();
       }
-      let sliderY =
-        e.targetTouches[0].pageY - e.targetTouches[0].target.offsetTop;
-      let sliderHeight = e.targetTouches[0].target.offsetHeight;
-      let setTime = parseInt((sliderY * this.player.duration()) / sliderHeight);
-      this.player.currentTime(setTime);
+      this.sliderSetTimeHandel(e);
     },
 
     landMoveHandel(e) {
@@ -506,9 +470,19 @@ export default {
         this.isPlay = false;
         this.player.play();
       }
-      let sliderY =
-        e.targetTouches[0].pageY - e.targetTouches[0].target.offsetTop;
-      let sliderHeight = e.targetTouches[0].target.clientHeight;
+      this.sliderSetTimeHandel(e);
+    },
+
+    sliderSetTimeHandel(e) {
+      let sliderY = null;
+      let sliderHeight = null;
+      if(!this.windowLand){
+         sliderY = e.targetTouches[0].pageY - e.targetTouches[0].target.offsetTop;
+         sliderHeight = e.targetTouches[0].target.offsetHeight;
+      }else{
+         sliderY = e.targetTouches[0].pageX - e.targetTouches[0].target.offsetLeft;
+         sliderHeight = e.targetTouches[0].target.offsetWidth;
+      }
       let setTime = parseInt((sliderY * this.player.duration()) / sliderHeight);
       this.player.currentTime(setTime);
     },
@@ -525,7 +499,7 @@ export default {
 
     videoInit() {
       let video = this.$refs.video[this.index];
-      video.setAttribute("data-setup", '{"aspectRatio":"3:2"}');
+      video.setAttribute("data-setup", '{"aspectRatio":"5:3"}');
       let url = "/apiV/" + this.videoUrl;
       this.player = this.$video(video, {
         controls: false,
@@ -541,14 +515,38 @@ export default {
       ]);
     },
 
-    goToComment(){
+    goToComment() {
       this.$router.push({
-        path:'/morefunc-comment',
-        query:{
+        path: "/morefunc-comment",
+        query: {
           id: this.id,
-          type: 'D'
-        }
-      })
+          type: "D",
+        },
+      });
+    },
+
+    copyClicked(){
+      let text = location.href;
+        this.$copyText(text).then(() => {
+          this.copy = true;
+          let copyTime = setTimeout(() => {
+            this.copy = false;
+            clearTimeout(copyTime)
+          }, 3000);
+        }, (err) => {
+          console.log('复制失败',err);
+        })
+    },
+
+    goToSingerPage(){
+      let id = this.videoMessage.singers[0].userId
+      this.$router.push({
+        name: "SingerPage",
+        params: {
+          id,
+          type : '2002',
+        },
+      });
     }
   },
 
@@ -567,6 +565,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.copy-success{
+  padding: 10px 10px;
+  background-color: #fff;
+  z-index: 300;
+  position: absolute;
+  top: 40vh;
+  left: 29vw;
+  border-radius: 10px;
+}
 .video-mask {
   height: 70vh;
   width: 100vw;
@@ -873,85 +880,229 @@ footer {
     }
   }
 }
-
-.landing-page {
-  height: 100vh;
-  width: 100vw;
-  position: absolute;
-  top: 0%;
-  display: flex;
-  justify-content: space-between;
-
-  .tips {
-    position: absolute;
-    top: 45vh;
-    left: 40vw;
-    font-size: 12px;
-    color: #fff;
-    transform: rotateZ(90deg);
-  }
-
-  .land-page-mask {
+@media all and (orientation: portrait) {
+  .landing-page {
     height: 100vh;
     width: 100vw;
     position: absolute;
     top: 0%;
-    left: 0%;
-    bottom: 0%;
-    right: 0%;
-  }
+    display: flex;
+    justify-content: space-between;
 
-  .land-header {
-    height: 100vh;
-    width: 10vw;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 1;
-    .land-back-left-arrow {
-      transform: rotateZ(90deg);
+    .tips {
       position: absolute;
-      top: 1vh;
-      right: 3vw;
+      top: 45vh;
+      left: 40vw;
+      font-size: 12px;
+      color: #fff;
+      transform: rotateZ(90deg);
     }
-    .land-more {
-      transform: rotateZ(90deg);
+
+    .land-page-mask {
+      height: 100vh;
+      width: 100vw;
       position: absolute;
-      bottom: 1vh;
-      right: 3vw;
+      top: 0%;
+      left: 0%;
+      bottom: 0%;
+      right: 0%;
     }
-  }
 
-  .land-footer {
-    height: 100vh;
-    width: 10vw;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 1;
-    position: relative;
+    .land-header {
+      height: 100vh;
+      width: 10vw;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 1;
 
-    .land-play {
-      height: 32px;
-      width: 32px;
-      background-image: url(@/assets/videoFullScreenPlay.svg);
-      background-repeat: no-repeat;
-      background-position: center center;
-      background-size: cover;
-      transform: rotateZ(90deg);
-      position: absolute;
-      top: 1vh;
-      left: 1vw;
-
-      &.landPause {
-        background-image: url(@/assets/videoFullScreenPuase.svg);
+      .land-back-left-arrow {
+        transform: rotateZ(90deg);
+        position: absolute;
+        top: 1vh;
+        right: 3vw;
       }
+      .land-more {
+        transform: rotateZ(90deg);
+        position: absolute;
+        bottom: 1vh;
+        right: 3vw;
+      }
+    }
+
+    .land-footer {
+      height: 100vh;
+      width: 10vw;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 1;
+      position: relative;
+
+      .definition {
+        position: absolute;
+        left: -2vw;
+        bottom: 4vh;
+        transform: rotateZ(90deg);
+        .default-definition {
+          color: #fff;
+          width: 15vw;
+          font-size: 13px;
+          padding: 2px 0;
+          text-align: center;
+          border: 2px solid #fff;
+          border-radius: 5px;
+        }
+
+        .select-definition {
+          width: 20vw;
+          background-color: #333;
+          display: flex;
+          flex-direction: column-reverse;
+          justify-content: center;
+          align-items: center;
+          position: absolute;
+          bottom: 4vh;
+          left: -3vw;
+
+          p {
+            font-size: 13px;
+            color: #fff;
+            padding: 1px 2px;
+            margin: 5px 0;
+            white-space: nowrap;
+            border-radius: 5px;
+            border: 2px solid #fff;
+          }
+        }
+      }
+
+      .land-time {
+        color: #fff;
+        font-size: 12px;
+        height: 10vw;
+        line-height: 8vw;
+        transform: rotateZ(90deg);
+        position: absolute;
+        bottom: 10vh;
+        left: 0vw;
+      }
+
+      .land-current-time {
+        color: #fff;
+        font-size: 12px;
+        height: 10vw;
+        line-height: 8vw;
+        transform: rotateZ(90deg);
+        position: absolute;
+        top: 2vh;
+        left: 0vw;
+      }
+    }
+  }
+  .land-slide-box {
+    height: calc(80vh - 32px - 2vh);
+    width: 10vw;
+    position: absolute;
+    top: calc(5vh + 32px);
+    right: 0%;
+    display: flex;
+    justify-content: center;
+
+    .land-slider {
+      height: 100%;
+      width: 1vw;
+      background-color: #666;
+      border-radius: 20px;
+
+      .land-slider-active {
+        width: 100%;
+        height: 0%;
+        background-color: #fff;
+        border-radius: 20px;
+        position: relative;
+
+        i {
+          display: inline-block;
+          height: 10px;
+          width: 10px;
+          border-radius: 999px;
+          background-color: #fff;
+          position: absolute;
+          bottom: 0;
+          right: -3px;
+        }
+      }
+    }
+  }
+  .land-slide-mask {
+    height: calc(80vh - 32px - 2vh);
+    width: 10vw;
+    position: absolute;
+    top: calc(5vh + 32px);
+    right: 0%;
+    // background-color: #fff;
+    z-index: 25;
+  }
+}
+
+@media all and (orientation: landscape) {
+  main {
+    width: 77vw;
+    height: 74vh;
+    position: absolute;
+    top: 13vh;
+    left: 13vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .video-page {
+    height: 100vh;
+    width: 100vw;
+    position: absolute;
+    top: 0%;
+    .land-page-mask {
+      height: 100vh;
+      width: 100vw;
+      position: absolute;
+      top: 0%;
+      left: 0%;
+      bottom: 0%;
+      right: 0%;
+    }
+
+    .land-header {
+      position: absolute;
+      top: 0%;
+      height: 10vh;
+      width: 100vw;
+      background-color: rgba(0, 0, 0, 0.5);
+
+      .land-back-left-arrow {
+        position: absolute;
+        top: 3vh;
+        left: 2vw;
+      }
+      .land-more {
+        position: absolute;
+        top: 3vh;
+        right: 2vw;
+      }
+    }
+
+    .land-footer {
+      height: 13vh;
+      width: 100vw;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 1;
+      position: absolute;
+      bottom: 0%;
     }
 
     .definition {
       position: absolute;
-      left: -2vw;
+      right: 3vw;
       bottom: 4vh;
-      transform: rotateZ(90deg);
       .default-definition {
         color: #fff;
-        width: 15vw;
+        width: 5vw;
         font-size: 13px;
         padding: 2px 0;
         text-align: center;
@@ -960,15 +1111,15 @@ footer {
       }
 
       .select-definition {
-        width: 20vw;
+        width: 10vw;
         background-color: #333;
         display: flex;
         flex-direction: column-reverse;
         justify-content: center;
         align-items: center;
         position: absolute;
-        bottom: 4vh;
-        left: -3vw;
+        bottom: 9vh;
+        left: -2.5vw;
 
         p {
           font-size: 13px;
@@ -985,68 +1136,67 @@ footer {
     .land-time {
       color: #fff;
       font-size: 12px;
-      height: 10vw;
-      line-height: 8vw;
-      transform: rotateZ(90deg);
+      height: 13vh;
+      line-height: 13vh;
       position: absolute;
-      bottom: 10vh;
-      left: 0vw;
+      top: 0vh;
+      right: 13vw;
     }
 
     .land-current-time {
       color: #fff;
       font-size: 12px;
-      height: 10vw;
-      line-height: 8vw;
-      transform: rotateZ(90deg);
+      height: 13vh;
+      line-height: 13vh;
       position: absolute;
-      top: 2vh;
-      left: 0vw;
+      top: 0vh;
+      left: 3vw;
     }
   }
-}
-.land-slide-box {
-  height: calc(80vh - 32px - 2vh);
-  width: 10vw;
-  position: absolute;
-  top: calc(5vh + 32px);
-  right: 0%;
-  display: flex;
-  justify-content: center;
 
-  .land-slider {
+  .land-slide-box {
     height: 100%;
-    width: 1vw;
-    background-color: #666;
-    border-radius: 20px;
+    width: 72vw;
+    position: absolute;
+    top: 0;
+    left: 9vw;
+    display: flex;
+    align-items: center;
 
-    .land-slider-active {
+    .land-slider {
+      height: 1vh;
       width: 100%;
-      height: 0%;
-      background-color: #fff;
+      background-color: #666;
       border-radius: 20px;
-      position: relative;
 
-      i {
-        display: inline-block;
-        height: 10px;
-        width: 10px;
-        border-radius: 999px;
+      .land-slider-active {
+        width: 10%;
+        height: 100%;
         background-color: #fff;
-        position: absolute;
-        bottom: 0;
-        right: -3px;
+        border-radius: 20px;
+        position: relative;
+
+        i {
+          display: inline-block;
+          height: 10px;
+          width: 10px;
+          border-radius: 999px;
+          background-color: #fff;
+          position: absolute;
+          bottom: -1vh;
+          right: -3px;
+        }
       }
     }
   }
+  .land-slide-mask {
+    height: 100%;
+    width: 72vw;
+    position: absolute;
+    top: 0;
+    left: 9vw;
+    z-index: 25;
+  }
 }
-.land-slide-mask {
-  height: calc(80vh - 32px - 2vh);
-  width: 10vw;
-  position: absolute;
-  top: calc(5vh + 32px);
-  right: 0%;
-  // background-color: #fff;
-  z-index: 25;
-}
+
 </style>
