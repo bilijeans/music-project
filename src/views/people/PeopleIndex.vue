@@ -6,9 +6,19 @@
       <transition name="user">
         <div class="user-profile" v-show="showHeader == 1">
           <div class="user-pic">
-            <img src="@/assets/user4.svg" />
+            <img :src="user.userInfo?.smallIcon" />
           </div>
           <div class="user-name">{{ user.userInfo?.nickName }}</div>
+          <!-- <div
+            class="follow-btn"
+            @click="toggleFollow"
+            :style="{
+              backgroundColor: followStatus ? '#ccc' : '#ff0000',
+              right: followStatus ? '-70px' : '-60px',
+            }"
+          >
+            {{ followStatus ? "已" : "" }}关注
+          </div> -->
         </div>
       </transition>
     </header>
@@ -18,7 +28,19 @@
           <div class="user-pic">
             <img :src="user.userInfo?.smallIcon" />
           </div>
-          <div class="user-name">{{ user.userInfo?.nickName }}</div>
+          <div class="user-name">
+            {{ user.userInfo?.nickName }}
+            <div
+              class="follow-btn"
+              @click="toggleFollow"
+              :style="{
+                backgroundColor: followStatus ? '#ccc' : '#ff0000',
+                right: followStatus ? '-70px' : '-60px',
+              }"
+            >
+              {{ followStatus ? "已" : "" }}关注
+            </div>
+          </div>
           <div class="user-status">
             <span class="follow"
               >{{ user.homePageNumItems[2]?.number }} 关注</span
@@ -65,6 +87,7 @@
           class="user-fav-list"
           v-for="(i, index) in user.userPrivateItems"
           :key="index"
+          @click="turnToPeopleListenPage(i.actionUrl)"
         >
           <div class="fav-cover">
             <img :src="i.picUrl" />
@@ -92,7 +115,9 @@
         <div class="song-list-page card">
           <div class="page-title">
             <div class="title-name">
-              ta的歌单({{ user.myCreatedMusicLists?.createdMusicLists.length }}个)
+              ta的歌单({{
+                user.myCreatedMusicLists?.createdMusicLists.length
+              }}个)
             </div>
           </div>
           <div
@@ -269,7 +294,7 @@
   </div>
 </template>
 <script>
-import { mapMutations } from "vuex";
+import { mapMutations, mapState } from "vuex";
 export default {
   data() {
     return {
@@ -291,16 +316,28 @@ export default {
         follow: 0,
         homePageNumItems: [],
       },
+      followStatus: false,
     };
   },
   created() {
     this.getCommendData();
     this.userId = this.$route.query.userId;
     this.getUerInfo();
+    this.hasFollow();
   },
   mounted() {
-    // console.log(this.$refs.userPage.scrollTop);
-    this.$refs.userPage.addEventListener("scroll", () => {
+    this.$refs.userPage.addEventListener("scroll", this.showHeadFunc);
+  },
+  computed: {
+    userInfoUrl() {
+      return `/people/user/home-page/v2.0?userId=${this.userId}`;
+    },
+    ...mapState({
+      fav: (state) => state.user.fav,
+    }),
+  },
+  methods: {
+    showHeadFunc() {
       // console.log(this.$refs.collectItem.getBoundingClientRect().top);
       if (this.$refs.userPage.scrollTop >= 130) {
         if (this.showHeader < 1) {
@@ -324,7 +361,7 @@ export default {
           this.userInfoShow = this.userInfoShow + 0.2;
         }
       }
-      if (this.$refs.userPage.scrollTop >= 410) {
+      if (this.$refs.userPage.scrollTop >= 430) {
         this.navShow = 1;
       } else {
         this.navShow = 0;
@@ -338,49 +375,41 @@ export default {
           this.navIndex = 0;
         });
       }
-    });
-  },
-  computed: {
-    userInfoUrl() {
-      return `/people/user/home-page/v2.0?userId=${this.userId}`;
     },
-  },
-  methods: {
     // closePopUp() {
     //   this.songlistStatus = false;
     // },
+    backTop() {
+      console.log(1);
+      window.scrollTop = 0;
+    },
+    hasFollow() {
+      this.followStatus = false;
+      this.fav.user.forEach((e) => {
+        if (e.userId == this.userId) {
+          this.followStatus = true;
+        }
+      });
+    },
+    toggleFollow() {
+      this.followStatus = !this.followStatus;
+      if (this.followStatus) {
+        this.addFavUser({
+          userId: this.userId,
+          userName: this.user.userInfo.nickName,
+          cover: this.user.userInfo.smallIcon,
+        });
+      } else {
+        this.delFavUser(this.userId);
+      }
+    },
     getUerInfo() {
       this.$axios.get(this.userInfoUrl).then(({ data }) => {
         console.log(data.data);
         this.user = data.data;
       });
     },
-    rename() {
-      this.renameStatus = true;
-      // this.songlistStatus = false
-      console.log(this.itemData);
-    },
-    renameCompeleted() {
-      this.itemData.title = this.newTitle;
-      this.renameMySongList(this.itemData);
-      this.renameStatus = false;
-      this.songlistStatus = false;
-      this.newTitle = "";
-    },
-    delSonglist() {
-      // this.renameStatus = false
-      this.songlistStatus = false;
-      // setTimeout(() => {
-      this.delMySongList(this.itemData.playlistId);
-      // }, 300);
-    },
-    createMySongList() {
-      if (this.addSongListName.trim()) {
-        this.addMySongList(this.addSongListName);
-        this.addSongListName = "";
-        this.addStatus = false;
-      }
-    },
+
     turnToSongList() {
       this.$router.push({
         path: "/song-lists",
@@ -396,24 +425,28 @@ export default {
           this.commendSongList = data.data.contentItemList;
         });
     },
-    showSonglistCro(id) {
-      console.log(id);
-      this.songlistStatus = true;
-      this.user.mySongList.forEach((e) => {
-        if (e.playlistId == id) {
-          this.croTitle = e.title;
-          this.itemData = e;
-        }
-      });
-    },
-    showColSonglistMore(id) {
-      this.colSonglistStatus = true;
-      this.user.collectSongList.forEach((e) => {
-        if (e.playlistId == id) {
-          this.croTitle = e.title;
-          this.itemData = e;
-        }
-      });
+    turnToPeopleListenPage(str) {
+      console.log(str);
+      if (str.indexOf("musicListId") != -1) {
+        str = str.slice(
+          str.indexOf("musicListId") + 12,
+          str.indexOf("uid") - 1
+        );
+        this.$router.push({
+          path: "/other-user/fav",
+          query: { id: str },
+        });
+        console.log(str);
+      } else if (str.indexOf("listenbank") == -1) {
+        str = str.slice(str.indexOf("uid") + 4);
+        console.log(str);
+        this.$router.push({
+          path: "other-user/lately",
+          query: {
+            id: str,
+          },
+        });
+      }
     },
     backToHome() {
       this.$router.go(-1);
@@ -427,30 +460,18 @@ export default {
         },
       });
     },
-    turnToLatelyPlay() {
-      this.$router.push({
-        path: "/user-lately-play",
-      });
-    },
-    turnToCollectPage() {
-      this.$router.push({
-        path: "/user/user-collect",
-      });
-    },
-    turnToFavSong() {
-      this.$router.push({
-        path: "/user/user-fav-song",
-      });
-    },
-    turnToFollowPage() {
-      this.$router.push({
-        path: "/user/user-follow",
-      });
-    },
 
-    ...mapMutations(["addMySongList", "renameMySongList", "delMySongList"]),
+    ...mapMutations([
+      "addMySongList",
+      "renameMySongList",
+      "delMySongList",
+      "addFavUser",
+      "delFavUser",
+    ]),
   },
-  beforeDestroy() {},
+  beforeDestroy() {
+    this.$refs.userPage.removeEventListener("scroll", this.showHeadFunc);
+  },
 };
 </script>
 <style lang="scss">
@@ -487,15 +508,25 @@ export default {
     }
     .user-profile {
       display: flex;
-      justify-content: center;
+      // justify-content: center;
       align-items: center;
       margin-top: 10px;
+      margin-left: 50px;
       .user-pic {
         width: 30px;
+        margin-right: 5px;
         img {
           display: block;
           width: 100%;
         }
+      }
+      .follow-btn {
+        font-size: 12px;
+        font-weight: 500;
+        padding: 5px 10px;
+        color: #fff;
+        margin-left: 10px;
+        border-radius: 999px;
       }
     }
     .user-enter {
@@ -546,10 +577,21 @@ export default {
       }
     }
     .user-name {
+      position: relative;
       font-size: 20px;
       margin-top: 10px;
       letter-spacing: 1px;
       font-weight: bold;
+    }
+    .follow-btn {
+      position: absolute;
+      top: 0px;
+      right: -60px;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 5px 10px;
+      color: #fff;
+      border-radius: 999px;
     }
     .user-status {
       margin-top: 15px;

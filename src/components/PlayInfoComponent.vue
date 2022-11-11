@@ -1,5 +1,5 @@
 <template>
-  <div class="play-info" v-if="playbar.songData" @touchStart.stop>
+  <div class="play-info" @touchStart.stop>
     <header>
       <i class="wd-icon-arrow-down" @click="pickUp"></i>
       <div class="title">
@@ -37,7 +37,7 @@
         </div>
       </div>
       <div class="song-lrc" v-show="lrcToggle">
-        <div ref="lrc" class="lrc-container" v-if="playbar.lrcData">
+        <div ref="lrc" class="lrc-container">
           <ul>
             <li
               ref="lrcItem"
@@ -76,7 +76,9 @@
             :percentage="moveTo || currentRate"
             hide-text
             color="#fc0fc0"
-            @mousedown.native.stop="moveProgress($event)"
+            ref="progress"
+            @touchmove.native="moveProgress($event)"
+            @touchend.native="moveProgressEnd()"
           />
           <div
             class="point"
@@ -143,7 +145,7 @@
       class="glass"
       :style="{
         backgroundImage: `url(${
-          'http://d.musicapp.migu.cn' + playbar.songData.img2
+          'http://d.musicapp.migu.cn' + playbar.songData?.img2
         })`,
       }"
     ></div>
@@ -170,6 +172,8 @@ export default {
       time: null,
       titleShow: false,
       likeStatus: false,
+      pageX: 0,
+      moveLong: 0,
     };
   },
   created() {
@@ -214,6 +218,7 @@ export default {
     },
     songId() {
       console.log(this.playbar);
+      localStorage.setItem("playlist", JSON.stringify(this.playList));
       this.hasLike();
     },
   },
@@ -233,6 +238,7 @@ export default {
       }
     },
     pickUp() {
+      console.log(12);
       this.$emit("packUpPlayInfo");
     },
     pickUpList() {
@@ -317,13 +323,21 @@ export default {
           singerList: this.playbar.songData.singerList,
           albumId: this.playbar.songData.albumId,
           album: this.playbar.songData.album,
-          toneFlag:this.playList.listData[this.playList.highLight].toneFlag
+          toneFlag: this.playList.listData[this.playList.highLight].toneFlag,
         });
         this.likeStatus = true;
       }
     },
     moveProgress(e) {
-      console.log(e.offsetX);
+      this.pageX = this.$refs.progress.$el.getBoundingClientRect().x;
+      this.moveLong = this.$refs.progress.$el.getBoundingClientRect().width;
+      this.moveTo = parseInt(
+        ((e.changedTouches[0].clientX - this.pageX) / this.moveLong) * 100
+      );
+    },
+    moveProgressEnd() {
+      this.$emit("moveProgress", this.moveTo);
+      this.moveTo = null;
     },
     nextSong() {
       let nextSongIndex = this.playList.highLight + 1;
@@ -435,11 +449,8 @@ export default {
       width: 100vw;
       text-align: center;
       height: 52vh;
-      overflow: auto;
+      overflow: hidden;
       transition: all 1s linear;
-      &::-webkit-scrollbar {
-        display: none;
-      }
       .lrc-item {
         min-height: 4vh;
         line-height: 4vh;

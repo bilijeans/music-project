@@ -92,6 +92,16 @@ export default {
             })
             localStorage.setItem("moyuM-user", JSON.stringify(state))
         },
+        addFavUser(state, obj) {
+            state.fav.user = [...[obj], ...state.fav.user]
+            localStorage.setItem("moyuM-user", JSON.stringify(state))
+        },
+        delFavUser(state, id) {
+            state.fav.user = state.fav.user.filter(e => {
+                return e.userId != id
+            })
+            localStorage.setItem("moyuM-user", JSON.stringify(state))
+        },
         addFavSong(state, obj) {
             state.fav.song = [...[obj], ...state.fav.song]
             localStorage.setItem("moyuM-user", JSON.stringify(state))
@@ -122,5 +132,19 @@ export default {
             })
             localStorage.setItem("moyuM-user", JSON.stringify(state))
         },
+        addToMySongList(state, obj) {
+            console.log(obj);
+            state.mySongList.forEach(e => {
+                if (e.playlistId == obj.id) {
+                    let idArr = []
+                    obj.songlist.forEach(el => {
+                        idArr.push(el.songId)
+                    })
+                    e.list.filter(item => idArr.indexOf(item.songId) != -1)
+                    e.list = [...obj.songlist, ...e.list]
+                }
+            })
+            localStorage.setItem("moyuM-user", JSON.stringify(state))
+        }
     }
 }

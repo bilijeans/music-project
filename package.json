@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@videojs/http-streaming": "^2.15.0",
+    "better-scroll": "^2.5.0",
     "core-js": "^3.8.3",
     "lodash-es": "^4.17.21",
     "swiper": "^5.2.0",

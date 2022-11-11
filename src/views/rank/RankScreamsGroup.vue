@@ -75,7 +75,7 @@ export default {
     position: fixed;
     top: 0;
     width: 100vw;
-    z-index: 999;
+    z-index: 10;
     i {
       position: absolute;
       top: 14px;
