@@ -10,6 +10,8 @@ import 'swiper/css/swiper.css'
 import videojs from 'video.js'
 Vue.prototype.$video = videojs
 import 'video.js/dist/video-js.css'
+import VueClipboard from 'vue-clipboard2'
+Vue.use(VueClipboard)
 Vue.use(VueAwesomeSwiper)
 Vue.use(wotUI)
 Vue.use(vantUI)
