@@ -9,11 +9,22 @@
         <img :src="songMsg.pic" />
       </div>
       <div class="comment-msg">
-        <div class="comment-song">{{ songMsg.title }}</div>
-        <div class="comment-singer">{{ songMsg.subTitle }}</div>
+        <van-skeleton class="comment-msg-skeleton" :row="2" :loading="loading">
+          <div class="comment-song">{{ songMsg.title }}</div>
+          <div class="comment-singer">{{ songMsg.subTitle }}</div>
+        </van-skeleton>
       </div>
       <i class="wd-icon-arrow-right"></i>
     </div>
+    <van-skeleton
+      class="comment-skeleton"
+      :row="4"
+      avatar
+      :loading="loading"
+    ></van-skeleton>
+    <van-skeleton :row="4" avatar :loading="loading"></van-skeleton>
+    <van-skeleton :row="4" avatar :loading="loading"></van-skeleton>
+    <van-skeleton :row="4" avatar :loading="loading"></van-skeleton>
     <div class="comment-hotComments">
       <div class="comment-title" v-if="hotComments[0]">精彩评论</div>
       <div
@@ -83,68 +94,77 @@
       <div class="comment-title" v-if="allComments[0]">
         全部评论 ({{ data.commentNums }})
       </div>
-      <div
-        class="comment-item"
-        v-for="i in allComments"
-        :key="'all' + i.commentId"
+      <van-list
+        :loading="loadingMore"
+        :finished="finished"
+        finished-text="没有更多了"
+        loading-text="加载中"
+        @load="onLoad"
+        style="padding: 0 0 55px 0"
       >
-        <div class="comment-usermsg">
-          <div class="item-img" @click="turnToPeoplePage(i.user.userId)">
-            <img :src="i.user.smallIcon" />
-          </div>
-          <div class="item-msg">
-            <div class="item-user">
-              <span @click="turnToPeoplePage(i.user.userId)">{{
-                i.user.nickName
-              }}</span>
-              <img
-                v-if="i.user.userMemberInfos"
-                :src="i.user.userMemberInfos[0].icon"
-              />
-              <img
-                v-if="i.user.userCommentIcons[0]"
-                :src="i.user.userCommentIcons[0].iconPic"
-              />
-              <img
-                v-if="i.user.userIdentityInfoItems[0]"
-                :src="i.user.userIdentityInfoItems[0].icon"
-              />
-              <img
-                v-if="i.user.userIdentityInfoItems[1]"
-                :src="i.user.userIdentityInfoItems[1].icon"
-              />
+        <van-cell
+          class="comment-item"
+          v-for="(i, index) in allComments"
+          :key="index"
+        >
+          <div class="comment-usermsg">
+            <div class="item-img" @click="turnToPeoplePage(i.user.userId)">
+              <img :src="i.user.smallIcon" />
             </div>
-            <div class="item-time">{{ i.commentTime }}</div>
-          </div>
-          <div class="item-good">
-            <span>{{ dealWithPlayNum(i.opNumItem.thumbNum) }}❤</span>
-          </div>
-        </div>
-        <div class="item-comment">
-          <div class="god-topic" v-if="i.topTagInfo">
-            {{ i.topTagInfo.name }}
-          </div>
-          <div>{{ i.commentInfo }}</div>
-          <div class="reply-comments" v-if="i.replyComments[0]">
-            <div v-for="n in i.replyComments" :key="n.replyId">
-              <span class="active-user">{{ n.user.nickName }}</span
-              >：<span v-if="n.targetUser.nickName != i.user.nickName"
-                >回复
-                <span class="active-user">
-                  {{ n.targetUser.nickName }}：</span
-                ></span
-              >{{ n.replyInfo }}
+            <div class="item-msg">
+              <div class="item-user">
+                <span @click="turnToPeoplePage(i.user.userId)">{{
+                  i.user.nickName
+                }}</span>
+                <img
+                  v-if="i.user.userMemberInfos"
+                  :src="i.user.userMemberInfos[0].icon"
+                />
+                <img
+                  v-if="i.user.userCommentIcons[0]"
+                  :src="i.user.userCommentIcons[0].iconPic"
+                />
+                <img
+                  v-if="i.user.userIdentityInfoItems[0]"
+                  :src="i.user.userIdentityInfoItems[0].icon"
+                />
+                <img
+                  v-if="i.user.userIdentityInfoItems[1]"
+                  :src="i.user.userIdentityInfoItems[1].icon"
+                />
+              </div>
+              <div class="item-time">{{ i.commentTime }}</div>
             </div>
-            <div
-              @click="moreReply(i.commentId)"
-              class="reply-nums"
-              v-if="i.replyTotalCount != 0"
-            >
-              查看 {{ i.replyTotalCount }} 条回复 >
+            <div class="item-good">
+              <span>{{ dealWithPlayNum(i.opNumItem.thumbNum) }}❤</span>
             </div>
           </div>
-        </div>
-      </div>
+          <div class="item-comment">
+            <div class="god-topic" v-if="i.topTagInfo">
+              {{ i.topTagInfo.name }}
+            </div>
+            <div>{{ i.commentInfo }}</div>
+            <div class="reply-comments" v-if="i.replyComments[0]">
+              <div v-for="n in i.replyComments" :key="n.replyId">
+                <span class="active-user">{{ n.user.nickName }}</span
+                >：<span v-if="n.targetUser.nickName != i.user.nickName"
+                  >回复
+                  <span class="active-user">
+                    {{ n.targetUser.nickName }}：</span
+                  ></span
+                >{{ n.replyInfo }}
+              </div>
+              <div
+                @click="moreReply(i.commentId)"
+                class="reply-nums"
+                v-if="i.replyTotalCount != 0"
+              >
+                查看 {{ i.replyTotalCount }} 条回复 >
+              </div>
+            </div>
+          </div>
+        </van-cell>
+      </van-list>
       <transition name="comment">
         <div class="comment-component" v-if="moreComment" @touchend.stop>
           <comment-component
@@ -177,6 +197,12 @@ export default {
       moreComment: false,
       moreCommentId: null,
       type: 2,
+      loading: true,
+      loadingMore: false,
+      getNum: 20,
+      allCommentsCount: 1,
+      finished: false,
+      preCommentId: "",
     };
   },
   components: {
@@ -186,6 +212,9 @@ export default {
     this.id = this.$route.query.id;
     this.type = this.$route.query.type;
     // console.log(this.$route.query.id);
+  },
+  mounted() {
+    // this.loading = false;
   },
   computed: {
     commentUrl() {
@@ -206,6 +235,10 @@ export default {
         this.songMsg = this.data.targetInfo;
         this.hotComments = this.data.hotComments;
         this.allComments = this.data.comments;
+        this.allCommentsCount = this.data.commentNums;
+        this.preCommentId = this.allComments[19].commentId;
+        // this.commentImg = [this.songMsg.pic];
+        this.loading = false;
         // console.log(this.hotComments);
         // console.log(this.allComments);
       });
@@ -243,11 +276,49 @@ export default {
         query: { userId: id },
       });
     },
+    onLoad() {
+      console.log(this.allComments.length, this.allCommentsCount);
+      if (this.allComments.length < this.allCommentsCount) {
+        // let lastNum = this.getNum;
+        // this.getNum += 20;
+        // this.getNum =
+        //   this.getNum >= this.allCommentsCount
+        //     ? this.allCommentsCount
+        //     : this.getNum;
+        this.$axios(
+          `/MIGUM3.0/user/comment/stack/v1.0?commentId=${this.preCommentId}&hotCommentStart=0&pageSize=20&queryType=1&resourceId=${this.id}&resourceType=${this.type}`
+        ).then(({ data }) => {
+          data.data.comments.forEach((element) => {
+            this.allComments.push(element);
+          });
+          // this.allComments = [
+          //   ...this.allComments,
+          //   ...,
+          // ];
+          this.loadingMore = false;
+        });
+        // this.loadingMore = true;
+      } else {
+        this.finished = true;
+      }
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+.van-skeleton--primary {
+  margin: var(50px);
+}
+.van-skeleton {
+  margin: 0 0 50px 0;
+}
+.comment-skeleton {
+  margin: 60px 0 50px;
+}
+.comment-msg-skeleton {
+  margin: 5px 0 0 0;
+}
 .comment-head {
   z-index: 1;
   position: fixed;
@@ -272,6 +343,7 @@ export default {
   display: flex;
   align-items: center;
   .comment-img {
+    width: 20vw;
     img {
       display: block;
       width: 20vw;

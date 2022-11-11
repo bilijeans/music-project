@@ -127,6 +127,7 @@
       </div>
       <div class="new-ablum-list">
         <div
+          @click="goToAlbumSongs(i.contentId, '0')"
           class="new-ablum-item"
           v-for="(i, index) in newAblumList"
           :key="i.contentId"
@@ -208,7 +209,7 @@ export default {
     },
     getNewAblumData() {
       this.$axios.get(this.newAblumUrl).then(({ data }) => {
-        // console.log(data.data);
+        console.log(data.data);
         this.newAblumData = data.data;
         // newAblumData.header.style.backgroundImageUrl;
         this.newAblumList = this.newAblumData.contentItemList[0].itemList;
@@ -222,6 +223,9 @@ export default {
           type: 2,
         },
       });
+    },
+    goToAlbumSongs(id, type) {
+      this.$router.push({ name: "albumSongs", params: { id: id, type: type } });
     },
     back() {
       this.$router.go(-1);
@@ -344,6 +348,8 @@ export default {
     background-image: url(@/assets/list-one-bg.png);
     background-size: cover;
     .one-img {
+      width: 40vw;
+      height: 40vw;
       img {
         display: block;
         width: 40vw;
@@ -354,8 +360,10 @@ export default {
       display: flex;
       flex-direction: column;
       .msg-img {
-        margin: 0 0 0 10px;
+        margin: 0 0 5px 10px;
         padding: 10px;
+        width: 8vw;
+        height: 8vw;
         img {
           display: block;
           width: 8vw;
@@ -408,6 +416,8 @@ export default {
       padding: 20px;
       .song-img {
         display: flex;
+        width: 25vw;
+        height: 25vw;
         img {
           display: block;
           width: 25vw;
@@ -449,14 +459,17 @@ export default {
         color: #9f9dab;
       }
       .item-img {
-        padding: 0 10px;
+        margin: 0 10px;
+        width: 16vw;
+        height: 16vw;
+        background-color: pink;
         img {
           display: block;
           width: 16vw;
         }
       }
       .item-msg {
-        width: 62%;
+        width: 60%;
         display: flex;
         flex-direction: column;
         .item-msg-song {
@@ -491,6 +504,7 @@ export default {
     .mv-item {
       position: relative;
       margin: 0 0 15px 0;
+      width: 90vw;
       img {
         display: block;
         width: 90vw;
@@ -561,6 +575,7 @@ export default {
     position: fixed;
     top: 0;
     z-index: -1;
+    width: 100vw;
     img {
       display: block;
       width: 100vw;
