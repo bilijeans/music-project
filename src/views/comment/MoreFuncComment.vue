@@ -51,7 +51,6 @@
           </div>
           <div class="item-good">
             <span>{{ dealWithPlayNum(i.opNumItem.thumbNum) }} ❤</span>
-            <!-- <span>❤</span> -->
           </div>
         </div>
         <div class="item-comment">
@@ -119,7 +118,6 @@
           </div>
           <div class="item-good">
             <span>{{ dealWithPlayNum(i.opNumItem.thumbNum) }}❤</span>
-            <!-- <span>❤</span> -->
           </div>
         </div>
         <div class="item-comment">
