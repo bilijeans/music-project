@@ -1,9 +1,9 @@
 <template>
-  <div class="albumPage">
+  <div class="albumPage" @scroll="scrollHandel">
     <div
       class="album-page-content"
-      v-for="i in SingerAlbumList"
-      :key="'album' + i.resId"
+      v-for="(i, index) in SingerAlbumList"
+      :key="index"
       @click="goToSingerAlbumSongs(i.resId, i.resType)"
     >
       <div class="album-page-content-img">
@@ -19,6 +19,7 @@
 export default {
   props: {
     SingerAlbumList: Array,
+    addMore: Boolean,
   },
 
   methods: {
@@ -30,6 +31,15 @@ export default {
           type,
         },
       });
+    },
+
+    scrollHandel(e) {
+      if (
+        e.target.scrollTop >
+        e.target.scrollHeight - e.target.offsetHeight - 5
+      ) {
+        this.$emit("changeAlbumPage", true);
+      }
     },
   },
 };

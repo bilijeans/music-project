@@ -48,18 +48,23 @@
         </div>
       </van-skeleton>
     </div>
-    <div class="reply-title">
-      全部回复 ({{ mainCommentItem.replyTotalCount }})
-    </div>
+    <div class="reply-title">全部回复 ({{ allCommentsCount }})</div>
     <van-skeleton :row="4" avatar :loading="loading"></van-skeleton>
     <van-skeleton :row="4" avatar :loading="loading"></van-skeleton>
     <van-skeleton :row="4" avatar :loading="loading"></van-skeleton>
     <van-skeleton :row="4" avatar :loading="loading"></van-skeleton>
-    <div class="reply-comments">
-      <div
+    <van-list
+      :loading="loadingMore"
+      :finished="finished"
+      finished-text="没有更多了"
+      loading-text="加载中..."
+      @load="onLoad"
+      style="padding: 0 0 0 0"
+    >
+      <van-cell
         class="reply-item"
-        v-for="i in mainCommentItem.replyComments"
-        :key="i.replyId"
+        v-for="(i, index) in mainCommentItem.replyComments"
+        :key="index"
       >
         <div class="reply-user">
           <div class="reply-img">
@@ -106,12 +111,13 @@
           >
           {{ i.replyInfo }}
         </div>
-      </div>
-    </div>
+      </van-cell>
+    </van-list>
   </div>
 </template>
 
 <script>
+import { debounce } from "lodash-es";
 export default {
   props: { moreCommentId: String },
   data() {
@@ -119,15 +125,23 @@ export default {
       resourceId: "",
       mainCommentItem: "",
       loading: true,
+      loadingMore: false,
+      getNum: 20,
+      allCommentsCount: 1,
+      finished: false,
+      preCommentId: "",
+      start: 0,
+      allComments: [],
     };
   },
   created() {
     this.resourceId = this.moreCommentId;
     console.log(this.moreCommentId);
+    this.onLoad = debounce(this.onLoad, 2000);
   },
   computed: {
     allCommentUrl() {
-      return `/MIGUM3.0/user/comment/stack/${this.resourceId}/v1.0?pageSize=20&queryType=2&resourceId=1&resourceId=1&resourceType=2&start=0`;
+      return `/MIGUM3.0/user/comment/stack/${this.resourceId}/v1.0?pageSize=20&queryType=2&resourceId=${this.resourceId}&resourceType=2&start=0`;
     },
   },
   watch: {
@@ -138,9 +152,10 @@ export default {
   methods: {
     getAllCommentData() {
       this.$axios.get(this.allCommentUrl).then(({ data }) => {
-        // this.data = data.data;
-        // console.log(data.data);
+        console.log(data.data);
         this.mainCommentItem = data.data.mainCommentItem;
+        this.allComments = this.mainCommentItem.replyComments;
+        this.allCommentsCount = this.mainCommentItem.replyTotalCount;
         this.loading = false;
       });
     },
@@ -163,6 +178,28 @@ export default {
     cancelMaskLayer() {
       // this.moreComment = false;
       this.$emit("cancelMaskLayer");
+    },
+    // 下拉刷新
+    onLoad() {
+      this.start += 20;
+      console.log(
+        this.mainCommentItem.replyComments.length,
+        this.allCommentsCount
+      );
+
+      if (this.mainCommentItem.replyComments.length < this.allCommentsCount) {
+        this.$axios(
+          `/MIGUM3.0/user/comment/stack/${this.resourceId}/v1.0?pageSize=20&queryType=2&resourceId=${this.resourceId}&resourceType=2&start=${this.start}`
+        ).then(({ data }) => {
+          console.log(data.data);
+          data.data.mainCommentItem.replyComments.forEach((element) => {
+            this.allComments.push(element);
+          });
+          this.loadingMore = false;
+        });
+      } else {
+        this.finished = true;
+      }
     },
   },
 };
