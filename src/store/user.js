@@ -49,6 +49,13 @@ export default {
             state.latelyListen.album = [...[obj], ...newArr]
             localStorage.setItem("moyuM-user", JSON.stringify(state))
         },
+        freshLatelyMvData(state, obj) {
+            let newArr = state.latelyListen.mv.filter(e => {
+                return e.resId != obj.resId
+            });
+            state.latelyListen.mv = [...[obj], ...newArr]
+            localStorage.setItem("moyuM-user", JSON.stringify(state))
+        },
         addMySongList(state, name) {
             console.log(state.mySongList);
             state.mySongList.unshift({
@@ -92,6 +99,16 @@ export default {
             })
             localStorage.setItem("moyuM-user", JSON.stringify(state))
         },
+        addFavUser(state, obj) {
+            state.fav.user = [...[obj], ...state.fav.user]
+            localStorage.setItem("moyuM-user", JSON.stringify(state))
+        },
+        delFavUser(state, id) {
+            state.fav.user = state.fav.user.filter(e => {
+                return e.userId != id
+            })
+            localStorage.setItem("moyuM-user", JSON.stringify(state))
+        },
         addFavSong(state, obj) {
             state.fav.song = [...[obj], ...state.fav.song]
             localStorage.setItem("moyuM-user", JSON.stringify(state))
@@ -118,9 +135,23 @@ export default {
         },
         delCollectMv(state, id) {
             state.userCollect.mv = state.userCollect.mv.filter(e => {
-                return e.mvId != id
+                return e.resId != id
             })
             localStorage.setItem("moyuM-user", JSON.stringify(state))
         },
+        addToMySongList(state, obj) {
+            console.log(obj);
+            state.mySongList.forEach(e => {
+                if (e.playlistId == obj.id) {
+                    let idArr = []
+                    obj.songlist.forEach(el => {
+                        idArr.push(el.songId)
+                    })
+                    e.list.filter(item => idArr.indexOf(item.songId) != -1)
+                    e.list = [...obj.songlist, ...e.list]
+                }
+            })
+            localStorage.setItem("moyuM-user", JSON.stringify(state))
+        }
     }
 }

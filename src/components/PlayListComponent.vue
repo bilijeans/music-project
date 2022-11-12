@@ -1,6 +1,10 @@
 <template>
-  <div class="wait-song-play-list" @touchStart.stop>
-    <div class="list-container">
+  <div
+    class="wait-song-play-list"
+    :style="{ height: showItSelf ? 'auto' : '0px' }"
+    @touchStart.stop
+  >
+    <div class="list-container" v-show="showItSelf">
       <div class="header">
         <div class="title">
           <span class="listNum">当前播放</span>
@@ -17,7 +21,7 @@
           <span class="loop-str">{{ loopStatus(loop) }}</span>
         </div>
         <div class="list-controls">
-          <div class="btn collect"></div>
+          <div class="btn collect" @click="showAddPop"></div>
           <div class="btn clean" @click="cleanListBtn"></div>
         </div>
       </div>
@@ -37,12 +41,19 @@
         </li>
       </ul>
     </div>
+    <popup-add-songlist
+      v-show="addSonglistStatus"
+      :songlist="listData"
+      @pickUpPop="pickUpPop"
+    ></popup-add-songlist>
     <div @click="packUpList" class="shadow"></div>
   </div>
 </template>
 <script>
 import { mapState, mapActions } from "vuex";
+import PopupAddSonglist from "./PopupAddSonglist.vue";
 export default {
+  components: { PopupAddSonglist },
   props: {
     loop: Number,
     status: Boolean,
@@ -50,6 +61,8 @@ export default {
   data() {
     return {
       show: true,
+      addSonglistStatus: false,
+      showItSelf: true,
     };
   },
   watch: {
@@ -79,6 +92,10 @@ export default {
         return "随机播放";
       }
     },
+    showAddPop() {
+      this.addSonglistStatus = true;
+      this.showItSelf = false;
+    },
     changeLoop() {
       this.$emit("changeLoop");
     },
@@ -101,10 +118,14 @@ export default {
     },
     deleteSong(id) {
       if (this.playList.listData.length == 1) {
-        this.cleanListBtn()
+        this.cleanListBtn();
       } else {
         this.deleteSongOnList(id);
       }
+    },
+    pickUpPop() {
+      this.addSonglistStatus = false;
+      this.showItSelf = true;
     },
     ...mapActions({
       play: "getPlayURL",

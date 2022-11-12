@@ -115,12 +115,13 @@
               class="u-l-item"
               v-for="item in user.mySongList"
               :key="item.playlistId"
+              @click="turnToMySonglist(item.playlistId)"
             >
               <div class="l-i-cover">
                 <img
                   :src="
                     item.list[0]
-                      ? item.list[0].cover
+                      ? 'http://d.musicapp.migu.cn' + item.list[0].cover
                       : require('@/assets/defaultSonglistCover.jpg')
                   "
                 />
@@ -448,6 +449,14 @@ export default {
         path: "/user/user-follow",
       });
     },
+    turnToMySonglist(id) {
+      this.$router.push({
+        path: "/user/songlist",
+        query: {
+          id: id,
+        },
+      });
+    },
 
     ...mapMutations(["addMySongList", "renameMySongList", "delMySongList"]),
   },
@@ -733,6 +742,7 @@ export default {
       }
       .l-i-msg {
         margin-left: 15px;
+        padding: 5px 0;
         .l-i-title {
           width: 50vw;
           overflow: hidden;
@@ -740,6 +750,7 @@ export default {
           font-size: 13px;
           letter-spacing: 1px;
           white-space: nowrap;
+          padding: 5px 0;
         }
         .l-i-list-num {
           font-size: 12px;

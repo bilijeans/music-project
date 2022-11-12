@@ -67,7 +67,7 @@ const routes = [
     name: 'SingerPage',
     component: SingerPageView,
     meta: {
-      index: 2
+      index: 2,
     }
   },
   {
@@ -136,7 +136,7 @@ const routes = [
     component: SearchResultView,
     meta: {
       index: 2,
-      keepAlive:true
+      keepAlive: true
     }
   },
   {
@@ -197,6 +197,24 @@ const routes = [
     path: '/other-user',
     name: 'other-user',
     component: PeopleIndex,
+  },
+  {
+
+    path: '/other-user/fav',
+    name: 'other-user-fav',
+    component: () => import('../views/people/PeopleFavSong.vue'),
+  },
+  {
+
+    path: '/other-user/lately',
+    name: 'other-user-lately',
+    component: () => import('../views/people/PeopleLatelySong.vue'),
+  },
+  {
+
+    path: '/user/songlist',
+    name: 'user-songlist',
+    component: () => import('../views/user/UserSonglist.vue'),
   },
 
 ]

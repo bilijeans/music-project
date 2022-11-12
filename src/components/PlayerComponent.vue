@@ -33,6 +33,7 @@
           @togglePlay="togglePlay"
           @changeLoop="changeLoop"
           @stopPlay="stopPlay"
+          @moveProgress="moveProgress"
         ></play-info-component>
       </transition>
       <div class="play-title" ref="title" v-show="playbar.playURL">
@@ -99,6 +100,7 @@
           @packUp="pickUpList"
           @changeLoop="changeLoop"
           @stopPlay="stopPlay"
+          @moveProgress="moveProgress"
         ></play-list-component>
       </transition>
     </div>
@@ -120,6 +122,7 @@ export default {
       time: null,
       playInfoShow: false,
       loop: 0,
+      moveLong: 0,
     };
   },
   created() {
@@ -164,6 +167,10 @@ export default {
     },
   },
   methods: {
+    moveProgress(value) {
+      console.log(value);
+      this.$refs.play.currentTime = (this.duration / 100) * value;
+    },
     statrPlay() {
       this.$refs.play.play();
     },

@@ -28,19 +28,24 @@ export default {
             }
         },
         playList(state, list) {
+            console.log(list);
             let newList = list.map(e => {
-                let { songName, songId, singerList } = e
+                let { name, songName, songId, singerList, img1, album, albumId
+                } = e
                 let obj = {
-                    name: songName,
+                    name: songName || name,
                     singerList: singerList,
                     songId: songId,
-                    toneFlag: 'ZQ32'
+                    toneFlag: 'ZQ32',
+                    cover: img1,
+                    album: album,
+                    albumId: albumId
                 }
                 return obj
             })
             state.commit("changeList", newList)
             state.dispatch("playOnList", { data: newList[0], index: 0 })
-
+            console.log(state);
         },
         deleteSongOnList(state, id) {
             let index

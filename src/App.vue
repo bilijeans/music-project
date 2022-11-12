@@ -2,11 +2,9 @@
   <div id="app">
     <transition :name="transitionName">
       <keep-alive v-if="$route.meta.keepAlive">
-        <router-view></router-view
-      ></keep-alive>
-      <keep-alive v-if="!$route.meta.keepAlive">
-        <router-view></router-view
-      ></keep-alive>
+        <router-view></router-view>
+      </keep-alive>
+      <router-view v-if="!$route.meta.keepAlive"> </router-view>
     </transition>
     <footer>
       <play-component></play-component>
