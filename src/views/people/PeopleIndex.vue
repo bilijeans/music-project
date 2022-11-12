@@ -518,6 +518,7 @@ export default {
         img {
           display: block;
           width: 100%;
+          border-radius: 999px;
         }
       }
       .follow-btn {

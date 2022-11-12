@@ -49,6 +49,13 @@ export default {
             state.latelyListen.album = [...[obj], ...newArr]
             localStorage.setItem("moyuM-user", JSON.stringify(state))
         },
+        freshLatelyMvData(state, obj) {
+            let newArr = state.latelyListen.mv.filter(e => {
+                return e.resId != obj.resId
+            });
+            state.latelyListen.mv = [...[obj], ...newArr]
+            localStorage.setItem("moyuM-user", JSON.stringify(state))
+        },
         addMySongList(state, name) {
             console.log(state.mySongList);
             state.mySongList.unshift({
@@ -128,7 +135,7 @@ export default {
         },
         delCollectMv(state, id) {
             state.userCollect.mv = state.userCollect.mv.filter(e => {
-                return e.mvId != id
+                return e.resId != id
             })
             localStorage.setItem("moyuM-user", JSON.stringify(state))
         },

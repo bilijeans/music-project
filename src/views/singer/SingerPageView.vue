@@ -125,6 +125,7 @@ export default {
     };
   },
   created() {
+    console.log(1);
     this.id = this.$route.params.id;
     this.type = this.$route.params.type;
     this.getSingerPersonalPage();
@@ -166,6 +167,7 @@ export default {
           `/MIGUM3.0/v1.0/content/resourceinfo.do?resourceId=${this.id}&resourceType=${this.type}`
         )
         .then((data) => {
+          console.log(data);
           this.singerPageData = data.data.resource[0];
         });
     },

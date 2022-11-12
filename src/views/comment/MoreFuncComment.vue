@@ -98,7 +98,7 @@
         :loading="loadingMore"
         :finished="finished"
         finished-text="没有更多了"
-        loading-text="加载中"
+        loading-text="加载中..."
         @load="onLoad"
         style="padding: 0 0 55px 0"
       >
@@ -186,6 +186,7 @@
 
 <script>
 import CommentComponent from "@/components/CommentComponent.vue";
+import { debounce } from "lodash-es";
 export default {
   data() {
     return {
@@ -212,6 +213,7 @@ export default {
     this.id = this.$route.query.id;
     this.type = this.$route.query.type;
     // console.log(this.$route.query.id);
+    this.onLoad = debounce(this.onLoad, 2000);
   },
   mounted() {
     // this.loading = false;

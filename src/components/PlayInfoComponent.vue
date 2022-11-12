@@ -11,7 +11,7 @@
             {{ playbar.songData ? playbar.songData.songName : "" }}
           </span>
         </p>
-        <p class="singer">
+        <p class="singer" @click="turnToSingerPage">
           {{
             playbar.songData
               ? dealWithSingerList(playbar.songData.singerList)
@@ -363,6 +363,18 @@ export default {
     },
     changeLoop() {
       this.$emit("changeLoop");
+    },
+    turnToSingerPage() {
+      this.$emit("packUpPlayInfo");
+      console.log(this.playbar.songData.singerList[0].id);
+      this.$router.push({
+        name: "SingerPage",
+        params: {
+          id: this.playbar.songData.singerList[0].id,
+          type: "2002",
+        },
+      });
+      location.reload();
     },
     ...mapMutations(["changeHighNum", "addFavSong", "delFavSong"]),
     ...mapActions(["playOnList"]),

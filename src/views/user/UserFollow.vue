@@ -24,7 +24,7 @@
               class="fol-item"
               v-for="i in item.data"
               :key="i.singerId"
-              @click="turnToSingerPage(i.singerId,i.type)"
+              @click="turnToSingerPage(i.singerId, i.type)"
             >
               <div class="cover">
                 <img :src="i.cover" />
@@ -33,7 +33,17 @@
             </div>
           </div>
           <div class="fol-items-people" v-if="item.key == 'user'">
-            <div class="fol-item" v-for="i in item.data" :key="i.userId"></div>
+            <div
+              class="fol-item"
+              v-for="i in item.data"
+              :key="i.userId"
+              @click="turnToUserPage(i.userId)"
+            >
+              <div class="cover">
+                <img :src="i.cover" />
+              </div>
+              <div class="singer-name">{{ i.userName }}</div>
+            </div>
           </div>
         </wd-tab>
       </wd-tabs>
@@ -91,13 +101,19 @@ export default {
     goBack() {
       this.$router.go(-1);
     },
-    turnToSingerPage(id,type) {
+    turnToSingerPage(id, type) {
       this.$router.push({
         name: "SingerPage",
         params: {
           id,
           type,
         },
+      });
+    },
+    turnToUserPage(id) {
+      this.$router.push({
+        path: "/other-user",
+        query: { userId: id },
       });
     },
   },

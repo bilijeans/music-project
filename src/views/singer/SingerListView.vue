@@ -36,7 +36,11 @@
         <div class="word-nav">
           <ul>
             <li v-for="item in singerList" :key="'nav' + item.keyword">
-              <a :href="'#' + item.keyword" :class="{active : activeId == item.keyword}">{{ item.keyword }}</a>
+              <a
+                :href="'#' + item.keyword"
+                :class="{ active: activeId == item.keyword }"
+                >{{ item.keyword }}</a
+              >
             </li>
           </ul>
         </div>
@@ -205,6 +209,7 @@ export default {
           type,
         },
       });
+      location.reload();
     },
     goToSearch() {
       this.$router.push({ path: "/search" });
@@ -217,7 +222,10 @@ export default {
         if (i + 1 >= wordList.length) {
           this.activeId = wordList[i].id;
           break;
-        } else if (scrollTop < wordList[i + 1].offsetTop - wordList[0].offsetTop) {
+        } else if (
+          scrollTop <
+          wordList[i + 1].offsetTop - wordList[0].offsetTop
+        ) {
           this.activeId = wordList[i].id;
           break;
         }

@@ -67,7 +67,7 @@ const routes = [
     name: 'SingerPage',
     component: SingerPageView,
     meta: {
-      index: 2
+      index: 2,
     }
   },
   {
@@ -136,7 +136,7 @@ const routes = [
     component: SearchResultView,
     meta: {
       index: 2,
-      keepAlive:true
+      keepAlive: true
     }
   },
   {
