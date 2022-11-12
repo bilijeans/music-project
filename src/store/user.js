@@ -8,7 +8,10 @@ export default {
             album: []
         },
         mySongList: [],
-        config: {},
+        config: {
+            themeColor: "#888",
+            nickName: "小明"
+        },
         userCollect: {
             mv: [],
             album: []
@@ -25,8 +28,6 @@ export default {
             for (const key in obj) {
                 state[key] = obj[key]
             }
-            // console.log(localStorage.getItem("moyuM-user"));
-            // console.log(state);
         },
         freshLatelySongData(state, obj) {
             let newArr = state.latelyListen.songs.filter(e => {
@@ -57,7 +58,6 @@ export default {
             localStorage.setItem("moyuM-user", JSON.stringify(state))
         },
         addMySongList(state, name) {
-            console.log(state.mySongList);
             state.mySongList.unshift({
                 title: name,
                 playlistId: Date.now(),
@@ -140,7 +140,6 @@ export default {
             localStorage.setItem("moyuM-user", JSON.stringify(state))
         },
         addToMySongList(state, obj) {
-            console.log(obj);
             state.mySongList.forEach(e => {
                 if (e.playlistId == obj.id) {
                     let idArr = []

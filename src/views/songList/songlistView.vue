@@ -29,7 +29,7 @@
         >
           {{ i.tagName }}
         </p>
-        <i ref="reUnderLine"></i>
+        <i :style="[{left:`calc(2vw + ${(recommendNavActive + 1) * 16}vw - 25vw / 2)`}]"></i>
       </div>
       <div class="songs-list-contents">
         <div
@@ -97,6 +97,7 @@ import SongListBanner from "@/components/SongListBanner.vue";
 export default {
   data() {
     return {
+      // id:'',
       bannerList: [],
       nav: [],
       recommendNav: [],
@@ -111,6 +112,8 @@ export default {
     SongListBanner,
   },
   created() {
+    this.id = this.$route.query.id || '1000001635';
+    this.recommendNavActive = Number(this.$route.query.index) || 0;
     this.getHeaderBanner();
     this.getNav();
     this.getSongsList();
@@ -125,7 +128,6 @@ export default {
         .get("/MIGUM3.0/v1.0/template/musiclistplaza-header")
         .then(({ data }) => {
           this.bannerList = data.data.contentItemList;
-          // console.log(data.data.contentItemList);
         });
     },
     getNav() {
@@ -141,15 +143,13 @@ export default {
         .get("/MIGUM3.0/v1.0/template/musiclistplaza-hottaglist")
         .then(({ data }) => {
           this.recommendNav = data.data.contentItemList;
-          // console.log(this.recommendNav, "aaa");
         });
     },
 
-    getSongsList(id) {
-      id = id || 1000001635;
+    getSongsList() {
       this.$axios({
         methods: "GET",
-        url: `/MIGUM3.0/v1.0/template/musiclistplaza-listbytag?pageNumber=1&tagId=${id}`,
+        url: `/MIGUM3.0/v1.0/template/musiclistplaza-listbytag?pageNumber=1&tagId=${this.id}`,
         headers: {
           recommendstatus: 1,
           aversionid:
@@ -157,23 +157,21 @@ export default {
         },
       }).then(({ data }) => {
         this.songList = data.data.contentItemList.itemList;
-        // console.log(this.songList);
       });
     },
 
     getSongsListAndActive(id, index) {
       this.moveRecommendNav(index);
 
-      this.recommendNavActive = index;
+      this.id = id;
 
-      this.getSongsList(id);
+      this.recommendNavActive = Number(index);
 
-      this.$refs.reUnderLine.style.left = `calc(2vw + ${(index + 1) * 16}vw - 25vw/2)`;
+      this.getSongsList();
 
     },
 
     goToOnlySongsList(id) {
-      // console.log(id);
       this.$router.push({
         name: "songListOnly",
         params: {
@@ -214,7 +212,9 @@ export default {
     changeUnderLine(id, name) {
       this.$refs.songListPage.scrollTop = 228;
 
-      this.getSongsList(id);
+      this.id = id;
+
+      this.getSongsList();
 
       this.notShowNav();
 
@@ -233,13 +233,10 @@ export default {
           ...this.recommendNav,
         ];
 
-        this.$refs.reUnderLine.style.left = `calc(2vw + 16vw - 25vw/2)`;
       } else {
         let isExistIndex = this.recommendNav.indexOf(isExist);
 
-        this.recommendNavActive = isExistIndex;
-
-        this.$refs.reUnderLine.style.left = `calc(2vw + ${(isExistIndex + 1) * 16}vw - 25vw/2)`;
+        this.recommendNavActive = Number(isExistIndex);
 
       }
 
@@ -429,7 +426,7 @@ main {
     background-color: red;
     position: absolute;
     top: calc(11vh / 2);
-    left: calc(11vw / 2);
+    // left: calc(11vw / 2);
     z-index: 2;
     transition: all 0.5s;
   }

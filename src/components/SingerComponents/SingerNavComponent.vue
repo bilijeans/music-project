@@ -1,21 +1,9 @@
 <template>
   <div class="singer-page-nav">
     <div class="singer-page-nav-content">
-      <div @click="moveUnderLine(1)">
-        <p :class="{ active: tab == 1 }">主页</p>
-        <span></span>
-      </div>
-      <div @click="moveUnderLine(2)">
-        <p :class="{ active: tab == 2 }">歌曲</p>
-        <span>{{ tabName[1] ? tabName[1].txt2 : "" }}</span>
-      </div>
-      <div @click="moveUnderLine(3)">
-        <p :class="{ active: tab == 3 }">视频</p>
-        <span>{{ tabName[2] ? tabName[2].txt2 : "" }}</span>
-      </div>
-      <div @click="moveUnderLine(4)">
-        <p :class="{ active: tab == 4 }">专辑</p>
-        <span>{{ tabName[3] ? tabName[3].txt2 : "" }}</span>
+      <div v-for="(i,index) in resultArr" @click="moveUnderLine(index + 1)" :key="index">
+        <p :class="{ active: tab == index + 1 }">{{i.txt}}</p>
+        <span>{{i.txt2 == 0? '' : i.txt2}}</span>
       </div>
       <i ref="underLine"></i>
     </div>
@@ -30,7 +18,27 @@ export default {
   data() {
     return {
       tab: 2,
+      tabList: [
+        { title: "主页" },
+        { title: "歌曲" },
+        { title: "视频" },
+        { title: "专辑" },
+      ],
+      resultArr: [],
     };
+  },
+  watch: {
+    tabName() {
+      this.tabList.forEach((i) => {
+        let hasArr = this.tabName.find((x) => x.txt == i.title);
+        if (hasArr) {
+          this.resultArr = [...this.resultArr, hasArr];
+        } else {
+          this.resultArr = [...this.resultArr, { txt: i.title, txt2: 0 }];
+        }
+      });
+        console.log(this.resultArr)
+    },
   },
   methods: {
     moveUnderLine(left) {
@@ -46,14 +54,13 @@ export default {
 <style lang="scss" scoped>
 .singer-page-nav {
   width: 100vw;
-   background-color: #fff;
+  background-color: #fff;
   border-top-left-radius: 20px;
 
   .singer-page-nav-content {
     height: 7vh;
     display: flex;
     position: relative;
-   
 
     div {
       width: 25vw;

@@ -283,7 +283,6 @@ export default {
           `/MIGUM3.0/bmw/mv/by-contentId/v1.0?contentId=${id}&resourceType=D`
         )
         .then(({ data }) => {
-          console.log(this.allVideo[this.index]);
           this.freshLatelyMvData(this.allVideo[this.index]);
           this.videoMessage = data.data;
         });

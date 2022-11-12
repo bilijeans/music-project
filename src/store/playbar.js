@@ -11,41 +11,50 @@ export default {
         playStatus: false,
         playbarElement: null,
         vue: null,
-        duration: 0
-
+        duration: 0,
+        canPlay: true
     },
     actions: {
         getPlayURL(state, id) {
             let toneFlag = state.state.toneFlag[state.state.toneFlagIndex]
-            state.state.axios({
-                methods: "GET",
-                url: `/MIGUM2.0/strategy/listen-url/v2.4?resourceType=2&songId=${id}&toneFlag=${toneFlag}`,
-                headers: {
-                    channel: "0146921",
-                    aversionid:
-                        "DF94878D95A2A88B64928AA5D0ADC975C497B590C29DD38A939884A18AAD996E9B99868D8ED4A68962948E9E86ACCBA29ADFD0D3C5A8A28C6495899EB7829FA5C498848DDDECEE8968978CA389829E759C9A8A87",
-                    timestamp: Date.parse(new Date()),
-                },
-            }).then(({ data }) => {
-                if (data.data.cannotCode == "440018") {
-                    state.commit("lowerTongFlagIndex")
-                    state.dispatch("getPlayURL", id)
-                } else {
-                    state.commit("newId", id)
-                    state.commit("initTongFlagIndex")
-                    state.commit("newURL", data.data.url)
-                    state.commit("newLrcURL", data.data.lrcUrl)
-                    state.commit("getDuration", data.data.song.duration)
-                    state.dispatch("getLrcData")
-                    state.commit("commitSongData", data.data.song)
-                    state.commit("initHighNum")
-                    state.dispatch("hasSong", { name: data.data.song.songName, singerList: data.data.song.singerList, songId: id, toneFlag: toneFlag })
-                    state.commit("playOrPause")
-                }
-            });
+            if (state.state.toneFlagIndex < 0) {
+                state.commit("cannotPlay")
+            } else {
+                state.state.axios({
+                    methods: "GET",
+                    url: `/MIGUM2.0/strategy/listen-url/v2.4?resourceType=2&songId=${id}&toneFlag=${toneFlag}`,
+                    headers: {
+                        channel: "0146921",
+                        aversionid:
+                            "DF94878D95A2A88B64928AA5D0ADC975C497B590C29DD38A939884A18AAD996E9B99868D8ED4A68962948E9E86ACCBA29ADFD0D3C5A8A28C6495899EB7829FA5C498848DDDECEE8968978CA389829E759C9A8A87",
+                        timestamp: Date.parse(new Date()),
+                    },
+                }).then(({ data }) => {
+                    if (data.data.cannotCode == "440016") {
+                        state.commit("cannotPlay")
+                    } else {
+                        if (data.data.cannotCode == "440018") {
+                            state.commit("lowerTongFlagIndex")
+                            state.dispatch("getPlayURL", id)
+                        } else {
+                            state.commit("newId", id)
+                            state.commit("initTongFlagIndex")
+                            state.commit("newURL", data.data.url)
+                            state.commit("newLrcURL", data.data.lrcUrl)
+                            state.commit("getDuration", data.data.song.duration)
+                            state.dispatch("getLrcData")
+                            state.commit("commitSongData", data.data.song)
+                            state.commit("initHighNum")
+                            state.dispatch("hasSong", { name: data.data.song.songName, singerList: data.data.song.singerList, songId: id, toneFlag: toneFlag })
+                            state.commit("playOrPause")
+                        }
+                    }
+
+                });
+            }
+
         },
         playOnList(state, obj) {
-            // console.log(obj);
             state.state.axios({
                 methods: "GET",
                 url: `/MIGUM2.0/strategy/listen-url/v2.4?resourceType=2&songId=${obj.data.songId}&toneFlag=${obj.data.toneFlag}`,
@@ -64,6 +73,7 @@ export default {
                         }
                     })
                     if (index < 0) {
+                        state.commit("cannotPlay")
                         console.log('暂无该歌曲播放数据，敬请期待');
                     } else {
                         obj.data.toneFlag = state.state.toneFlag[index]
@@ -184,6 +194,12 @@ export default {
         }
     },
     mutations: {
+        cannotPlay(state) {
+            state.canPlay = false
+        },
+        initCanPlayStatus(state) {
+            state.canPlay = true
+        },
         getElement(state, el) {
             state.playbarElement = el
         },
@@ -219,7 +235,6 @@ export default {
             state.axios = f
         },
         commitSongData(state, data) {
-            console.log()
             if (data.img1.indexOf('http') != -1) {
                 data.img1 = '/prod/playlist-service/playListimg/a982971d-27e4-4a70-8c3c-3abdfda852c9.jpg'
                 data.img2 = '/prod/playlist-service/playListimg/a982971d-27e4-4a70-8c3c-3abdfda852c9.jpg'
