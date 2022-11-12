@@ -40,7 +40,7 @@ export default {
   background-color: #fff;
   display: flex;
   justify-content: flex-start;
-  align-items: flex-start;
+  align-content: flex-start;
   flex-wrap: wrap;
   padding-top: 2vh;
   height: 76vh;
@@ -48,6 +48,7 @@ export default {
 }
 .album-page-content {
   width: calc(90vw / 3);
+  height: 20vh;
   margin-left: calc(10vw / 4);
   margin-bottom: 1vh;
   .album-page-content-img {

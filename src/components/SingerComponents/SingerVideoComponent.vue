@@ -44,7 +44,7 @@ export default {
   background-color: #fff;
   display: flex;
   justify-content: flex-start;
-  align-items: flex-start;
+  align-content: flex-start;
   flex-wrap: wrap;
   padding-top: 2vh;
   height: 76vh;
