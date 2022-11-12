@@ -156,7 +156,6 @@ export default {
   },
   methods: {
     dealWithData(data) {
-      console.log(data);
       this.title = data.header.title.slice(2);
       this.specialStation = data.contents[0].contents;
       this.timeStation = {
