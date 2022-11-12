@@ -240,7 +240,7 @@ export default {
       position: relative;
       display: flex;
       align-items: center;
-      padding: 10px 20px;
+      padding: 8px 20px;
       font-size: 14px;
       // margin-bottom: 10px;
       .name {
@@ -250,15 +250,17 @@ export default {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        padding: 5px;
       }
       .singer {
         margin-left: 5px;
+        margin-top: 2px;
         font-size: 12px;
         color: #999;
       }
       .delete {
         position: absolute;
-        right: 10px;
+        right: 32px;
         width: 15px;
         height: 15px;
         background-image: url("@/assets/Delete.svg");
