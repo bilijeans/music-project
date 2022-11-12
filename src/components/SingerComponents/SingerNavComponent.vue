@@ -1,22 +1,11 @@
 <template>
   <div class="singer-page-nav">
     <div class="singer-page-nav-content">
-      <div @click="moveUnderLine(1)">
-        <p :class="{ active: tab == 1 }">主页</p>
-        <span></span>
+      <div v-for="(i,index) in tabName" @click="moveUnderLine(index + 1)" :key="index">
+        <p :class="{ active: tab == index + 1 }">{{i.txt}}</p>
+        <span>{{i.txt2 == 0? '':i.txt2}}</span>
       </div>
-      <div @click="moveUnderLine(2)">
-        <p :class="{ active: tab == 2 }">歌曲</p>
-        <span>{{ tabName[1] ? tabName[1].txt2 : "" }}</span>
-      </div>
-      <div @click="moveUnderLine(3)">
-        <p :class="{ active: tab == 3 }">视频</p>
-        <span>{{ tabName[2] ? tabName[2].txt2 : "" }}</span>
-      </div>
-      <div @click="moveUnderLine(4)">
-        <p :class="{ active: tab == 4 }">专辑</p>
-        <span>{{ tabName[3] ? tabName[3].txt2 : "" }}</span>
-      </div>
+      
       <i ref="underLine"></i>
     </div>
   </div>
@@ -31,6 +20,9 @@ export default {
     return {
       tab: 2,
     };
+  },
+  created(){
+    console.log(this.tabName,'aa')
   },
   methods: {
     moveUnderLine(left) {

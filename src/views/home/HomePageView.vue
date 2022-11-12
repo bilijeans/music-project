@@ -122,7 +122,7 @@
           </svg>
           <span>全部</span>
         </div>
-        <div class="classify-item" v-for="i in classifyData" :key="i.viewId">
+        <div class="classify-item" v-for="(i,index) in classifyData" :key="i.viewId" @click="goToSongList(i.viewId,index)">
           {{ i.txt }}
         </div>
       </div>
@@ -274,7 +274,7 @@ export default {
     this.recommendSongListTitle = HomePageData.data.contents[4].contents[0];
     this.recommendSongList = HomePageData.data.contents[5].contents;
     this.classifyData = HomePageData.data.contents[6].contents;
-    // console.log(this.classifyData);
+    console.log(this.classifyData);
     this.newSongTitle = HomePageData.data.contents[7].contents;
     this.newSongData = HomePageData.data.contents[8].contents;
     this.roostTitle = HomePageData.data.contents[9].contents;
@@ -376,8 +376,15 @@ export default {
     //       (windowWidth * 0.9)
     //   );
     // },
-    goToSongList() {
-      this.$router.push({ path: "/song-lists" });
+    goToSongList(id = '0000-1000001635',index = 0) {
+      id = id.slice(5);
+      this.$router.push({ 
+        path: "/song-lists",
+        query:{
+          id,
+          index
+        }
+        });
     },
     turnToUser() {
       this.$router.push({ path: "/user" });
