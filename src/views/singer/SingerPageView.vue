@@ -51,18 +51,21 @@
               v-else-if="tab == 2"
               :songsData="songsData"
               key="song"
+              @changePage="addSongsPage"
             ></songs-component>
 
             <singer-video-component
               v-else-if="tab == 3"
               :singerViedoList="singerViedoList"
               key="video"
+              @changeVideoPage="addVideoPage"
             ></singer-video-component>
 
             <singer-album-component
               v-else
               :SingerAlbumList="SingerAlbumList"
               key="album"
+              @changeAlbumPage="addAlbumPage"
             ></singer-album-component>
           </transition-group>
         </div>
@@ -121,11 +124,15 @@ export default {
       singerSongListPage: 1,
       singerViedoList: [],
       SingerAlbumList: [],
+      dataList: [],
       SingerAlbumListPage: 1,
+      SingerVideoListPage:1,
+      turnSongsPage: false,
+      turnAlbumPage: false,
+      turnVideoPage: false
     };
   },
   created() {
-    console.log(1);
     this.id = this.$route.params.id;
     this.type = this.$route.params.type;
     this.getSingerPersonalPage();
@@ -139,6 +146,28 @@ export default {
   computed: {
     ...mapState(["user"]),
   },
+  watch: {
+    turnSongsPage() {
+      if (this.turnSongsPage) {
+        this.singerSongListPage = this.singerSongListPage + 1;
+        this.getSongList();
+      }
+    },
+
+    turnAlbumPage() {
+      if (this.turnAlbumPage) {
+        this.SingerAlbumListPage = this.SingerAlbumListPage + 1;
+        this.getAlbumList();
+      }
+    },
+
+    turnVideoPage() {
+      if (this.turnVideoPage) {
+        this.SingerVideoListPage = this.SingerVideoListPage + 1;
+        this.getViedoList();
+      }
+    },
+  },
   methods: {
     hasLike() {
       this.user.fav.singer.forEach((e) => {
@@ -148,7 +177,6 @@ export default {
       });
     },
     like() {
-      console.log(this.singerPageData);
       this.isLike = !this.isLike;
       if (this.isLike) {
         this.addFavSinger({
@@ -167,7 +195,6 @@ export default {
           `/MIGUM3.0/v1.0/content/resourceinfo.do?resourceId=${this.id}&resourceType=${this.type}`
         )
         .then((data) => {
-          console.log(data);
           this.singerPageData = data.data.resource[0];
         });
     },
@@ -193,25 +220,28 @@ export default {
           `/MIGUM3.0/bmw/singer/song/v1.0?pageNo=${this.singerSongListPage}&singerId=${this.id}`
         )
         .then(({ data }) => {
-          let dataList = [];
           data.data.contents[0].contents.forEach((el) => {
-            dataList.push(el.songItem);
+            this.dataList.push(el.songItem);
           });
 
           this.songsData = {
-            dataList,
-            totalCount: dataList.length,
+            dataList: this.dataList,
+            totalCount: this.dataList.length,
           };
 
-          // console.log(this.songsData);
+          this.turnSongsPage = false;
         });
     },
 
     getViedoList() {
       this.$axios
-        .get(`/MIGUM3.0/bmw/singer/mv/v1.0?singerId=${this.id}`)
+        .get(`/MIGUM3.0/bmw/singer/mv/v1.0?pageNo=${this.SingerVideoListPage}&singerId=${this.id}`)
         .then(({ data }) => {
-          this.singerViedoList = data.data.contents;
+          data.data.contents.forEach(i => {
+            this.singerViedoList.push(i)
+          });
+
+          this.turnVideoPage = false;
         });
     },
 
@@ -221,8 +251,11 @@ export default {
           `/MIGUM3.0/bmw/singer/album/v1.0?pageNo=${this.SingerAlbumListPage}&singerId=${this.id}`
         )
         .then(({ data }) => {
-          console.log(data);
-          this.SingerAlbumList = data.data.contents;
+          data.data.contents.forEach((i) => {
+            this.SingerAlbumList.push(i);
+          });
+
+          this.turnAlbumPage = false;
         });
     },
 
@@ -263,6 +296,15 @@ export default {
 
         this.$refs.navOpacity.style.opacity = `${opacity}%`;
       }
+    },
+    addSongsPage(value) {
+      this.turnSongsPage = value;
+    },
+    addAlbumPage(value) {
+      this.turnAlbumPage = value;
+    },
+    addVideoPage(value){
+      this.turnVideoPage = value
     },
     ...mapMutations(["addFavSinger", "delFavSinger"]),
   },
