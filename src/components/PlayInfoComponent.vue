@@ -19,6 +19,13 @@
           }}
         </p>
       </div>
+      <div
+        class="mv-btn"
+        v-show="playbar.songData?.mvId"
+        @click="turnToVideoPage"
+      >
+        mv
+      </div>
     </header>
     <main @click="lrcToggle = !lrcToggle">
       <div
@@ -63,8 +70,8 @@
               : `url(${require('@/assets/ActiveHeartWhite.svg')})`,
           }"
         ></div>
-        <div class="nav-item comment"></div>
-        <div class="nav-item tone-flag"></div>
+        <div class="nav-item comment" @click="turnToComment"></div>
+        <div class="nav-item tone-flag" @click="turnToAlbum"></div>
         <div class="nav-item more"></div>
       </div>
       <div class="play-control">
@@ -217,7 +224,6 @@ export default {
       this.moveLrc();
     },
     songId() {
-      console.log(this.playbar);
       localStorage.setItem("playlist", JSON.stringify(this.playList));
       this.hasLike();
     },
@@ -238,7 +244,6 @@ export default {
       }
     },
     pickUp() {
-      console.log(12);
       this.$emit("packUpPlayInfo");
     },
     pickUpList() {
@@ -247,7 +252,6 @@ export default {
     getTitleStyle() {
       this.titleShow = false;
       clearInterval(this.time);
-      // console.log(this.$refs.firstSpan);
       if (!this.$refs.firstSpan) {
         return false;
       }
@@ -281,7 +285,7 @@ export default {
     dealWithSingerList(arr) {
       let str = "";
       arr.forEach((e) => {
-        str = str + e.name + "/";
+        str = str + (e.name || e.nickName) + "/";
       });
       str = str.slice(0, -1);
       return str;
@@ -366,7 +370,6 @@ export default {
     },
     turnToSingerPage() {
       this.$emit("packUpPlayInfo");
-      console.log(this.playbar.songData.singerList[0].id);
       this.$router.push({
         name: "SingerPage",
         params: {
@@ -375,6 +378,57 @@ export default {
         },
       });
       location.reload();
+    },
+    turnToAlbum() {
+      this.$emit("packUpPlayInfo");
+      this.$router.push({
+        name: "albumSongs",
+        params: {
+          id: this.playbar.songData.albumId,
+          type: this.playbar.songData.restrictType,
+        },
+      });
+    },
+    turnToVideoPage() {
+      this.$axios
+        .get(
+          `/MIGUM3.0/bmw/mv/by-contentId/v1.0?contentId=${this.playbar.songData.mvId}&resourceType=D`
+        )
+        .then(({ data }) => {
+          let videoData = {
+            action: data.data.actionUrl,
+            img: data.data.showImg,
+            logEvent: data.data.logEvent,
+            resId: data.data.contentId,
+            resType: data.data.resourceType,
+            style: data.data.style,
+            track: data.data.track,
+            txt: data.data.title,
+            txt2: this.dealWithSingerList(data.data.singers),
+            txt3: null,
+            view: data.data.view,
+            viewId: data.data.viewId,
+          };
+          let jsonData = JSON.stringify({ data: [videoData] });
+          this.$emit("packUpPlayInfo");
+          this.$router.push({
+            path: "/video",
+            query: {
+              videoList: jsonData,
+              index: 0,
+            },
+          });
+        });
+    },
+    turnToComment() {
+      this.$emit("packUpPlayInfo");
+      this.$router.push({
+        path: "/morefunc-comment",
+        query: {
+          id: this.songId,
+          type: 2,
+        },
+      });
     },
     ...mapMutations(["changeHighNum", "addFavSong", "delFavSong"]),
     ...mapActions(["playOnList"]),
@@ -429,6 +483,15 @@ export default {
         font-size: 12px;
         color: rgba(255, 255, 255, 0.7);
       }
+    }
+    .mv-btn {
+      position: absolute;
+      bottom: 18px;
+      right: 30px;
+      padding: 2px 5px;
+      border: 1px solid #fff;
+      border-radius: 5px;
+      color: #fff;
     }
   }
   main {

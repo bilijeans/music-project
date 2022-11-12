@@ -104,6 +104,9 @@
         ></play-list-component>
       </transition>
     </div>
+    <div class="can-not-play-pop" v-show="!playbar.canPlay">
+      <p>抱歉，该歌曲暂无音源</p>
+    </div>
   </div>
 </template>
 <script>
@@ -128,7 +131,6 @@ export default {
   created() {
     if (localStorage.getItem("playlist")) {
       let data = JSON.parse(localStorage.getItem("playlist"));
-      // console.log(data, data.listData[data.highLight]);
       this.playFirst({
         data: data.listData[data.highLight],
         index: data.highLight,
@@ -151,6 +153,7 @@ export default {
     ...mapState({
       listData: (state) => state.playList.listData,
       songId: (state) => state.playbar.playId,
+      canPlay: (state) => state.playbar.canPlay,
     }),
   },
   watch: {
@@ -165,10 +168,16 @@ export default {
         });
       }
     },
+    canPlay() {
+      if (!this.canPlay) {
+        setTimeout(() => {
+          this.initCanPlayStatus();
+        }, 2000);
+      }
+    },
   },
   methods: {
     moveProgress(value) {
-      console.log(value);
       this.$refs.play.currentTime = (this.duration / 100) * value;
     },
     statrPlay() {
@@ -294,7 +303,6 @@ export default {
       this.loop = (this.loop + 1) % 3;
     },
     stopPlay() {
-      // console.log(11);
       this.playStatus = false;
       this.$refs.play.pause();
     },
@@ -304,6 +312,7 @@ export default {
       "changeHighNum",
       "getElement",
       "freshLatelySongData",
+      "initCanPlayStatus",
     ]),
     ...mapActions(["getPlayURL", "playOnList", "playFirst"]),
   },
@@ -405,6 +414,16 @@ export default {
     width: 20px;
     height: 20px;
   }
+}
+.can-not-play-pop {
+  padding: 10px 10px;
+  background-color: rgba(129, 129, 129, 0.425);
+  z-index: 300;
+  position: fixed;
+  bottom: 20vh;
+  left: 29vw;
+  border-radius: 10px;
+  color: #fff;
 }
 </style>
 <style>
