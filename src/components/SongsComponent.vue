@@ -48,7 +48,7 @@
         </svg>
       </div>
     </div>
-    <div class="songs">
+    <div class="songs"  @scroll="scrollHandel">
       <div
         class="songs-item"
         v-for="(i, index) in songsData.dataList"
@@ -123,6 +123,11 @@ export default {
     // console.log(this.songsData);
   },
   methods: {
+    scrollHandel(e){
+      if(e.target.scrollTop > e.target.scrollHeight - e.target.offsetHeight - 100){
+        this.$emit('changePage', true)
+      }
+    },
     moreFunc(name, id) {
       this.moretab = true;
       this.name = name;

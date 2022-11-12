@@ -1,5 +1,5 @@
 <template>
-  <div class="videoPage">
+  <div class="videoPage" @scroll="scrollHandel">
     <div
       class="video-content"
       v-for="(item, index) in singerViedoList"
@@ -35,6 +35,15 @@ export default {
         },
       });
     },
+
+    scrollHandel(e){
+      if (
+        e.target.scrollTop >
+        e.target.scrollHeight - e.target.offsetHeight - 5
+      ) {
+        this.$emit("changeVideoPage", true);
+      }
+    }
   },
 };
 </script>
