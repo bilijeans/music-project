@@ -2,13 +2,13 @@
   <div class="user-index" ref="userPage">
     <header :style="{ backgroundColor: `rgba(255, 255, 255,${showHeader})` }">
       <i class="back wd-icon-thin-arrow-left" @click="backToHome"></i>
-      <i class="search wd-icon-search"></i>
+      <i class="search wd-icon-search" @click="goToSearch"></i>
       <transition name="user">
         <div class="user-profile" v-show="showHeader == 1">
           <div class="user-pic">
             <img src="@/assets/user4.svg" />
           </div>
-          <div class="user-name">猪蛋蛋</div>
+          <div class="user-name">{{ user.config.nickName }}</div>
         </div>
       </transition>
     </header>
@@ -18,11 +18,13 @@
           <div class="user-pic">
             <img src="@/assets/user4.svg" />
           </div>
-          <div class="user-name">猪蛋蛋</div>
+          <div class="user-name">{{ user.config.nickName }}</div>
           <div class="user-status">
-            <span class="follow">10 关注</span> |
-            <span class="fans">10 粉丝</span> |
-            <span class="level">Lv 8</span>
+            <span class="follow"
+              >{{ user.fav.singer.length + user.fav.user.length }} 关注</span
+            >
+            | <span class="fans">0 粉丝</span> |
+            <span class="level">Lv 1</span>
           </div>
         </div>
       </div>
@@ -357,6 +359,11 @@ export default {
     // closePopUp() {
     //   this.songlistStatus = false;
     // },
+    goToSearch() {
+      this.$router.push({
+        path: "/search",
+      });
+    },
     rename() {
       this.renameStatus = true;
       // this.songlistStatus = false

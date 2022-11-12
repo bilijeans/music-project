@@ -56,6 +56,7 @@ export default {
         album: [],
       },
       config: {
+        nickName: "小明",
         themeColor: "#888",
       },
     };

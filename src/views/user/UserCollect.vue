@@ -2,7 +2,7 @@
   <div class="lately-play">
     <header>
       <i class="back wd-icon-thin-arrow-left" @click="goBack"></i>
-      <i class="search wd-icon-search"></i>
+      <i class="search wd-icon-search" @click="goToSearch"></i>
       <div class="page-title">我的收藏</div>
     </header>
     <main>
@@ -166,6 +166,11 @@ export default {
     },
   },
   methods: {
+    goToSearch() {
+      this.$router.push({
+        path: "/search",
+      });
+    },
     goBack() {
       this.$router.go(-1);
     },

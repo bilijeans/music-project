@@ -238,7 +238,9 @@ export default {
         this.hotComments = this.data.hotComments;
         this.allComments = this.data.comments;
         this.allCommentsCount = this.data.commentNums;
-        this.preCommentId = this.allComments[19].commentId;
+        this.preCommentId =
+          this.allComments[this.allComments.length - 1].commentId;
+        console.log(this.preCommentId);
         // this.commentImg = [this.songMsg.pic];
         this.loading = false;
         // console.log(this.hotComments);
