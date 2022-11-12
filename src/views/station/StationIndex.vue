@@ -48,6 +48,7 @@
               class="content"
               v-for="(item, index) in timeStation.data"
               :key="index"
+              @click="playByStation(item)"
             >
               <div class="content-cover">
                 <img :src="item.img" />
@@ -77,7 +78,12 @@
               :key="item.viewId"
               :style="{ width: `${Math.ceil(item.list.length / 2) * 100}px` }"
             >
-              <div class="station-item" v-for="i in item.list" :key="i.viewId">
+              <div
+                class="station-item"
+                v-for="i in item.list"
+                :key="i.viewId"
+                @click="playByStation(i)"
+              >
                 <div class="station-cover">
                   <img :src="i.img" />
                   <div class="station-mask"></div>
@@ -121,6 +127,8 @@
   </div>
 </template>
 <script>
+import stationStaticData from "@/assets/radioData.json";
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
@@ -158,6 +166,13 @@ export default {
       this.getStationNavData(data.contents[3].contents);
       this.getRecommandData(data.contents.slice(4));
       // console.log(data.contents.slice(4));
+    },
+    playByStation(item) {
+      stationStaticData.forEach((el) => {
+        if (el.id == item.resId) {
+          this.playList(el.data.songItems);
+        }
+      });
     },
     getStationNavData(data) {
       let navTitle = data.filter((e) => {
@@ -208,6 +223,7 @@ export default {
     backToHome() {
       this.$router.push({ path: "home" });
     },
+    ...mapActions(["playList"]),
   },
   beforeDestroy() {
     this.$refs.nav.removeEventListener("scroll", this.getPageIndex);

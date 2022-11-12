@@ -29,7 +29,7 @@
 
       <div class="album-songs-page-content-main">
         <div class="album-songs-page-content-main-singer">
-          <div class="main-singer-left">
+          <div class="main-singer-left" @click="goToSingerPage()">
             <div class="main-singer-left-img">
               <img
                 :src="
@@ -180,7 +180,17 @@ export default {
           });
       }
     },
-
+    goToSingerPage() {
+      console.log(this.AblumMes);
+      this.$router.push({
+        name: "SingerPage",
+        params: {
+          id: this.AblumMes.singerId,
+          type: "2002",
+        },
+      });
+      location.reload();
+    },
     hasCollect() {
       this.hasCollectStatus = false;
       this.user.userCollect.album.forEach((el) => {
@@ -216,14 +226,14 @@ export default {
     goToComment() {
       let type;
       if (this.albumType == 1) {
-         type = 5;
-      }else{
-         type = 2003;
+        type = 5;
+      } else {
+        type = 2003;
       }
       this.$router.push({
-          path: "/morefunc-comment",
-          query: { id: this.albumId, type},
-        });
+        path: "/morefunc-comment",
+        query: { id: this.albumId, type },
+      });
     },
     back() {
       this.$router.go(-1);

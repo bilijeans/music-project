@@ -489,12 +489,15 @@ export default {
   watch: {
     resultUrl() {
       this.searchData = [];
+      this.songActiveData = [];
+      this.singerActiveData = [];
+      this.albumActiveData = [];
       this.getSearchResultData();
     },
   },
   methods: {
     getSearchResultData() {
-      console.log('12345678');
+      console.log("12345678", this.resultUrl);
       this.pageNo = 1;
       this.$axios.get(this.resultUrl).then(({ data }) => {
         console.log(data);
@@ -732,7 +735,7 @@ export default {
           console.log(this.searchData);
         });
       } else {
-        this.finished = true;
+        // this.finished = true;
       }
     },
     ...mapActions(["getPlayURL"]),
