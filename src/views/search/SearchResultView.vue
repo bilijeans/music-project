@@ -55,59 +55,70 @@
             />
           </svg>
         </div>
-        <div class="song-item" v-for="(i, index) in searchData" :key="i.id">
-          <div class="song-msg" @click="getPlayURL(i.id, '0')">
-            <div class="song-name">
-              <span
-                v-for="(n, nindex) in songActiveData[index]"
-                :key="nindex"
-                :class="{ 'song-active': n.highLight }"
-                >{{ n.word }}</span
-              >
-            </div>
-            <div class="song-pro">
-              <div
-                class="toneflag"
-                :style="{
-                  backgroundPosition: toneflagChoose(i),
-                  width: toneflagWidth(i),
-                }"
-                v-if="
-                  i.newRateFormats[i.newRateFormats.length - 1]?.formatType !=
-                  'PQ'
-                "
-              ></div>
-              <div>
-                <span
-                  v-for="(n, nindex) in singerActiveData[index]"
-                  :key="nindex"
-                  :class="{ 'song-active': n.highLight }"
-                  >{{ n.word }}</span
-                >·
-                <span
-                  v-for="(n, nindex) in albumActiveData[index]"
-                  :key="nindex + '0'"
-                  :class="{ 'song-active': n.highLight }"
-                  >{{ n.word }}</span
-                >
+        <van-list
+          :loading="loadingMore"
+          :finished="finished"
+          finished-text="没有更多了"
+          loading-text="加载中..."
+          @load="onLoad"
+          style="padding: 0 0 0 0"
+        >
+          <van-cell v-for="(i, index) in searchData" :key="index">
+            <div class="song-item">
+              <div class="song-msg" @click="getPlayURL(i.id, '0')">
+                <div class="song-name">
+                  <span
+                    v-for="(n, nindex) in songActiveData[index]"
+                    :key="nindex"
+                    :class="{ 'song-active': n.highLight }"
+                    >{{ n.word }}</span
+                  >
+                </div>
+                <div class="song-pro">
+                  <div
+                    class="toneflag"
+                    :style="{
+                      backgroundPosition: toneflagChoose(i),
+                      width: toneflagWidth(i),
+                    }"
+                    v-if="
+                      i.newRateFormats[i.newRateFormats.length - 1]
+                        ?.formatType != 'PQ'
+                    "
+                  ></div>
+                  <div>
+                    <span
+                      v-for="(n, nindex) in singerActiveData[index]"
+                      :key="nindex"
+                      :class="{ 'song-active': n.highLight }"
+                      >{{ n.word }}</span
+                    >
+                    <span
+                      v-for="(n, nindex) in albumActiveData[index]"
+                      :key="nindex + '0'"
+                      :class="{ 'song-active': n.highLight }"
+                      >·{{ n.word }}</span
+                    >
+                  </div>
+                </div>
               </div>
+              <svg
+                @click="moreFunc(i.name, i.id)"
+                class="icon"
+                width="16px"
+                height="16.00px"
+                viewBox="0 0 1024 1024"
+                version="1.1"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill="#2c2c2c"
+                  d="M469.333333 896a42.666667 42.666667 0 1 1 42.666667 42.666667 42.713333 42.713333 0 0 1-42.666667-42.666667m-42.666666 0a85.333333 85.333333 0 1 0 85.333333-85.333333 85.333333 85.333333 0 0 0-85.333333 85.333333z m42.666666-384a42.666667 42.666667 0 1 1 42.666667 42.666667 42.713333 42.713333 0 0 1-42.666667-42.666667m-42.666666 0a85.333333 85.333333 0 1 0 85.333333-85.333333 85.333333 85.333333 0 0 0-85.333333 85.333333z m42.666666-384a42.666667 42.666667 0 1 1 42.666667 42.666667 42.713333 42.713333 0 0 1-42.666667-42.666667m-42.666666 0A85.333333 85.333333 0 1 0 512 42.666667a85.333333 85.333333 0 0 0-85.333333 85.333333z"
+                />
+              </svg>
             </div>
-          </div>
-          <svg
-            @click="moreFunc(i.name, i.id)"
-            class="icon"
-            width="16px"
-            height="16.00px"
-            viewBox="0 0 1024 1024"
-            version="1.1"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fill="#2c2c2c"
-              d="M469.333333 896a42.666667 42.666667 0 1 1 42.666667 42.666667 42.713333 42.713333 0 0 1-42.666667-42.666667m-42.666666 0a85.333333 85.333333 0 1 0 85.333333-85.333333 85.333333 85.333333 0 0 0-85.333333 85.333333z m42.666666-384a42.666667 42.666667 0 1 1 42.666667 42.666667 42.713333 42.713333 0 0 1-42.666667-42.666667m-42.666666 0a85.333333 85.333333 0 1 0 85.333333-85.333333 85.333333 85.333333 0 0 0-85.333333 85.333333z m42.666666-384a42.666667 42.666667 0 1 1 42.666667 42.666667 42.713333 42.713333 0 0 1-42.666667-42.666667m-42.666666 0A85.333333 85.333333 0 1 0 512 42.666667a85.333333 85.333333 0 0 0-85.333333 85.333333z"
-            />
-          </svg>
-        </div>
+          </van-cell>
+        </van-list>
       </div>
       <div v-else class="noresult">无搜索结果</div>
       <songs-more-func
@@ -119,174 +130,200 @@
     </div>
     <div class="albums rl" v-if="dataHeader == 'album'">
       <div v-if="searchData">
-        <div
-          @click="goToAlbumSongs(i.id, i.type - 1)"
-          class="album-item"
-          v-for="(i, index) in searchData"
-          :key="i.id"
+        <van-list
+          :loading="loadingMore"
+          :finished="finished"
+          :immediate-check="false"
+          finished-text="没有更多了"
+          loading-text="加载中..."
+          @load="onLoad"
         >
-          <div class="album-img">
-            <img
-              v-lazy="i.imgItems[0].img"
-              loading="require('defaultSonglistCover.jpg')"
-            />
-            <img class="Album-img" v-lazy="require('@/assets/Album.png')" />
-          </div>
-          <div class="album-msg">
-            <div class="album-name">
-              <span
-                v-for="(n, nindex) in songActiveData[index]"
-                :key="nindex"
-                :class="{ 'song-active': n.highLight }"
-                >{{ n.word }}</span
-              >
-            </div>
-            <div class="album-pro">
-              <div class="album-singer">
-                <span
-                  v-for="(n, nindex) in singerActiveData[index]"
-                  :key="nindex"
-                  :class="{ 'song-active': n.highLight }"
-                  >{{ n.word }}</span
-                >
+          <van-cell v-for="(i, index) in searchData" :key="index">
+            <div @click="goToAlbumSongs(i.id, i.type - 1)" class="album-item">
+              <div class="album-img">
+                <img
+                  v-lazy="i.imgItems[0].img"
+                  loading="require('defaultSonglistCover.jpg')"
+                />
+                <img class="Album-img" v-lazy="require('@/assets/Album.png')" />
               </div>
-              <div class="album-time">{{ i.publishDate }}</div>
+              <div class="album-msg">
+                <div class="album-name">
+                  <span
+                    v-for="(n, nindex) in songActiveData[index]"
+                    :key="nindex"
+                    :class="{ 'song-active': n.highLight }"
+                    >{{ n.word }}</span
+                  >
+                </div>
+                <div class="album-pro">
+                  <div class="album-singer">
+                    <span
+                      v-for="(n, nindex) in singerActiveData[index]"
+                      :key="nindex"
+                      :class="{ 'song-active': n.highLight }"
+                      >{{ n.word }}</span
+                    >
+                  </div>
+                  <div class="album-time">{{ i.publishDate }}</div>
+                </div>
+              </div>
+              <i class="wd-icon-arrow-right"></i>
             </div>
-          </div>
-          <i class="wd-icon-arrow-right"></i>
-        </div>
+          </van-cell>
+        </van-list>
       </div>
       <div v-else class="noresult">无搜索结果</div>
     </div>
     <div class="mvSong rl" v-if="dataHeader == 'mvSong'">
       <div v-if="searchData && searchData.length > 0">
-        <div class="mvSong-item" v-for="(i, index) in searchData" :key="i.id">
-          <div class="mvSong-img" v-if="i.mvList">
-            <img
-              v-lazy="i.mvList[0]?.mvPicUrl[1]?.img"
-              loading="require('defaultSonglistCover.jpg')"
-            />
-          </div>
-          <div class="mvSong-playNum">
-            <svg
-              t="1666840943343"
-              class="icon"
-              viewBox="0 0 1024 1024"
-              version="1.1"
-              xmlns="http://www.w3.org/2000/svg"
-              p-id="23732"
-              xmlns:xlink="http://www.w3.org/1999/xlink"
-              width="16"
-              height="16"
-            >
-              <path
-                d="M586.666667 213.333333H53.333333a53.393333 53.393333 0 0 0-53.333333 53.333334v490.666666a53.393333 53.393333 0 0 0 53.333333 53.333334h533.333334a53.393333 53.393333 0 0 0 53.333333-53.333334V266.666667a53.393333 53.393333 0 0 0-53.333333-53.333334z m10.666666 544a10.666667 10.666667 0 0 1-10.666666 10.666667H53.333333a10.666667 10.666667 0 0 1-10.666666-10.666667V266.666667a10.666667 10.666667 0 0 1 10.666666-10.666667h533.333334a10.666667 10.666667 0 0 1 10.666666 10.666667z m399.72-536.8a52.746667 52.746667 0 0 0-53.613333 0.493334l-192 114a53.553333 53.553333 0 0 0-26.106667 45.853333v262.24a53.54 53.54 0 0 0 26.106667 45.853333l192 114a53.333333 53.333333 0 0 0 80.56-45.853333V266.88a52.746667 52.746667 0 0 0-26.946667-46.346667zM981.333333 757.12a10.666667 10.666667 0 0 1-16.113333 9.166667l-192-114a10.706667 10.706667 0 0 1-5.22-9.166667V380.88a10.706667 10.706667 0 0 1 5.22-9.166667l192-114a10.4 10.4 0 0 1 5.386667-1.54 11.006667 11.006667 0 0 1 5.333333 1.44 10.466667 10.466667 0 0 1 5.386667 9.266667z"
-                fill="#fff"
-                p-id="23733"
-              ></path>
-            </svg>
-            <span v-if="i.mvList">{{
-              dealWithPlayNum(i.mvList[0]?.playNum)
-            }}</span>
-          </div>
-          <div class="mvSong-msg">
-            <div class="mvSong-name">
-              <span
-                v-for="(n, nindex) in songActiveData[index]"
-                :key="nindex"
-                :class="{ 'song-active': n.highLight }"
-                >{{ n.word }}</span
-              >
+        <van-list
+          :loading="loadingMore"
+          :finished="finished"
+          finished-text="没有更多了"
+          loading-text="加载中..."
+          @load="onLoad"
+        >
+          <van-cell v-for="(i, index) in searchData" :key="index">
+            <div class="mvSong-item">
+              <div class="mvSong-img" v-if="i.mvList">
+                <img
+                  v-lazy="i.mvList[0]?.mvPicUrl[1]?.img"
+                  loading="require('defaultSonglistCover.jpg')"
+                />
+              </div>
+              <div class="mvSong-playNum">
+                <svg
+                  t="1666840943343"
+                  class="icon"
+                  viewBox="0 0 1024 1024"
+                  version="1.1"
+                  xmlns="http://www.w3.org/2000/svg"
+                  p-id="23732"
+                  xmlns:xlink="http://www.w3.org/1999/xlink"
+                  width="16"
+                  height="16"
+                >
+                  <path
+                    d="M586.666667 213.333333H53.333333a53.393333 53.393333 0 0 0-53.333333 53.333334v490.666666a53.393333 53.393333 0 0 0 53.333333 53.333334h533.333334a53.393333 53.393333 0 0 0 53.333333-53.333334V266.666667a53.393333 53.393333 0 0 0-53.333333-53.333334z m10.666666 544a10.666667 10.666667 0 0 1-10.666666 10.666667H53.333333a10.666667 10.666667 0 0 1-10.666666-10.666667V266.666667a10.666667 10.666667 0 0 1 10.666666-10.666667h533.333334a10.666667 10.666667 0 0 1 10.666666 10.666667z m399.72-536.8a52.746667 52.746667 0 0 0-53.613333 0.493334l-192 114a53.553333 53.553333 0 0 0-26.106667 45.853333v262.24a53.54 53.54 0 0 0 26.106667 45.853333l192 114a53.333333 53.333333 0 0 0 80.56-45.853333V266.88a52.746667 52.746667 0 0 0-26.946667-46.346667zM981.333333 757.12a10.666667 10.666667 0 0 1-16.113333 9.166667l-192-114a10.706667 10.706667 0 0 1-5.22-9.166667V380.88a10.706667 10.706667 0 0 1 5.22-9.166667l192-114a10.4 10.4 0 0 1 5.386667-1.54 11.006667 11.006667 0 0 1 5.333333 1.44 10.466667 10.466667 0 0 1 5.386667 9.266667z"
+                    fill="#fff"
+                    p-id="23733"
+                  ></path>
+                </svg>
+                <span v-if="i.mvList">{{
+                  dealWithPlayNum(i.mvList[0]?.playNum)
+                }}</span>
+              </div>
+              <div class="mvSong-msg">
+                <div class="mvSong-name">
+                  <span
+                    v-for="(n, nindex) in songActiveData[index]"
+                    :key="nindex"
+                    :class="{ 'song-active': n.highLight }"
+                    >{{ n.word }}</span
+                  >
+                </div>
+                <div class="mvSong-singer">
+                  <svg
+                    t="1666840583066"
+                    class="icon"
+                    viewBox="0 0 1024 1024"
+                    version="1.1"
+                    xmlns="http://www.w3.org/2000/svg"
+                    p-id="21256"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                    width="16"
+                    height="16"
+                  >
+                    <path
+                      d="M807.538 408.872l-99.22 231.336c-5.233 12.162-16.68 19.405-28.892 19.837a86.04 86.04 0 0 1-2.907 0c-12.311-0.416-23.858-7.66-29.108-19.837L561.499 441.17v185.847c0 18.359-14.87 33.228-33.228 33.228s-33.23-14.87-33.23-33.228V527.93l-66.755 115.618c-6.396 11.081-18.208 16.93-30.154 16.448-11.43 0.482-22.745-5.367-28.86-16.448l-73.601-133.28v116.749c0 18.359-14.87 33.228-33.229 33.228s-33.229-14.87-33.229-33.228V394.418c0-18.36 14.87-33.229 33.23-33.229 14.104 0 26.067 8.822 30.902 21.2 4.719 2.824 104.786 180.48 104.786 180.48l96.91-167.853s14.87-33.827 33.229-33.827c10.051 0 18.94 4.553 25.037 11.597 3.09-3.538 6.895-6.53 11.414-8.573 16.83-7.642 36.435-0.016 43.778 17.013l69.447 160.908 69.015-160.908c7.31-17.03 26.799-24.656 43.53-17.013 16.714 7.626 24.357 27.63 17.047 44.66z"
+                      fill="#D81E06"
+                      p-id="21257"
+                    ></path>
+                    <path
+                      d="M927.011 294.733c0-82.573-66.939-149.528-149.528-149.528H245.83c-82.59 0-149.528 66.955-149.528 149.528v431.969c0 82.589 66.939 149.527 149.528 149.527h531.653c82.59 0 149.528-66.938 149.528-149.527v-431.97zM794.097 942.686H229.214c-110.102 0-199.37-89.268-199.37-199.37V278.117c0-110.102 89.268-199.37 199.37-199.37h564.883c110.102 0 199.37 89.268 199.37 199.37v465.197c0 110.103-89.268 199.371-199.37 199.371z"
+                      fill="#D81E06"
+                      p-id="21258"
+                    ></path>
+                  </svg>
+                  <span
+                    v-for="(n, nindex) in singerActiveData[index]"
+                    :key="nindex"
+                    :class="{ 'song-active': n.highLight }"
+                    >{{ n.word }}</span
+                  >
+                </div>
+              </div>
             </div>
-            <div class="mvSong-singer">
-              <svg
-                t="1666840583066"
-                class="icon"
-                viewBox="0 0 1024 1024"
-                version="1.1"
-                xmlns="http://www.w3.org/2000/svg"
-                p-id="21256"
-                xmlns:xlink="http://www.w3.org/1999/xlink"
-                width="16"
-                height="16"
-              >
-                <path
-                  d="M807.538 408.872l-99.22 231.336c-5.233 12.162-16.68 19.405-28.892 19.837a86.04 86.04 0 0 1-2.907 0c-12.311-0.416-23.858-7.66-29.108-19.837L561.499 441.17v185.847c0 18.359-14.87 33.228-33.228 33.228s-33.23-14.87-33.23-33.228V527.93l-66.755 115.618c-6.396 11.081-18.208 16.93-30.154 16.448-11.43 0.482-22.745-5.367-28.86-16.448l-73.601-133.28v116.749c0 18.359-14.87 33.228-33.229 33.228s-33.229-14.87-33.229-33.228V394.418c0-18.36 14.87-33.229 33.23-33.229 14.104 0 26.067 8.822 30.902 21.2 4.719 2.824 104.786 180.48 104.786 180.48l96.91-167.853s14.87-33.827 33.229-33.827c10.051 0 18.94 4.553 25.037 11.597 3.09-3.538 6.895-6.53 11.414-8.573 16.83-7.642 36.435-0.016 43.778 17.013l69.447 160.908 69.015-160.908c7.31-17.03 26.799-24.656 43.53-17.013 16.714 7.626 24.357 27.63 17.047 44.66z"
-                  fill="#D81E06"
-                  p-id="21257"
-                ></path>
-                <path
-                  d="M927.011 294.733c0-82.573-66.939-149.528-149.528-149.528H245.83c-82.59 0-149.528 66.955-149.528 149.528v431.969c0 82.589 66.939 149.527 149.528 149.527h531.653c82.59 0 149.528-66.938 149.528-149.527v-431.97zM794.097 942.686H229.214c-110.102 0-199.37-89.268-199.37-199.37V278.117c0-110.102 89.268-199.37 199.37-199.37h564.883c110.102 0 199.37 89.268 199.37 199.37v465.197c0 110.103-89.268 199.371-199.37 199.371z"
-                  fill="#D81E06"
-                  p-id="21258"
-                ></path>
-              </svg>
-              <span
-                v-for="(n, nindex) in singerActiveData[index]"
-                :key="nindex"
-                :class="{ 'song-active': n.highLight }"
-                >{{ n.word }}</span
-              >
-            </div>
-          </div>
-        </div>
+          </van-cell>
+        </van-list>
       </div>
       <div v-else class="noresult">无搜索结果</div>
     </div>
     <div class="songList rl" v-if="dataHeader == 'songList'">
       <div v-if="searchData">
-        <div
-          @click="goToOnlySongsList(i.id)"
-          class="songList-item"
-          v-for="(i, index) in searchData"
-          :key="i.id"
+        <van-list
+          :loading="loadingMore"
+          :finished="finished"
+          finished-text="没有更多了"
+          loading-text="加载中..."
+          @load="onLoad"
         >
-          <div class="songList-img">
-            <img
-              v-lazy="i.musicListPicUrl"
-              loading="require('defaultSonglistCover.jpg')"
-            />
-          </div>
-          <div class="songList-msg">
-            <div class="songList-title">
-              <span
-                v-for="(n, nindex) in songActiveData[index]"
-                :key="nindex"
-                :class="{ 'song-active': n.highLight }"
-                >{{ n.word }}</span
-              >
+          <van-cell v-for="(i, index) in searchData" :key="index">
+            <div
+              @click="goToOnlySongsList(i.id)"
+              class="songList-item"
+              v-for="(i, index) in searchData"
+              :key="i.id"
+            >
+              <div class="songList-img">
+                <img
+                  v-lazy="i.musicListPicUrl"
+                  loading="require('defaultSonglistCover.jpg')"
+                />
+              </div>
+              <div class="songList-msg">
+                <div class="songList-title">
+                  <span
+                    v-for="(n, nindex) in songActiveData[index]"
+                    :key="nindex"
+                    :class="{ 'song-active': n.highLight }"
+                    >{{ n.word }}</span
+                  >
+                </div>
+                <div class="songList-times">
+                  <svg
+                    t="1666947494755"
+                    class="icon"
+                    viewBox="0 0 1024 1024"
+                    version="1.1"
+                    xmlns="http://www.w3.org/2000/svg"
+                    p-id="12298"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                    width="16"
+                    height="16"
+                  >
+                    <path
+                      d="M770.051533 313.11157869H254.83220512c-24.00821911 0-43.59774757 19.58952848-43.59774758 43.59774759v494.15690252c0 24.00821911 19.58952848 43.59774757 43.59774758 43.59774759h515.21932788c24.00821911 0 43.59774757-19.58952848 43.59774761-43.59774759V356.85661596c0-24.15550879-19.58952848-43.74503728-43.59774761-43.74503727z m15.7599966 537.75465011c0 8.69009158-7.06990501 15.75999659-15.7599966 15.75999659H254.83220512c-8.69009158 0-15.75999659-7.06990501-15.7599966-15.75999659V356.85661596c0-8.69009158 7.06990501-15.75999659 15.7599966-15.75999661h515.21932788c8.69009158 0 15.75999659 7.06990501 15.7599966 15.75999661v494.00961284zM277.22023765 255.52131075h470.29597313c7.65906378 0 13.99252034-6.1861669 13.99252032-13.99252032s-6.1861669-13.99252034-13.99252032-13.99252037H277.22023765c-7.65906378 0-13.99252034 6.1861669-13.99252034 13.99252037s6.33345658 13.99252034 13.99252034 13.99252032zM321.84901307 168.62039497h381.03842231c6.92261532 0 12.51962347-5.59700814 12.51962346-12.51962348s-5.59700814-12.51962347-12.51962346-12.51962346H321.84901307c-6.92261532 0-12.51962347 5.59700814-12.51962347 12.51962346s5.59700814 12.51962347 12.51962347 12.51962348z"
+                      fill="#FF2C2C"
+                      p-id="12299"
+                    ></path>
+                    <path
+                      d="M634.10315118 451.71117489l-194.56967758 31.96186226c-3.38766283 0.58915875-5.89158752 3.5349525-5.89158751 6.92261531v173.94912129c0 13.40336159-9.72111939 24.74466755-22.9771913 26.6594335l-19.00036972 2.79850407c-16.20186565 2.35663501-28.13233036 16.34915535-28.13233037 32.55102099v3.38766281c0 20.17868721 17.96934191 35.64410444 37.85344978 32.55102102l24.89195723-3.68224219c22.97719129-3.38766283 39.9155054-23.12448098 39.91550538-46.39625166V563.35675824c0-3.5349525 2.50392469-6.48074626 5.89158751-6.92261533l129.61492527-21.20971503c4.27140094-0.73644845 8.24822251 2.65121438 8.24822251 6.92261531v94.55997958c0 13.40336159-9.72111939 24.74466755-22.97719129 26.65943349l-19.00036975 2.79850406c-16.20186565 2.35663501-28.13233036 16.34915535-28.13233035 32.55102101v3.3876628c0 20.17868721 17.96934191 35.64410444 37.85344976 32.55102103l24.89195723-3.68224221c22.97719129-3.38766283 39.9155054-23.12448098 39.9155054-46.39625166V458.63379022c-0.1472897-4.41869063-4.12411126-7.65906378-8.3955122-6.92261533z"
+                      fill="#FF2C2C"
+                      p-id="12300"
+                    ></path>
+                  </svg>
+                  <span>
+                    {{ i.musicNum }}首 播放{{ dealWithPlayNum(i.playNum) }}次
+                  </span>
+                </div>
+                <div class="songList-ts">{{ dealWithSongListTS(i.ts) }}</div>
+              </div>
+              <i class="wd-icon-arrow-right"></i>
             </div>
-            <div class="songList-times">
-              <svg
-                t="1666947494755"
-                class="icon"
-                viewBox="0 0 1024 1024"
-                version="1.1"
-                xmlns="http://www.w3.org/2000/svg"
-                p-id="12298"
-                xmlns:xlink="http://www.w3.org/1999/xlink"
-                width="16"
-                height="16"
-              >
-                <path
-                  d="M770.051533 313.11157869H254.83220512c-24.00821911 0-43.59774757 19.58952848-43.59774758 43.59774759v494.15690252c0 24.00821911 19.58952848 43.59774757 43.59774758 43.59774759h515.21932788c24.00821911 0 43.59774757-19.58952848 43.59774761-43.59774759V356.85661596c0-24.15550879-19.58952848-43.74503728-43.59774761-43.74503727z m15.7599966 537.75465011c0 8.69009158-7.06990501 15.75999659-15.7599966 15.75999659H254.83220512c-8.69009158 0-15.75999659-7.06990501-15.7599966-15.75999659V356.85661596c0-8.69009158 7.06990501-15.75999659 15.7599966-15.75999661h515.21932788c8.69009158 0 15.75999659 7.06990501 15.7599966 15.75999661v494.00961284zM277.22023765 255.52131075h470.29597313c7.65906378 0 13.99252034-6.1861669 13.99252032-13.99252032s-6.1861669-13.99252034-13.99252032-13.99252037H277.22023765c-7.65906378 0-13.99252034 6.1861669-13.99252034 13.99252037s6.33345658 13.99252034 13.99252034 13.99252032zM321.84901307 168.62039497h381.03842231c6.92261532 0 12.51962347-5.59700814 12.51962346-12.51962348s-5.59700814-12.51962347-12.51962346-12.51962346H321.84901307c-6.92261532 0-12.51962347 5.59700814-12.51962347 12.51962346s5.59700814 12.51962347 12.51962347 12.51962348z"
-                  fill="#FF2C2C"
-                  p-id="12299"
-                ></path>
-                <path
-                  d="M634.10315118 451.71117489l-194.56967758 31.96186226c-3.38766283 0.58915875-5.89158752 3.5349525-5.89158751 6.92261531v173.94912129c0 13.40336159-9.72111939 24.74466755-22.9771913 26.6594335l-19.00036972 2.79850407c-16.20186565 2.35663501-28.13233036 16.34915535-28.13233037 32.55102099v3.38766281c0 20.17868721 17.96934191 35.64410444 37.85344978 32.55102102l24.89195723-3.68224219c22.97719129-3.38766283 39.9155054-23.12448098 39.91550538-46.39625166V563.35675824c0-3.5349525 2.50392469-6.48074626 5.89158751-6.92261533l129.61492527-21.20971503c4.27140094-0.73644845 8.24822251 2.65121438 8.24822251 6.92261531v94.55997958c0 13.40336159-9.72111939 24.74466755-22.97719129 26.65943349l-19.00036975 2.79850406c-16.20186565 2.35663501-28.13233036 16.34915535-28.13233035 32.55102101v3.3876628c0 20.17868721 17.96934191 35.64410444 37.85344976 32.55102103l24.89195723-3.68224221c22.97719129-3.38766283 39.9155054-23.12448098 39.9155054-46.39625166V458.63379022c-0.1472897-4.41869063-4.12411126-7.65906378-8.3955122-6.92261533z"
-                  fill="#FF2C2C"
-                  p-id="12300"
-                ></path>
-              </svg>
-              <span>
-                {{ i.musicNum }}首 播放{{ dealWithPlayNum(i.playNum) }}次
-              </span>
-            </div>
-            <div class="songList-ts">{{ dealWithSongListTS(i.ts) }}</div>
-          </div>
-          <i class="wd-icon-arrow-right"></i>
-        </div>
+          </van-cell>
+        </van-list>
       </div>
       <div v-else class="noresult">无搜索结果</div>
     </div>
@@ -417,6 +454,7 @@ export default {
         },
       ],
       dataHeader: "song",
+      data: "",
       searchData: null,
       moretab: false,
       name: "",
@@ -428,6 +466,11 @@ export default {
       albumActiveData: [],
       loading: true,
       singLength: 0,
+
+      loadingMore: false,
+      totalCount: 1,
+      finished: false,
+      // allComments: [],
     };
   },
   components: {
@@ -436,10 +479,11 @@ export default {
   created() {
     this.text = this.$route.query.word;
     this.getSearchResultData = debounce(this.getSearchResultData, 1500);
+    this.onLoad = debounce(this.onLoad, 2000);
   },
   computed: {
     resultUrl() {
-      return `/v1.0/content/search_all.do?text=${this.text}&pageNo=${this.pageNo}&pageSize=${this.pageSize}&searchSwitch={"song":${this.swtich.song},"album":${this.swtich.album},"singer":${this.swtich.singer},"tagSong":${this.swtich.tagSong},"mvSong":${this.swtich.mvSong},"songlist":${this.swtich.songList},"bestShow":${this.swtich.bestShow}}`;
+      return `/v1.0/content/search_all.do?text=${this.text}&pageNo=1&pageSize=${this.pageSize}&searchSwitch={"song":${this.swtich.song},"album":${this.swtich.album},"singer":${this.swtich.singer},"tagSong":${this.swtich.tagSong},"mvSong":${this.swtich.mvSong},"songlist":${this.swtich.songList},"bestShow":${this.swtich.bestShow}}`;
     },
   },
   watch: {
@@ -450,9 +494,14 @@ export default {
   },
   methods: {
     getSearchResultData() {
+      console.log('12345678');
+      this.pageNo = 1;
       this.$axios.get(this.resultUrl).then(({ data }) => {
-        // console.log(data);
+        console.log(data);
+        this.data = data[this.dataHeader + "ResultData"];
         this.searchData = data[this.dataHeader + "ResultData"]?.result;
+        this.totalCount = this.data.totalCount;
+        // console.log(this.data);
         console.log(this.searchData);
         if (this.searchData) {
           this.dealWithActiveData(this.searchData);
@@ -514,9 +563,10 @@ export default {
           arr3.push(this.dealWithWord(this.text, e.albums));
         }
       });
-      this.songActiveData = arr1;
-      this.singerActiveData = arr2;
-      this.albumActiveData = arr3;
+      this.songActiveData = [...this.songActiveData, ...arr1];
+      this.singerActiveData = [...this.singerActiveData, ...arr2];
+      this.albumActiveData = [...this.albumActiveData, ...arr3];
+      this.loadingMore = false;
     },
     dealWithWord(key, str) {
       let arr = [];
@@ -666,6 +716,25 @@ export default {
         path: "/home",
       });
     },
+    // 下拉刷新
+    onLoad() {
+      console.log(Math.ceil(this.totalCount / 10));
+      this.pageNo += 1;
+      if (this.pageNo <= Math.ceil(this.totalCount / 20)) {
+        this.$axios(
+          `/v1.0/content/search_all.do?text=${this.text}&pageNo=${this.pageNo}&pageSize=${this.pageSize}&searchSwitch={"song":${this.swtich.song},"album":${this.swtich.album},"singer":${this.swtich.singer},"tagSong":${this.swtich.tagSong},"mvSong":${this.swtich.mvSong},"songlist":${this.swtich.songList},"bestShow":${this.swtich.bestShow}}`
+        ).then(({ data }) => {
+          console.log(data);
+          this.dealWithActiveData(data[this.dataHeader + "ResultData"].result);
+          data[this.dataHeader + "ResultData"].result.forEach((element) => {
+            this.searchData.push(element);
+          });
+          console.log(this.searchData);
+        });
+      } else {
+        this.finished = true;
+      }
+    },
     ...mapActions(["getPlayURL"]),
   },
 };
@@ -771,13 +840,16 @@ export default {
     .song-item {
       width: 95%;
       height: 50px;
-      margin: 0 auto 10px;
+      margin: 0 auto;
       border-bottom: 1px #ccc dotted;
       display: flex;
       align-items: center;
       justify-content: space-between;
       .song-msg {
         width: 80%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
         .song-name {
           font-size: 14px;
           white-space: nowrap;
@@ -790,7 +862,6 @@ export default {
         .song-pro {
           display: flex;
           align-items: center;
-          padding: 5px 0;
           font-size: 12px;
           color: #666;
           white-space: nowrap;
@@ -857,10 +928,10 @@ export default {
           width: 250px;
           height: 15px;
           margin: 6px 0;
+          padding: 6px 0 0 0;
           color: #999;
           .album-singer {
             font-size: 12px;
-            height: 15px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -868,7 +939,6 @@ export default {
           .album-time {
             font-size: 12px;
             width: 65px;
-            height: 15px;
             margin: 0 0 0 10px;
             align-items: center;
             white-space: nowrap;

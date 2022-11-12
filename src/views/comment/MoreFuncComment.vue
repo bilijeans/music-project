@@ -232,7 +232,7 @@ export default {
     getCommentData() {
       console.log(this.commentUrl);
       this.$axios.get(this.commentUrl).then(({ data }) => {
-        console.log(data.data);
+        // console.log(data.data);
         this.data = data.data;
         this.songMsg = this.data.targetInfo;
         this.hotComments = this.data.hotComments;
@@ -280,28 +280,18 @@ export default {
         query: { userId: id },
       });
     },
+    // 下拉刷新
     onLoad() {
       console.log(this.allComments.length, this.allCommentsCount);
       if (this.allComments.length < this.allCommentsCount) {
-        // let lastNum = this.getNum;
-        // this.getNum += 20;
-        // this.getNum =
-        //   this.getNum >= this.allCommentsCount
-        //     ? this.allCommentsCount
-        //     : this.getNum;
         this.$axios(
           `/MIGUM3.0/user/comment/stack/v1.0?commentId=${this.preCommentId}&hotCommentStart=0&pageSize=20&queryType=1&resourceId=${this.id}&resourceType=${this.type}`
         ).then(({ data }) => {
           data.data.comments.forEach((element) => {
             this.allComments.push(element);
           });
-          // this.allComments = [
-          //   ...this.allComments,
-          //   ...,
-          // ];
           this.loadingMore = false;
         });
-        // this.loadingMore = true;
       } else {
         this.finished = true;
       }
