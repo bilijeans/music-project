@@ -56,7 +56,7 @@
           </svg>
         </div>
         <div class="song-item" v-for="(i, index) in searchData" :key="i.id">
-          <div class="song-msg">
+          <div class="song-msg" @click="getPlayURL(i.id, '0')">
             <div class="song-name">
               <span
                 v-for="(n, nindex) in songActiveData[index]"
@@ -77,18 +77,20 @@
                   'PQ'
                 "
               ></div>
-              <span
-                v-for="(n, nindex) in singerActiveData[index]"
-                :key="nindex"
-                :class="{ 'song-active': n.highLight }"
-                >{{ n.word }}</span
-              >·
-              <span
-                v-for="(n, nindex) in albumActiveData[index]"
-                :key="nindex + '0'"
-                :class="{ 'song-active': n.highLight }"
-                >{{ n.word }}</span
-              >
+              <div>
+                <span
+                  v-for="(n, nindex) in singerActiveData[index]"
+                  :key="nindex"
+                  :class="{ 'song-active': n.highLight }"
+                  >{{ n.word }}</span
+                >·
+                <span
+                  v-for="(n, nindex) in albumActiveData[index]"
+                  :key="nindex + '0'"
+                  :class="{ 'song-active': n.highLight }"
+                  >{{ n.word }}</span
+                >
+              </div>
             </div>
           </div>
           <svg
@@ -117,10 +119,18 @@
     </div>
     <div class="albums rl" v-if="dataHeader == 'album'">
       <div v-if="searchData">
-        <div class="album-item" v-for="(i, index) in searchData" :key="i.id">
-          <div class="album-img" v-if="i.imgItems">
-            <img :src="i.imgItems[0].img" />
-            <img class="Album-img" src="@/assets/Album.png" />
+        <div
+          @click="goToAlbumSongs(i.id, i.type - 1)"
+          class="album-item"
+          v-for="(i, index) in searchData"
+          :key="i.id"
+        >
+          <div class="album-img">
+            <img
+              v-lazy="i.imgItems[0].img"
+              loading="require('defaultSonglistCover.jpg')"
+            />
+            <img class="Album-img" v-lazy="require('@/assets/Album.png')" />
           </div>
           <div class="album-msg">
             <div class="album-name">
@@ -152,7 +162,10 @@
       <div v-if="searchData && searchData.length > 0">
         <div class="mvSong-item" v-for="(i, index) in searchData" :key="i.id">
           <div class="mvSong-img" v-if="i.mvList">
-            <img :src="i.mvList[0]?.mvPicUrl[1]?.img" />
+            <img
+              v-lazy="i.mvList[0]?.mvPicUrl[1]?.img"
+              loading="require('defaultSonglistCover.jpg')"
+            />
           </div>
           <div class="mvSong-playNum">
             <svg
@@ -222,9 +235,17 @@
     </div>
     <div class="songList rl" v-if="dataHeader == 'songList'">
       <div v-if="searchData">
-        <div class="songList-item" v-for="(i, index) in searchData" :key="i.id">
+        <div
+          @click="goToOnlySongsList(i.id)"
+          class="songList-item"
+          v-for="(i, index) in searchData"
+          :key="i.id"
+        >
           <div class="songList-img">
-            <img :src="i.musicListPicUrl" />
+            <img
+              v-lazy="i.musicListPicUrl"
+              loading="require('defaultSonglistCover.jpg')"
+            />
           </div>
           <div class="songList-msg">
             <div class="songList-title">
@@ -274,29 +295,70 @@
     </div>
     <div class="singer rl" v-if="dataHeader == 'singer'">
       <div v-if="searchData">
-        <div class="singer-item" v-for="(i, index) in searchData" :key="i.id">
-          <div class="singer-img" v-if="singerInfo[i.id]">
-            <img :src="singerInfo[i.id][0].contents[0].img2" />
-          </div>
-          <div class="singer-msg" v-if="singerData">
-            <div class="singer-name">
-              <span
-                v-for="(n, nindex) in songActiveData[index]"
-                :key="nindex"
-                :class="{ 'song-active': n.highLight }"
-                >{{ n.word }}</span
-              >
+        <van-skeleton
+          :row="1"
+          title
+          avatar
+          avatar-size="20vw"
+          :loading="loading"
+          style="margin: 10px 0 0 -10px"
+        >
+          <div
+            @click="goToSingerPage(i.id, '2002')"
+            class="singer-item"
+            v-for="(i, index) in searchData"
+            :key="i.id"
+          >
+            <div class="singer-img" v-if="singerInfo[i.id]">
+              <img :src="singerInfo[i.id][0].contents[0].img2" />
             </div>
-            <div class="singer-contents">
-              {{
-                singerInfo[i.id]
-                  ? dealWithSingerInfo(singerInfo[i.id][1].contents)
-                  : ""
-              }}
+            <div class="singer-msg" v-if="singerData">
+              <div class="singer-name">
+                <span
+                  v-for="(n, nindex) in songActiveData[index]"
+                  :key="nindex"
+                  :class="{ 'song-active': n.highLight }"
+                  >{{ n.word }}</span
+                >
+              </div>
+              <div class="singer-contents">
+                {{
+                  singerInfo[i.id]
+                    ? dealWithSingerInfo(singerInfo[i.id][1].contents)
+                    : ""
+                }}
+              </div>
             </div>
+            <i class="wd-icon-arrow-right"></i>
           </div>
-          <i class="wd-icon-arrow-right"></i>
-        </div>
+        </van-skeleton>
+        <van-skeleton
+          :row="1"
+          title
+          avatar
+          avatar-size="20vw"
+          :loading="loading"
+          style="margin: 15px 0 0 -10px"
+        >
+        </van-skeleton>
+        <van-skeleton
+          :row="1"
+          title
+          avatar
+          avatar-size="20vw"
+          :loading="loading"
+          style="margin: 15px 0 0 -10px"
+        >
+        </van-skeleton>
+        <van-skeleton
+          :row="1"
+          title
+          avatar
+          avatar-size="20vw"
+          :loading="loading"
+          style="margin: 15px 0 0 -10px"
+        >
+        </van-skeleton>
       </div>
       <div v-else class="noresult">无搜索结果</div>
     </div>
@@ -306,6 +368,7 @@
 <script>
 import { debounce } from "lodash-es";
 import SongsMoreFunc from "@/components/SongsMoreFunc";
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
@@ -363,6 +426,8 @@ export default {
       songActiveData: [],
       singerActiveData: [],
       albumActiveData: [],
+      loading: true,
+      singLength: 0,
     };
   },
   components: {
@@ -388,12 +453,13 @@ export default {
       this.$axios.get(this.resultUrl).then(({ data }) => {
         // console.log(data);
         this.searchData = data[this.dataHeader + "ResultData"]?.result;
-        // console.log(this.searchData);
+        console.log(this.searchData);
         if (this.searchData) {
           this.dealWithActiveData(this.searchData);
         }
         if (this.dataHeader == "singer" && this.searchData) {
           // this.getSingerInfo(this.searchData[0].id);
+          this.singLength = this.searchData.length;
           this.searchData.forEach((e) => {
             this.getSingerInfo(e.id);
           });
@@ -533,6 +599,10 @@ export default {
           this.singerData = data.data.contents;
           // console.log(this.singerData);
           this.setInSingerInfo(id, data.data.contents);
+          this.singLength--;
+          if (this.singLength == 0) {
+            this.loading = false;
+          }
         });
     },
     // 处理歌手信息
@@ -572,6 +642,20 @@ export default {
         return "20px";
       }
     },
+    goToAlbumSongs(id, type) {
+      this.$router.push({ name: "albumSongs", params: { id: id, type: type } });
+    },
+    goToSingerPage(id, type) {
+      this.$router.push({ name: "SingerPage", params: { id: id, type: type } });
+    },
+    goToOnlySongsList(id) {
+      this.$router.push({
+        name: "songListOnly",
+        params: {
+          id,
+        },
+      });
+    },
     goToLenovo() {
       this.$router.push({
         path: "/search",
@@ -582,6 +666,7 @@ export default {
         path: "/home",
       });
     },
+    ...mapActions(["getPlayURL"]),
   },
 };
 </script>
@@ -719,8 +804,6 @@ export default {
             margin: 0 5px 0 0;
           }
           span {
-            // width: 80%;
-            // display: block;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -742,6 +825,8 @@ export default {
       padding: 10px 0;
       .album-img {
         position: relative;
+        width: 20vw;
+        height: 20vw;
         img {
           position: relative;
           z-index: 2;
@@ -802,6 +887,8 @@ export default {
       padding: 10px 0;
       .mvSong-img {
         position: relative;
+        width: 45vw;
+        height: calc(4500 / 175) - (100 / 8) vh;
         img {
           display: block;
           width: 45vw;
@@ -870,6 +957,8 @@ export default {
       align-items: center;
       padding: 10px 0;
       .songList-img {
+        width: 25vw;
+        height: 25vw;
         img {
           display: block;
           width: 25vw;
@@ -919,6 +1008,8 @@ export default {
       align-items: center;
       padding: 10px 0;
       .singer-img {
+        width: 20vw;
+        height: 20vw;
         img {
           width: 20vw;
           display: block;

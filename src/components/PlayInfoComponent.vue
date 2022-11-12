@@ -1,5 +1,5 @@
 <template>
-  <div class="play-info" v-if="playbar.songData" @touchStart.stop>
+  <div class="play-info" @touchStart.stop>
     <header>
       <i class="wd-icon-arrow-down" @click="pickUp"></i>
       <div class="title">
@@ -11,13 +11,20 @@
             {{ playbar.songData ? playbar.songData.songName : "" }}
           </span>
         </p>
-        <p class="singer">
+        <p class="singer" @click="turnToSingerPage">
           {{
             playbar.songData
               ? dealWithSingerList(playbar.songData.singerList)
               : ""
           }}
         </p>
+      </div>
+      <div
+        class="mv-btn"
+        v-show="playbar.songData?.mvId"
+        @click="turnToVideoPage"
+      >
+        mv
       </div>
     </header>
     <main @click="lrcToggle = !lrcToggle">
@@ -37,7 +44,7 @@
         </div>
       </div>
       <div class="song-lrc" v-show="lrcToggle">
-        <div ref="lrc" class="lrc-container" v-if="playbar.lrcData">
+        <div ref="lrc" class="lrc-container">
           <ul>
             <li
               ref="lrcItem"
@@ -63,8 +70,8 @@
               : `url(${require('@/assets/ActiveHeartWhite.svg')})`,
           }"
         ></div>
-        <div class="nav-item comment"></div>
-        <div class="nav-item tone-flag"></div>
+        <div class="nav-item comment" @click="turnToComment"></div>
+        <div class="nav-item tone-flag" @click="turnToAlbum"></div>
         <div class="nav-item more"></div>
       </div>
       <div class="play-control">
@@ -76,7 +83,9 @@
             :percentage="moveTo || currentRate"
             hide-text
             color="#fc0fc0"
-            @mousedown.native.stop="moveProgress($event)"
+            ref="progress"
+            @touchmove.native="moveProgress($event)"
+            @touchend.native="moveProgressEnd()"
           />
           <div
             class="point"
@@ -143,7 +152,7 @@
       class="glass"
       :style="{
         backgroundImage: `url(${
-          'http://d.musicapp.migu.cn' + playbar.songData.img2
+          'http://d.musicapp.migu.cn' + playbar.songData?.img2
         })`,
       }"
     ></div>
@@ -170,6 +179,8 @@ export default {
       time: null,
       titleShow: false,
       likeStatus: false,
+      pageX: 0,
+      moveLong: 0,
     };
   },
   created() {
@@ -213,7 +224,7 @@ export default {
       this.moveLrc();
     },
     songId() {
-      console.log(this.playbar);
+      localStorage.setItem("playlist", JSON.stringify(this.playList));
       this.hasLike();
     },
   },
@@ -241,7 +252,6 @@ export default {
     getTitleStyle() {
       this.titleShow = false;
       clearInterval(this.time);
-      // console.log(this.$refs.firstSpan);
       if (!this.$refs.firstSpan) {
         return false;
       }
@@ -275,7 +285,7 @@ export default {
     dealWithSingerList(arr) {
       let str = "";
       arr.forEach((e) => {
-        str = str + e.name + "/";
+        str = str + (e.name || e.nickName) + "/";
       });
       str = str.slice(0, -1);
       return str;
@@ -317,13 +327,21 @@ export default {
           singerList: this.playbar.songData.singerList,
           albumId: this.playbar.songData.albumId,
           album: this.playbar.songData.album,
-          toneFlag:this.playList.listData[this.playList.highLight].toneFlag
+          toneFlag: this.playList.listData[this.playList.highLight].toneFlag,
         });
         this.likeStatus = true;
       }
     },
     moveProgress(e) {
-      console.log(e.offsetX);
+      this.pageX = this.$refs.progress.$el.getBoundingClientRect().x;
+      this.moveLong = this.$refs.progress.$el.getBoundingClientRect().width;
+      this.moveTo = parseInt(
+        ((e.changedTouches[0].clientX - this.pageX) / this.moveLong) * 100
+      );
+    },
+    moveProgressEnd() {
+      this.$emit("moveProgress", this.moveTo);
+      this.moveTo = null;
     },
     nextSong() {
       let nextSongIndex = this.playList.highLight + 1;
@@ -349,6 +367,68 @@ export default {
     },
     changeLoop() {
       this.$emit("changeLoop");
+    },
+    turnToSingerPage() {
+      this.$emit("packUpPlayInfo");
+      this.$router.push({
+        name: "SingerPage",
+        params: {
+          id: this.playbar.songData.singerList[0].id,
+          type: "2002",
+        },
+      });
+      location.reload();
+    },
+    turnToAlbum() {
+      this.$emit("packUpPlayInfo");
+      this.$router.push({
+        name: "albumSongs",
+        params: {
+          id: this.playbar.songData.albumId,
+          type: this.playbar.songData.restrictType,
+        },
+      });
+    },
+    turnToVideoPage() {
+      this.$axios
+        .get(
+          `/MIGUM3.0/bmw/mv/by-contentId/v1.0?contentId=${this.playbar.songData.mvId}&resourceType=D`
+        )
+        .then(({ data }) => {
+          let videoData = {
+            action: data.data.actionUrl,
+            img: data.data.showImg,
+            logEvent: data.data.logEvent,
+            resId: data.data.contentId,
+            resType: data.data.resourceType,
+            style: data.data.style,
+            track: data.data.track,
+            txt: data.data.title,
+            txt2: this.dealWithSingerList(data.data.singers),
+            txt3: null,
+            view: data.data.view,
+            viewId: data.data.viewId,
+          };
+          let jsonData = JSON.stringify({ data: [videoData] });
+          this.$emit("packUpPlayInfo");
+          this.$router.push({
+            path: "/video",
+            query: {
+              videoList: jsonData,
+              index: 0,
+            },
+          });
+        });
+    },
+    turnToComment() {
+      this.$emit("packUpPlayInfo");
+      this.$router.push({
+        path: "/morefunc-comment",
+        query: {
+          id: this.songId,
+          type: 2,
+        },
+      });
     },
     ...mapMutations(["changeHighNum", "addFavSong", "delFavSong"]),
     ...mapActions(["playOnList"]),
@@ -404,6 +484,15 @@ export default {
         color: rgba(255, 255, 255, 0.7);
       }
     }
+    .mv-btn {
+      position: absolute;
+      bottom: 18px;
+      right: 30px;
+      padding: 2px 5px;
+      border: 1px solid #fff;
+      border-radius: 5px;
+      color: #fff;
+    }
   }
   main {
     width: 100vw;
@@ -435,11 +524,8 @@ export default {
       width: 100vw;
       text-align: center;
       height: 52vh;
-      overflow: auto;
+      overflow: hidden;
       transition: all 1s linear;
-      &::-webkit-scrollbar {
-        display: none;
-      }
       .lrc-item {
         min-height: 4vh;
         line-height: 4vh;

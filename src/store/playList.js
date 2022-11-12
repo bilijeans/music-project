@@ -29,18 +29,21 @@ export default {
         },
         playList(state, list) {
             let newList = list.map(e => {
-                let { songName, songId, singerList } = e
+                let { name, songName, songId, singerList, img1, album, albumId
+                } = e
                 let obj = {
-                    name: songName,
+                    name: songName || name,
                     singerList: singerList,
                     songId: songId,
-                    toneFlag: 'ZQ32'
+                    toneFlag: 'ZQ32',
+                    cover: img1,
+                    album: album,
+                    albumId: albumId
                 }
                 return obj
             })
             state.commit("changeList", newList)
             state.dispatch("playOnList", { data: newList[0], index: 0 })
-
         },
         deleteSongOnList(state, id) {
             let index
@@ -54,11 +57,9 @@ export default {
                 state.commit("changeHighNum", state.state.highLight - 1)
             } else if (index == state.state.highLight) {
                 index = index % (state.state.listData.length - 1)
-                console.log(index, state.state.listData.length);
                 state.dispatch("playOnList", { data: newList[index], index: index })
             }
             state.commit("changeList", newList)
-            // console.log(newList, index);
         }
     },
     mutations: {
@@ -72,13 +73,10 @@ export default {
         },
         addToList(state, data) {
             state.listData = [...[data], ...state.listData]
-            // console.log(state);
         },
         upToList(state, index) {
             let data = state.listData[index]
             state.listData = [...[data], ...state.listData.slice(0, index), ...state.listData.slice(index + 1)]
-            // console.log(state);
-
         },
         changeHighNum(state, num) {
             state.highLight = num
@@ -86,7 +84,6 @@ export default {
         },
         initHighNum(state) {
             state.highLight = 0
-            // console.log(state.highLight);
         },
         changeList(state, data) {
             state.listData = data

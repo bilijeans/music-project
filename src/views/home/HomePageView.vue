@@ -64,6 +64,7 @@
       <div class="container">
         <ul class="recommend-song-list">
           <li
+            @click="goToOnlySongsList(i.resId)"
             class="item"
             v-for="(i, index) in recommendSongList"
             :key="i.resId"
@@ -139,6 +140,7 @@
       >
         <div class="home-songs-list">
           <div
+            @click="getPlayURL(n.resId)"
             class="home-song-list"
             v-for="n in newSongArr[index]"
             :key="n.resId"
@@ -160,7 +162,12 @@
     </div>
     <div class="roost-list">
       <div class="roost">
-        <div class="roost-item" v-for="i in roostData" :key="i.viewId">
+        <div
+          class="roost-item"
+          @click="goToAlbumSongs(i.viewId, i.resType)"
+          v-for="i in roostData"
+          :key="i.viewId"
+        >
           <div class="roost-album">
             <img src="@/assets/Album.png" />
           </div>
@@ -186,6 +193,7 @@
       >
         <div class="home-songs-list">
           <div
+            @click="getPlayURL(n.resId)"
             class="home-song-list"
             v-for="n in maylikeArr[index]"
             :key="n.resId"
@@ -223,6 +231,7 @@
       >
         <div class="home-songs-list">
           <div
+            @click="getPlayURL(n.resId)"
             class="home-song-list"
             v-for="n in screamingArr[index].value"
             :key="n.resId"
@@ -242,6 +251,7 @@
 </template>
 <script>
 import HomePageData from "@/assets/HomePageData.json";
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
@@ -386,9 +396,22 @@ export default {
         }
         });
     },
+    goToOnlySongsList(id) {
+      // console.log(id);
+      this.$router.push({
+        name: "songListOnly",
+        params: {
+          id,
+        },
+      });
+    },
+    goToAlbumSongs(id, type) {
+      this.$router.push({ name: "albumSongs", params: { id:id, type:type } });
+    },
     turnToUser() {
       this.$router.push({ path: "/user" });
     },
+    ...mapActions(["getPlayURL"]),
   },
 };
 </script>
@@ -465,6 +488,7 @@ export default {
     }
   }
   .sub-item {
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -484,7 +508,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 15px 10px;
+    padding: 25px 10px 15px;
     .more {
       font-size: 13px;
       color: #999;
@@ -626,6 +650,7 @@ export default {
     margin: 0 0 0 10px;
     display: flex;
     width: 960px;
+    height: 120px;
     flex-direction: row;
     .roost-item {
       position: relative;
@@ -652,7 +677,7 @@ export default {
       span {
         display: block;
         width: 100px;
-        padding: 3px 0;
+        padding: 3px 0 0;
         font-size: 13px;
         white-space: nowrap;
         overflow: hidden;

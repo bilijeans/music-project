@@ -1,7 +1,10 @@
 <template>
   <div id="app">
     <transition :name="transitionName">
-      <router-view></router-view>
+      <keep-alive v-if="$route.meta.keepAlive">
+        <router-view></router-view>
+      </keep-alive>
+      <router-view v-if="!$route.meta.keepAlive"> </router-view>
     </transition>
     <footer>
       <play-component></play-component>
@@ -53,6 +56,7 @@ export default {
         album: [],
       },
       config: {
+        nickName: "小明",
         themeColor: "#888",
       },
     };

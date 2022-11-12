@@ -43,7 +43,10 @@ const routes = [
   {
     path: '/radio-detail',
     name: 'radio-detail',
-    component: RadioDetail
+    component: RadioDetail,
+    meta:{
+      index:2
+    }
   },
 
   {
@@ -67,7 +70,7 @@ const routes = [
     name: 'SingerPage',
     component: SingerPageView,
     meta: {
-      index: 2
+      index: 2,
     }
   },
   {
@@ -92,11 +95,17 @@ const routes = [
     path: '/rankCharacteristics',
     name: 'characteristics',
     component: RankCharacteristicsGroup,
+    meta:{
+      index:2
+    }
   },
   {
     path: '/characteristics-group',
     name: 'characteristics-group',
     component: CharacteristicsGroup,
+    meta:{
+      index:2
+    }
   },
   {
     path: '/songList',
@@ -135,7 +144,8 @@ const routes = [
     name: 'search-result',
     component: SearchResultView,
     meta: {
-      index: 2
+      index: 2,
+      keepAlive: true
     }
   },
   {
@@ -183,6 +193,9 @@ const routes = [
     path: '/video',
     name: 'video',
     component: VideoPageView,
+    meta:{
+      index:10
+    }
   },
 
   {
@@ -190,12 +203,45 @@ const routes = [
     path: '/morefunc-comment',
     name: 'morefunc-comment',
     component: MoreFuncComment,
+    meta:{
+      index:20
+    }
   },
   {
 
     path: '/other-user',
     name: 'other-user',
     component: PeopleIndex,
+    meta:{
+      index:20
+    }
+  },
+  {
+
+    path: '/other-user/fav',
+    name: 'other-user-fav',
+    component: () => import('../views/people/PeopleFavSong.vue'),
+    meta:{
+      index:21
+    }
+  },
+  {
+
+    path: '/other-user/lately',
+    name: 'other-user-lately',
+    component: () => import('../views/people/PeopleLatelySong.vue'),
+    meta:{
+      index:21
+    }
+  },
+  {
+
+    path: '/user/songlist',
+    name: 'user-songlist',
+    component: () => import('../views/user/UserSonglist.vue'),
+    meta:{
+      index:5
+    }
   },
 
 ]

@@ -68,6 +68,9 @@ export default {
       font-size: 13px;
       color: #666;
       padding-top: 1vh;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     .video-content-img {

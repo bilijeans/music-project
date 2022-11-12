@@ -1,11 +1,10 @@
 <template>
   <div class="singer-page-nav">
     <div class="singer-page-nav-content">
-      <div v-for="(i,index) in tabName" @click="moveUnderLine(index + 1)" :key="index">
+      <div v-for="(i,index) in resultArr" @click="moveUnderLine(index + 1)" :key="index">
         <p :class="{ active: tab == index + 1 }">{{i.txt}}</p>
-        <span>{{i.txt2 == 0? '':i.txt2}}</span>
+        <span>{{i.txt2 == 0? '' : i.txt2}}</span>
       </div>
-      
       <i ref="underLine"></i>
     </div>
   </div>
@@ -19,10 +18,27 @@ export default {
   data() {
     return {
       tab: 2,
+      tabList: [
+        { title: "主页" },
+        { title: "歌曲" },
+        { title: "视频" },
+        { title: "专辑" },
+      ],
+      resultArr: [],
     };
   },
-  created(){
-    console.log(this.tabName,'aa')
+  watch: {
+    tabName() {
+      this.tabList.forEach((i) => {
+        let hasArr = this.tabName.find((x) => x.txt == i.title);
+        if (hasArr) {
+          this.resultArr = [...this.resultArr, hasArr];
+        } else {
+          this.resultArr = [...this.resultArr, { txt: i.title, txt2: 0 }];
+        }
+      });
+        console.log(this.resultArr)
+    },
   },
   methods: {
     moveUnderLine(left) {
@@ -38,14 +54,13 @@ export default {
 <style lang="scss" scoped>
 .singer-page-nav {
   width: 100vw;
-   background-color: #fff;
+  background-color: #fff;
   border-top-left-radius: 20px;
 
   .singer-page-nav-content {
     height: 7vh;
     display: flex;
     position: relative;
-   
 
     div {
       width: 25vw;

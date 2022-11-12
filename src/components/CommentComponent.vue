@@ -4,47 +4,57 @@
       <div class="pull-down-btn"></div>
     </div>
     <div class="layer-master-comment">
-      <div class="layer-master-item">
-        <div class="img" v-if="mainCommentItem.user">
-          <img :src="mainCommentItem.user.smallIcon" />
-        </div>
-        <div class="layer-master-msg">
-          <div class="name" v-if="mainCommentItem.user">
-            <span>{{ mainCommentItem.user.nickName }}</span>
-            <img
-              v-if="mainCommentItem.user.userMemberInfos"
-              :src="mainCommentItem.user.userMemberInfos[0].icon"
-            />
-            <img
-              v-if="mainCommentItem.user.userCommentIcons[0]"
-              :src="mainCommentItem.user.userCommentIcons[0].iconPic"
-            />
-            <img
-              v-if="
-                mainCommentItem.user.userIdentityInfoItems && mainCommentItem.user.userIdentityInfoItems[0]
-              "
-              :src="mainCommentItem.user.userIdentityInfoItems[0].icon"
-            />
-            <img
-              v-if="
-                mainCommentItem.user.userIdentityInfoItems && mainCommentItem.user.userIdentityInfoItems[1]
-              "
-              :src="mainCommentItem.user.userIdentityInfoItems[1].icon"
-            />
+      <van-skeleton :row="4" avatar :loading="loading">
+        <div class="layer-master-item">
+          <div class="img" v-if="mainCommentItem.user">
+            <img :src="mainCommentItem.user.smallIcon" />
           </div>
-          <div class="time">{{ mainCommentItem.commentTime }}</div>
+          <div class="layer-master-msg">
+            <div class="name" v-if="mainCommentItem.user">
+              <span>{{ mainCommentItem.user.nickName }}</span>
+              <img
+                v-if="mainCommentItem.user.userMemberInfos"
+                :src="mainCommentItem.user.userMemberInfos[0].icon"
+              />
+              <img
+                v-if="mainCommentItem.user.userCommentIcons[0]"
+                :src="mainCommentItem.user.userCommentIcons[0].iconPic"
+              />
+              <img
+                v-if="
+                  mainCommentItem.user.userIdentityInfoItems &&
+                  mainCommentItem.user.userIdentityInfoItems[0]
+                "
+                :src="mainCommentItem.user.userIdentityInfoItems[0].icon"
+              />
+              <img
+                v-if="
+                  mainCommentItem.user.userIdentityInfoItems &&
+                  mainCommentItem.user.userIdentityInfoItems[1]
+                "
+                :src="mainCommentItem.user.userIdentityInfoItems[1].icon"
+              />
+            </div>
+            <div class="time">{{ mainCommentItem.commentTime }}</div>
+          </div>
+          <div class="good" v-if="mainCommentItem.opNumItem">
+            <span
+              >{{ dealWithPlayNum(mainCommentItem.opNumItem.thumbNum) }} ❤</span
+            >
+          </div>
         </div>
-        <div class="good" v-if="mainCommentItem.opNumItem">
-          <span
-            >{{ dealWithPlayNum(mainCommentItem.opNumItem.thumbNum) }} ❤</span
-          >
+        <div class="layer-master-comment">
+          {{ mainCommentItem.commentInfo }}
         </div>
-      </div>
-      <div class="layer-master-comment">{{ mainCommentItem.commentInfo }}</div>
+      </van-skeleton>
     </div>
     <div class="reply-title">
       全部回复 ({{ mainCommentItem.replyTotalCount }})
     </div>
+    <van-skeleton :row="4" avatar :loading="loading"></van-skeleton>
+    <van-skeleton :row="4" avatar :loading="loading"></van-skeleton>
+    <van-skeleton :row="4" avatar :loading="loading"></van-skeleton>
+    <van-skeleton :row="4" avatar :loading="loading"></van-skeleton>
     <div class="reply-comments">
       <div
         class="reply-item"
@@ -108,7 +118,7 @@ export default {
     return {
       resourceId: "",
       mainCommentItem: "",
-      // moreComment: true,
+      loading: true,
     };
   },
   created() {
@@ -131,6 +141,7 @@ export default {
         // this.data = data.data;
         // console.log(data.data);
         this.mainCommentItem = data.data.mainCommentItem;
+        this.loading = false;
       });
     },
     // 处理点赞人数
@@ -158,6 +169,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.van-skeleton--primary {
+  margin: var(50px);
+}
+.van-skeleton {
+  margin: 0 0 50px 0;
+}
 .comment-reply {
   width: 90%;
   margin: 0 auto;

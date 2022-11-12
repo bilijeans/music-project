@@ -11,8 +11,8 @@
         <div class="video-mask" @click="isPlayOrNot" v-show="!isLand"></div>
 
         <div class="copy-success" v-show="copy">
-            <p>已成功复制到粘贴板</p>
-          </div>
+          <p>已成功复制到粘贴板</p>
+        </div>
 
         <header>
           <div class="back-left-arrow" @click="goBack" v-show="!isLand">
@@ -35,10 +35,7 @@
 
           <div class="comment-list" v-show="!isLand">
             <div class="video-heart">
-              <div
-                :class="{ likeActive: isLike }"
-                @click="isLike = !isLike"
-              ></div>
+              <div :class="{ likeActive: isLike }" @click="toggleCollect"></div>
             </div>
 
             <img src="@/assets/videoComment.svg" @click="goToComment" />
@@ -183,6 +180,7 @@
 </template>
 
 <script>
+import { mapMutations, mapState } from "vuex";
 export default {
   data() {
     return {
@@ -219,18 +217,38 @@ export default {
       showTip: false,
       keepCurrentTime: 0,
       windowLand: false,
-      copy:false,
+      copy: false,
     };
   },
   created() {
     this.videoListHandel();
     this.getVideoMessage();
     this.getVideoPage();
+    this.hasLike();
+  },
+  computed: {
+    ...mapState(["user"]),
   },
   mounted() {
     window.addEventListener("resize", this.renderResize, false);
   },
   methods: {
+    hasLike() {
+      this.isLike = false;
+      this.user.userCollect.mv.forEach((e) => {
+        if (e.resId == this.id) {
+          this.isLike = true;
+        }
+      });
+    },
+    toggleCollect() {
+      this.isLike = !this.isLike;
+      if (this.isLike) {
+        this.addCollectMv(this.allVideo[this.index]);
+      } else {
+        this.delCollectMv(this.id);
+      }
+    },
     renderResize() {
       // 判断横竖屏
       let width = document.documentElement.clientWidth;
@@ -245,6 +263,7 @@ export default {
       let tapIndex = this.$route.query.index;
       let allVideoArr = this.$route.query.videoList;
       allVideoArr = JSON.parse(allVideoArr).data;
+      console.log(allVideoArr);
       let handelArrStart = [];
       let handelArrEnd = allVideoArr;
       if (tapIndex != 0) {
@@ -264,6 +283,7 @@ export default {
           `/MIGUM3.0/bmw/mv/by-contentId/v1.0?contentId=${id}&resourceType=D`
         )
         .then(({ data }) => {
+          this.freshLatelyMvData(this.allVideo[this.index]);
           this.videoMessage = data.data;
         });
     },
@@ -357,6 +377,8 @@ export default {
       this.isPlay = false;
       clearInterval(this.timer);
       this.getVideoPage();
+      this.hasLike();
+      this.freshLatelyMvData(this.allVideo[this.index]);
     },
 
     setLand() {
@@ -476,12 +498,14 @@ export default {
     sliderSetTimeHandel(e) {
       let sliderY = null;
       let sliderHeight = null;
-      if(!this.windowLand){
-         sliderY = e.targetTouches[0].pageY - e.targetTouches[0].target.offsetTop;
-         sliderHeight = e.targetTouches[0].target.offsetHeight;
-      }else{
-         sliderY = e.targetTouches[0].pageX - e.targetTouches[0].target.offsetLeft;
-         sliderHeight = e.targetTouches[0].target.offsetWidth;
+      if (!this.windowLand) {
+        sliderY =
+          e.targetTouches[0].pageY - e.targetTouches[0].target.offsetTop;
+        sliderHeight = e.targetTouches[0].target.offsetHeight;
+      } else {
+        sliderY =
+          e.targetTouches[0].pageX - e.targetTouches[0].target.offsetLeft;
+        sliderHeight = e.targetTouches[0].target.offsetWidth;
       }
       let setTime = parseInt((sliderY * this.player.duration()) / sliderHeight);
       this.player.currentTime(setTime);
@@ -525,29 +549,33 @@ export default {
       });
     },
 
-    copyClicked(){
+    copyClicked() {
       let text = location.href;
-        this.$copyText(text).then(() => {
+      this.$copyText(text).then(
+        () => {
           this.copy = true;
           let copyTime = setTimeout(() => {
             this.copy = false;
-            clearTimeout(copyTime)
+            clearTimeout(copyTime);
           }, 3000);
-        }, (err) => {
-          console.log('复制失败',err);
-        })
+        },
+        (err) => {
+          console.log("复制失败", err);
+        }
+      );
     },
 
-    goToSingerPage(){
-      let id = this.videoMessage.singers[0].userId
+    goToSingerPage() {
+      let id = this.videoMessage.singers[0].userId;
       this.$router.push({
         name: "SingerPage",
         params: {
           id,
-          type : '2002',
+          type: "2002",
         },
       });
-    }
+    },
+    ...mapMutations(["addCollectMv", "delCollectMv", "freshLatelyMvData"]),
   },
 
   destroyed() {
@@ -565,14 +593,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.copy-success{
+.copy-success {
   padding: 10px 10px;
-  background-color: #fff;
+  background-color: rgba(129, 129, 129, 0.425);
   z-index: 300;
   position: absolute;
-  top: 40vh;
+  bottom: 30vh;
   left: 29vw;
   border-radius: 10px;
+  color: #fff;
 }
 .video-mask {
   height: 70vh;
@@ -1198,5 +1227,4 @@ footer {
     z-index: 25;
   }
 }
-
 </style>
